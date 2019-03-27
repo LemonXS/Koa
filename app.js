@@ -8,13 +8,56 @@ const logger = require("koa-logger");
 const render = require("koa-art-template");
 const path = require("path");
 const session = require('koa-session');
+const cors = require('koa2-cors');
+
+//token
+const jwt = require('jsonwebtoken')
+const jwtKoa = require('koa-jwt')
+const util = require('util')
+const verify = util.promisify(jwt.verify) // 解密
+
+const secret= require("./Config/Config.js").secret;
+// const secret = 'jwt demo'
+
+console.log(secret)
 
 
-//【controller】
+
+
+//【controller】本地控制器
 const index = require("./app/controller/index");
 const users = require("./app/controller/users");
-//【api】
+//【api】对外开放的API专用
 const userinfo = require("./app/api/userinfo");
+
+
+app.use(jwtKoa({secret}).unless({
+        // path: [/^\/api\/login/] //数组中的路径不需要通过jwt验证
+         path: [
+           /^\/login/,
+           /^\/register/,
+           /^((?!\/api).)*$/ // 设置除了私有接口外的其它资源，可以不需要认证访问
+           ]
+    }));
+
+
+// //允许跨域
+app.use(cors());
+
+// //允许跨域
+// app.use(cors({
+//   origin: function (ctx) {
+//       if (ctx.url === '/cors') {
+//           return "*"; // 允许来自所有域名请求
+//       }
+//       return 'http://127.0.0.1:8080'; / 这样就能只允许 http://127.0.0.1:8080 这个域名的请求了
+//   },
+//   exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
+//   maxAge: 5,
+//   credentials: true,
+//   allowMethods: ['GET', 'POST', 'DELETE'],
+//   allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
+// }))
 
 // error handler
 onerror(app);

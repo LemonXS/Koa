@@ -19,9 +19,6 @@ const DB = require("../../Config/DBConfig.js");
 // });
 
 //------------------【Mongodb测试】
-
-
-
 //显示学员信息
 router.get('/',async (ctx)=>{
       var result=await DB.find('user',{});
