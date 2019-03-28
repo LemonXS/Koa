@@ -24,11 +24,10 @@ router.get('/login', async (ctx) => {
 router.post('/login', async (ctx) => {
   var username = ctx.request.body.username;
   var pwd = ctx.request.body.pwd;
-  console.log(ctx.request.body)
   let data = await Susers.login({
     "username": username,
     "pwd": pwd
-  }); // DB.find('user',{"username":username,"pwd":pwd});
+  }); 
   console.log("【登陆数量】");
   console.log(data)
   if (data.length > 0) {
@@ -48,24 +47,17 @@ router.post('/login', async (ctx) => {
       httpOnly: false, // 是否只用于http请求中获取 
       overwrite: false // 是否允许重写 
     });
-    if (Object.prototype.toString.call("abc") == "[object String]") {
-      console.log(true);
-    } else {
-      console.log(false);
-    }
-    // ctx.set
     ctx.body = {
-      msg: true,
-      data: data,
-      message: '获取token成功',
-      code: 1,
-      token
+      success: true,
+      data: [],
+      message: '登录成功',
+      code: 1
     };
   } else {
     ctx.body = {
-      msg: false,
+      success: false,
       data: [],
-      message: '参数错误',
+      message: '用户名密码错误',
       code: -1
     };
   }
@@ -84,7 +76,6 @@ router.post('/logout', async (ctx) => {
 //测试token是否成功
 router.get('/logininfo', async (ctx) => {
   let token = ctx.cookies.get('uid');
-  console.log(token)
   let payload
   if (true) {
     payload = await jwt.verify(token, secret, function (err, decoded) {
@@ -95,15 +86,11 @@ router.get('/logininfo', async (ctx) => {
         console.log("【Token-err】：" + err)
         log4js.logway("错误","error","【Token-err】"+err)
         return false;
-
       }
     })
     ctx.body = {
       payload
     }
-
-
-
   } else {
     ctx.body = {
       message: 'token 错误',

@@ -1,53 +1,105 @@
-<!DOCTYPE >
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <title></title>
+<meta charset="UTF-8">
+<title>jQuery拼图滑块验证</title>
+<link type="text/css" rel="stylesheet" href="/login/css/style.css">
+
 </head>
 <body>
+<div class="logo-box">
+<div class="login" style="">
+<div class="bxs-row" style="text-align:center;font-size:40px;">
+    Login
+</div>
+<div class="bxs-row">
+<input type="text" class="username" value="" placeholder="用户名">
+<p class=" err err-username"></p>
+</div>
+<div class="bxs-row">
+<input type="password" class="password" placeholder="密码">
+<p class="err err-password"></p>
+</div>
+<div class="bxs-row">
+<input type="submit" class="submit btn" value="登录">
+</div>
+</div>
+<div class="verBox">
+<div id="imgVer" style="display:inline-block;"></div>
+</div>
+</div>
 
-    <h2>用户登陆</h2>
-    <form >
-        用户名：<input id="username" type="text" name="username"/>
-        <br/>
-        <br/>
-        密码<input id="pwd" type="text" name="pwd"/>
-        <br/>
-        <br/>
-        <input  type="button" id="btn_sbmit" value="提交"/>
-    </form>
-    <div id="div_tips">
-
-    </div>
-</body>
-<script src="/javascripts/jquery-1.4.4.min.js"></script>
+<script src="login/js/jquery-1.10.2.js"></script>
+<script src="/login/js/img_ver.js"></script>
 <script>
+        imgVer({
+            el:'$("#imgVer")',
+            width:'260',
+            height:'116',
+            img:[
+                '/login/images/logo_1.jpg',
+                '/login/images/logo_2.jpg',
+                '/login/images/logo_3.jpg'
+            ],
+            success:function (result) {
+                //alert('执行登录函数');
+                $(".login").css({
+                    "left":"0",
+                    "opacity":"1"
+                });
+                $(".verBox").css({
+                    "left":"404px",
+                    "opacity":"0"
+                });
+                console.log("【滑块成功】");
+                console.log(result);
+                $("#div_tips").empty();
 
-$("#btn_sbmit").click(function(){
- var username=$("#username").val();
- var pwd=$("#pwd").val();
- $("#div_tips").empty();
-   $.ajax({
-    url:"/login",
-    type:"post",
-    dataType:"json",
-    data:{username:username,
-    pwd:pwd},
-    success:function(obj){
-        if(obj.msg==true){
-            console.log("【登陆成功】")
-            console.log(obj)
-            $("#div_tips").text("【登陆成功】:"+obj.data[0].username);
-        }else{
-            console.log("【账号密码错误】")
-            $("#div_tips").text("【账号密码错误】");
-        }
-    },
-    error:function(err){
-        console.log("ERR："+JSON.stringify(err))
-    }
-})
-})
+                var uname=$(".username").val().trim();
+                var pwd=$(".password").val().trim();
+                   $.ajax({
+                    url:"/login",
+                    type:"post",
+                    dataType:"json",
+                    data:{username:uname,
+                    pwd:pwd},
+                    success:function(obj){
+                        if(obj.success==true){
+                            console.log("【成功】")
+                           window.location.href="/"
+                        }else{
+                            console.log("【账号密码错误】：")
+                            console.log(obj.message)
+                        }
+                    },
+                    error:function(err){
+                        console.log("异常ERR："+JSON.stringify(err))
+                    }
+                })
+            },
+            error:function (herr) {
+            console.log("【herr】"+JSON.stringify(herr))
+            }
+        });
+        $(".submit").on('click',function () {
+            var uname=$(".username").val().trim();
+            var pwd=$(".password").val().trim();
+            if(uname.length<6) {
+                console.log("账号必须最少6位数");
+            } else if(pwd.length<6) {
+                console.log("密码必须最少6位数");
+            } else {
+                $(".login").css({
+                    "left":"-404px",
+                    "opacity":"0"
+                });
+                $(".verBox").css({
+                    "left":"0",
+                    "opacity":"1"
+                })
+            }
+        })
 
-
-</script>
+    </script>
+</body>
 </html>
