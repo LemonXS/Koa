@@ -12,17 +12,12 @@ const cors = require('koa2-cors');
 
 //token
 const jwt = require('jsonwebtoken')
-const jwtKoa = require('koa-jwt')
-const util = require('util')
-const verify = util.promisify(jwt.verify) // 解密
+// const jwtKoa = require('koa-jwt')
+// const util = require('util')
+// const verify = util.promisify(jwt.verify) // 解密
 
-const secret= require("./Config/Config.js").secret;
-// const secret = 'jwt demo'
-
-console.log(secret)
-
-
-
+const secret = require("./Config/Config.js").secret;
+const appkey=require("./Config/Config.js").appkey;
 
 //【controller】本地控制器
 const index = require("./app/controller/index");
@@ -31,14 +26,46 @@ const users = require("./app/controller/users");
 const userinfo = require("./app/api/userinfo");
 
 
-app.use(jwtKoa({secret}).unless({
-        // path: [/^\/api\/login/] //数组中的路径不需要通过jwt验证
-         path: [
-           /^\/login/,
-           /^\/register/,
-           /^((?!\/api).)*$/ // 设置除了私有接口外的其它资源，可以不需要认证访问
-           ]
-    }));
+
+// app.use(jwtKoa({
+//   secret
+// }).unless({
+//   // path: [/^\/api\/login/] //数组中的路径不需要通过jwt验证
+//   path: [
+//     /^\/login/,
+//     /^\/register/,
+//     /^\/javascripts.*/
+//     //  /^((?!\/api).)*$/ // 设置除了私有接口外的其它资源，可以不需要认证访问
+//   ]
+// }));
+
+app.use(async (ctx, next) =>  { // 我这里知识把登陆和注册请求去掉了，其他的多有请求都需要进行token校验 
+  if (!ctx.url.match(/^\/login/) && !ctx.url.match(/^\/javascripts.*/) && !ctx.url.match(/^\/register/)) {
+    // Authentication Error
+    let token=ctx.cookies.get('uid');
+    let result ;
+      try {
+        result=  await  jwt.verify(token, secret, function (err, decoded) {
+          if (!err){
+            console.log(decoded); //会输出解密的，如果过了60秒，则有错误。
+            return decoded;
+          }else{
+            console.log("【Token-err】："+err)
+            return false;
+          }
+        })
+      } catch (error) {
+        result=false;
+      }
+    if (result == false) {
+      return  await ctx.redirect("/login"); 
+    } else {
+      return   await  next();
+    }
+  } else {
+  return  await next();
+  }
+});
 
 
 // //允许跨域
@@ -59,8 +86,12 @@ app.use(cors());
 //   allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
 // }))
 
+
+
+
 // error handler
 onerror(app);
+
 
 // middlewares
 app.use(
@@ -80,22 +111,23 @@ app.use(require("koa-static")(__dirname + "/public"));
 
 //配置 koa-art-template模板引擎
 render(app, {
-  root: path.join(__dirname, 'views'),   // 视图的位置
-  extname: '.html',  // 后缀名
-  debug: process.env.NODE_ENV !== 'production'  //是否开启调试模式
+  root: path.join(__dirname, 'views'), // 视图的位置
+  extname: '.html', // 后缀名
+  debug: process.env.NODE_ENV !== 'production' //是否开启调试模式
 
 });
 
+
 //session
-app.keys = ['abcdefghigklmnopqrstuvwsyz'];
+app.keys = appkey;
 const CONFIG = {
-   key: 'koa:sess',   //cookie key (default is koa:sess)
-   maxAge: 1000*60*60*2,  // cookie的过期时间 maxAge in ms (default is 1 days)
-   overwrite: true,  //是否可以overwrite    (默认default true)
-   httpOnly: true, //cookie是否只有服务器端可以访问 httpOnly or not (default true)
-   signed: true,   //签名默认true
-   rolling: false,  //在每次请求时强行设置cookie，这将重置cookie过期时间（默认：false）
-   renew: false,  //(boolean) renew session when session is nearly expired,
+  key: 'koa:sess', //cookie key (default is koa:sess)
+  maxAge: 1000 * 60 * 60 * 2, // cookie的过期时间 maxAge in ms (default is 1 days)
+  overwrite: true, //是否可以overwrite    (默认default true)
+  httpOnly: true, //cookie是否只有服务器端可以访问 httpOnly or not (default true)
+  signed: true, //签名默认true
+  rolling: false, //在每次请求时强行设置cookie，这将重置cookie过期时间（默认：false）
+  renew: false, //(boolean) renew session when session is nearly expired,
 };
 app.use(session(CONFIG, app));
 // 设置值 ctx.session.username = "张三";
@@ -109,7 +141,6 @@ app.use(session(CONFIG, app));
 //   ctx.session.views = ++n;
 //   ctx.body = n + ' views';
 // });
-
 
 
 
@@ -128,11 +159,11 @@ app.use(users.routes(), users.allowedMethods());
 //【api】路由
 app.use(userinfo.routes(), userinfo.allowedMethods());
 
-
-
 // error-handling
 app.on("error", (err, ctx) => {
   console.error("server error", err, ctx);
 });
+
+
 
 module.exports = app;

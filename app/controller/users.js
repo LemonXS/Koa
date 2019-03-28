@@ -12,7 +12,9 @@ const secret= require("../../Config/Config.js").secret;
 
 
 router.get('/login', async (ctx) => {
-  await ctx.render('login');
+  console.log("【1234567890】")
+
+   await ctx.render('login');
 })
 
 router.post('/login', async (ctx) => {
@@ -27,7 +29,15 @@ router.post('/login', async (ctx) => {
   console.log("【登陆数量】");
   console.log(data)
   if (data.length > 0) {
-    ctx.cookies.set('cid', 'hello world', {
+
+    let userToken = {
+      name:username,
+      pwd:pwd
+  }
+    const token = jwt.sign(userToken, secret, {expiresIn: '1h'})  //token签名 有效期为1小时
+
+    // ctx.session.uid = token;
+    ctx.cookies.set('uid', token, {
       signed: false,
       domain: '127.0.0.1', // 写cookie所在的域名 
       path: '/', // 写cookie所在的路径 
@@ -36,19 +46,15 @@ router.post('/login', async (ctx) => {
       httpOnly: false, // 是否只用于http请求中获取 
       overwrite: false // 是否允许重写 
     });
+
     if (Object.prototype.toString.call("abc") == "[object String]") {
       console.log(true);
     } else {
       console.log(false);
     }
 
-    let userToken = {
-      name:username,
-      pwd:pwd
-  }
-  const token = jwt.sign(userToken, secret, {expiresIn: '1h'})  //token签名 有效期为1小时
+   
 
-  ctx.session.uid = token;
 
 
 
@@ -85,17 +91,25 @@ router.post('/login', async (ctx) => {
 })
 
 router.get('/logininfo', async (ctx) => {
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiMTExIiwicHdkIjoiMTIzIiwiaWF0IjoxNTUzNjkyOTkwLCJleHAiOjE1NTM2OTY1OTB9.6iIIOyL31R3Jo_1pDsyGoelUIvF0pembiUMZtUBYLyc";
-  //ctx.header.authorization  // 获取jwt
-  console.log("【Token】"+  ctx.session.uid )
+  let token=ctx.cookies.get('uid');
   console.log(token)
-  console.log(secret)
   let payload
-  if (token) {
-      payload = await verify(token.split(' ')[1], secret)  // // 解密，获取payload
+  if (true) {
+    payload=  await   jwt.verify(token, secret, function (err, decoded) {
+              if (!err){
+                console.log(decoded); //会输出123，如果过了60秒，则有错误。
+                return decoded;
+              }else{
+                console.log("【Token-err】："+err)
+                return false;
+              }
+            })
       ctx.body = {
           payload
       }
+
+
+
   } else {
       ctx.body = {
           message: 'token 错误',
@@ -103,6 +117,4 @@ router.get('/logininfo', async (ctx) => {
       }
   }
 })
-
-
 module.exports = router
