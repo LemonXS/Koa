@@ -39,6 +39,8 @@ const userinfo = require("./app/api/userinfo");
 //   ]
 // }));
 
+
+//Token 路由拦截中心
 app.use(async (ctx, next) =>  { // 我这里知识把登陆和注册请求去掉了，其他的多有请求都需要进行token校验 
   if (!ctx.url.match(/^\/login/) && !ctx.url.match(/^\/javascripts.*/) && !ctx.url.match(/^\/register/)) {
     // Authentication Error
@@ -47,7 +49,7 @@ app.use(async (ctx, next) =>  { // 我这里知识把登陆和注册请求去掉
       try {
         result=  await  jwt.verify(token, secret, function (err, decoded) {
           if (!err){
-            console.log(decoded); //会输出解密的，如果过了60秒，则有错误。
+            // console.log(decoded); //会输出解密的，如果过了60秒，则有错误。
             return decoded;
           }else{
             console.log("【Token-err】："+err)
@@ -147,9 +149,11 @@ app.use(session(CONFIG, app));
 // logger
 app.use(async (ctx, next) => {
   const start = new Date();
-  await next();
+  console.log("【日志】")
+  console.log(start)
   const ms = new Date() - start;
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
+  await next();
 });
 
 // routes
@@ -161,9 +165,8 @@ app.use(userinfo.routes(), userinfo.allowedMethods());
 
 // error-handling
 app.on("error", (err, ctx) => {
+  console.log("【错误中心】")
   console.error("server error", err, ctx);
 });
-
-
 
 module.exports = app;
