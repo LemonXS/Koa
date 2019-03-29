@@ -76,7 +76,7 @@ left: 0;
 top: -7px;
 z-index: 12;
 cursor: pointer;
-background-image: url(/login/images/sprite.3.2.png);
+background-image: url(/public/login/images/sprite.3.2.png);
 background-position: 0 -84px;
 transition: inherit
 }
@@ -105,7 +105,7 @@ display: inline-block;
 width: 22px;
 height: 22px;
 vertical-align: top;
-background-image: url(/login/images/sprite.3.2.png);
+background-image: url(/public/login/images/sprite.3.2.png);
 background-position: -4px -1229px
 }
 
@@ -137,7 +137,7 @@ display: inline-block;
 width: 14px;
 height: 14px;
 margin: 7px 0;
-background-image: url(/login/images/sprite.3.2.png);
+background-image: url(/public/login/images/sprite.3.2.png);
 background-position: 0 -1179px;
 cursor: pointer
 }

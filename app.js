@@ -15,6 +15,9 @@ const jwt = require('jsonwebtoken')
 // const jwtKoa = require('koa-jwt')
 // const util = require('util')
 // const verify = util.promisify(jwt.verify) // 解密
+const log4js = require('./Logs/log4js'); 
+
+
 
 const secret = require("./Config/Config.js").secret;
 const appkey=require("./Config/Config.js").appkey;
@@ -42,7 +45,7 @@ const userinfo = require("./app/api/userinfo");
 
 //Token 路由拦截中心
 app.use(async (ctx, next) =>  { // 我这里知识把登陆和注册请求去掉了，其他的多有请求都需要进行token校验 
-  if (!ctx.url.match(/^\/login/) && !ctx.url.match(/^\/javascripts.*/) && !ctx.url.match(/^\/register/)) {
+  if (!ctx.url.match(/^\/login/) && !ctx.url.match(/^\/public.*/) && !ctx.url.match(/^\/register/)) {
     // Authentication Error
     let token=ctx.cookies.get('uid');
     let result ;
@@ -103,7 +106,9 @@ app.use(
 );
 app.use(json());
 app.use(logger());
-app.use(require("koa-static")(__dirname + "/public"));
+// app.use(require("koa-static")(__dirname + "/public"));
+app.use(require("koa-static")(__dirname ));
+
 
 // app.use(
 //   views(__dirname + "/views", {
@@ -145,7 +150,6 @@ app.use(session(CONFIG, app));
 // });
 
 
-
 // logger
 app.use(async (ctx, next) => {
   const start = new Date();
@@ -163,10 +167,17 @@ app.use(users.routes(), users.allowedMethods());
 //【api】路由
 app.use(userinfo.routes(), userinfo.allowedMethods());
 
+
+
+
 // error-handling
-app.on("error", (err, ctx) => {
-  console.log("【错误中心】")
-  console.error("server error", err, ctx);
+//【错误中心】  在try-catch错误是无法监听的  
+//             需要手动释放：ctx.app.emit('error', err, ctx);
+//             在需要的代码中放入即可监听
+app.on("error", async (err, ctx) => {
+  // console.error("server error", err, ctx);
+  log4js.logway("【错误中心】","error","【err】:"+err+"  【ctx】: "+JSON.stringify(ctx))
+  // await next();
 });
 
 module.exports = app;

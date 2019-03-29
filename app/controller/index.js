@@ -41,6 +41,7 @@ router.get('/',async (ctx)=>{
       //获取表单提交的数据
      // console.log(ctx.request.body);  //{ username: '王麻子', age: '12', sex: '1',pwd:"123456" }
       let data=await DB.insert('user',ctx.request.body);
+      
       //console.log(data);
       console.log("添加后的返回："+data);
       try{

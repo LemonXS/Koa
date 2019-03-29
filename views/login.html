@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <title>jQuery拼图滑块验证</title>
-<link type="text/css" rel="stylesheet" href="/login/css/style.css">
+<link type="text/css" rel="stylesheet" href="/public/layui/css/layui.css">
+<link type="text/css" rel="stylesheet" href="/public/login/css/style.css">
+
 
 </head>
 <body>
@@ -29,77 +31,16 @@
 </div>
 </div>
 
-<script src="login/js/jquery-1.10.2.js"></script>
-<script src="/login/js/img_ver.js"></script>
-<script>
-        imgVer({
-            el:'$("#imgVer")',
-            width:'260',
-            height:'116',
-            img:[
-                '/login/images/logo_1.jpg',
-                '/login/images/logo_2.jpg',
-                '/login/images/logo_3.jpg'
-            ],
-            success:function (result) {
-                //alert('执行登录函数');
-                $(".login").css({
-                    "left":"0",
-                    "opacity":"1"
-                });
-                $(".verBox").css({
-                    "left":"404px",
-                    "opacity":"0"
-                });
-                console.log("【滑块成功】");
-                console.log(result);
-                $("#div_tips").empty();
-
-                var uname=$(".username").val().trim();
-                var pwd=$(".password").val().trim();
-                   $.ajax({
-                    url:"/login",
-                    type:"post",
-                    dataType:"json",
-                    data:{username:uname,
-                    pwd:pwd},
-                    success:function(obj){
-                        if(obj.success==true){
-                            console.log("【成功】")
-                           window.location.href="/"
-                        }else{
-                            console.log("【账号密码错误】：")
-                            console.log(obj.message)
-                        }
-                    },
-                    error:function(err){
-                        console.log("异常ERR："+JSON.stringify(err))
-                    }
-                })
-            },
-            error:function (herr) {
-            console.log("【herr】"+JSON.stringify(herr))
-            }
-        });
-        $(".submit").on('click',function () {
-            var uname=$(".username").val().trim();
-            var pwd=$(".password").val().trim();
-            if(uname.length<6) {
-                console.log("账号必须最少6位数");
-            } else if(pwd.length<6) {
-                console.log("密码必须最少6位数");
-            } else {
-                $(".login").css({
-                    "left":"-404px",
-                    "opacity":"0"
-                });
-                $(".verBox").css({
-                    "left":"0",
-                    "opacity":"1"
-                })
-            }
-        })
-
-    </script>
 </body>
+
+
+<!-- <script src="/public/javascripts/jquery-1.4.4.min.js"></script> -->
+<script src="/public/login/js/jquery-1.10.2.js"></script>
+<script src="/public/login/js/img_ver.js"></script>
+<script src="/public/layui/layui.js"></script>
+<script src="/public/login/js/login.js"></script>
+<script>
+
+ 
+</script>
 </html>

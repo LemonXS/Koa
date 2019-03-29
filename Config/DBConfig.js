@@ -99,6 +99,21 @@ class Db{
     getObjectId(id){    /*mongodb里面查询 _id 把字符串转换成对象*/
         return new ObjectID(id);
     }
+    findOne(collectionName,json){
+        return new Promise((resolve,reject)=>{
+             this.connect().then((db)=>{
+                 var result=db.collection(collectionName).find(json).limit(1);
+                 result.toArray(function(err,docs){
+                     if(err){
+                         reject(err);
+                         return;
+                     }
+                     resolve(docs);
+                 })
+             })
+         })
+     }
+    
 }
 
 module.exports=Db.getInstance();

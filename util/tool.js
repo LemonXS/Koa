@@ -2,7 +2,6 @@
 /*
 ** randomWord 产生任意长度随机字母数字组合
 ** randomFlag-是否任意长度 min-任意长度最小位[固定位数] max-任意长度最大位
-** xuanfeng 2014-08-28
 */
 //【使用方法】
 //生成3-32位随机串：randomWord(true, 3, 32)
