@@ -83,10 +83,23 @@ class Db{
             })
         })
     }
-    remove(collectionName,json){
+    removeOne(collectionName,json){
         return new  Promise((resolve,reject)=>{
             this.connect().then((db)=>{
                 db.collection(collectionName).removeOne(json,function(err,result){
+                    if(err){
+                        reject(err);
+                    }else{
+                        resolve(result);
+                    }
+                })
+            })
+        })
+    }
+    remove(collectionName,json){
+        return new  Promise((resolve,reject)=>{
+            this.connect().then((db)=>{
+                db.collection(collectionName).remove(json,function(err,result){
                     if(err){
                         reject(err);
                     }else{

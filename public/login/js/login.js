@@ -36,8 +36,15 @@ layui.use(['layer'], function(){
                              layer.msg('登陆成功', {icon: 6});
                              window.location.href="/"
                           }else{
-                              layer.msg('【账号密码错误】', {icon: 5});
-                              console.log(obj.message)
+                            if(obj.code==-1){
+                                layer.msg('【账号密码错误】', {icon: 5});
+                                console.log(obj.message)
+                            }
+                            if(obj.code==2){
+                                layer.msg('【登录异常】', {icon: 5});
+                                console.log(obj.message);
+                            }
+                             
                           }
                       },
                       error:function(err){

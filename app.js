@@ -9,24 +9,26 @@ const render = require("koa-art-template");
 const path = require("path");
 const session = require('koa-session');
 const cors = require('koa2-cors');
-
 //token
 const jwt = require('jsonwebtoken')
 // const jwtKoa = require('koa-jwt')
 // const util = require('util')
 // const verify = util.promisify(jwt.verify) // 解密
-const log4js = require('./Logs/log4js'); 
-
-
-
+const log4js = require('./Logs/log4js');
 const secret = require("./Config/Config.js").secret;
-const appkey=require("./Config/Config.js").appkey;
+const appkey = require("./Config/Config.js").appkey;
+
+const appservice = require("./app/service/users.js");
+
 
 //【controller】本地控制器
 const index = require("./app/controller/index");
 const users = require("./app/controller/users");
 //【api】对外开放的API专用
 const userinfo = require("./app/api/userinfo");
+
+
+
 
 
 
@@ -44,33 +46,81 @@ const userinfo = require("./app/api/userinfo");
 
 
 //Token 路由拦截中心
-app.use(async (ctx, next) =>  { // 我这里知识把登陆和注册请求去掉了，其他的多有请求都需要进行token校验 
+app.use(async (ctx, next) => { // 我这里知识把登陆和注册请求去掉了，其他的多有请求都需要进行token校验 
   if (!ctx.url.match(/^\/login/) && !ctx.url.match(/^\/public.*/) && !ctx.url.match(/^\/register/)) {
     // Authentication Error
-    let token=ctx.cookies.get('uid');
-    let result ;
-      try {
-        result=  await  jwt.verify(token, secret, function (err, decoded) {
-          if (!err){
-            // console.log(decoded); //会输出解密的，如果过了60秒，则有错误。
-            return decoded;
-          }else{
-            console.log("【Token-err】："+err)
-            return false;
-          }
-        })
-      } catch (error) {
-        result=false;
-      }
+    let token = ctx.cookies.get('uid');
+    let result;
+    let jwtdata = "";
+    try {
+      result = await jwt.verify(token, secret, function (err, decoded) {
+        if (!err) {
+          console.log("【总路径 Token 监控】")
+          console.log(decoded)
+          // console.log(decoded); //会输出解密的，如果过了60秒，则有错误。
+          jwtdata = decoded;
+          return decoded;
+        } else {
+          console.log("【Token-err】：" + err)
+          return false;
+        }
+      })
+    } catch (error) {
+      result = false;
+    }
+console.log(jwtdata.ukey)
+console.log(jwtdata.randomkey)
+
+    // if (Object.prototype.toString.call(jwtdata) == "[object Object]") {
+    //   let trackdata = await appservice.find('tracklog', {
+    //     "uid": jwtdata.ukey,
+    //     "randomkey": jwtdata.randomkey
+    //   });
+    //   console.log("【trackdata】123123")
+    //   console.log(trackdata)
+    //   if (trackdata.length > 0) {
+    //     result = true;
+    //   } else {
+    //     result = false;
+    //   }
+    // } else {
+    //   result = false;
+    // }
+
+
     if (result == false) {
-      return  await ctx.redirect("/login"); 
+      return await ctx.redirect("/login");
     } else {
-      return   await  next();
+      return await next();
     }
   } else {
-  return  await next();
+    return await next();
   }
 });
+
+
+// app.use(async (ctx, next) =>  {
+//   let trackdata =  appservice.find('tracklog', {
+//     uid: decoded.ukey,
+//     randomkey: decoded.randomkey
+//   }).then(data => { 
+//     console.log("【trackdata】")
+//   console.log(trackdata)
+//   console.log("【data】")
+//   console.log(data)
+//    })
+//   if (trackdata.length > 0) {
+//    next();
+//   }else{
+//     next();
+//   }
+// })
+
+
+
+
+
+
 
 
 // //允许跨域
@@ -107,7 +157,7 @@ app.use(
 app.use(json());
 app.use(logger());
 // app.use(require("koa-static")(__dirname + "/public"));
-app.use(require("koa-static")(__dirname ));
+app.use(require("koa-static")(__dirname));
 
 
 // app.use(
@@ -176,7 +226,7 @@ app.use(userinfo.routes(), userinfo.allowedMethods());
 //             在需要的代码中放入即可监听
 app.on("error", async (err, ctx) => {
   // console.error("server error", err, ctx);
-  log4js.logway("【错误中心】","error","【err】:"+err+"  【ctx】: "+JSON.stringify(ctx))
+  log4js.logway("【错误中心】", "error", "【err】:" + err + "  【ctx】: " + JSON.stringify(ctx))
   // await next();
 });
 
