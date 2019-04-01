@@ -1,5 +1,16 @@
 const DBConfig = require("../../Config/DBConfig.js");
 
+/**
+ *mongodb里面查询 _id 把字符串转换成对象
+ * @param {*} option
+ * @returns
+ */
+function getObjectId( option) {
+    return DBConfig.getObjectId(option);
+}
+
+
+
 // 【登录】
 function login(option) {
     return DBConfig.findOne('user', option);
@@ -36,6 +47,9 @@ function del(toption, option) {
     return DBConfig.find(toption,option);
 }
 
+
+
+exports.getObjectId=getObjectId;
 exports.login = login;
 exports.add = add;
 exports.del = del;

@@ -1,6 +1,12 @@
 const DBusers = require("../db/users.js");
 
 
+
+function getObjectId(option) {
+    return DBusers.getObjectId(option);
+}
+
+
 function login(option) {
     return DBusers.login(option);
 }
@@ -19,7 +25,7 @@ function del(toption, option) {
 }
 
 
-
+exports.getObjectId=getObjectId;
 exports.login = login;
 exports.add = add;
 exports.del = del;

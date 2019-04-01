@@ -2,7 +2,6 @@ const router = require('koa-router')()
 const log4js = require('../../Logs/log4js');
 // router.prefix('/users') //很重要，可以在当前地址前面添加一个 前缀 /xxx
 const Susers = require("../service/users.js");
-
 const jwt = require('jsonwebtoken')
 // const util = require('util')
 // const verify = util.promisify(jwt.verify) // 解密
@@ -10,13 +9,9 @@ const secret = require("../../Config/Config.js").secret; //私钥
 const toolway = require("../../util/tool.js"); //拓展方法池
 const timeway = require("../../util/timeway.js"); //拓展方法池
 
-
-
-
 router.get('/login', async (ctx) => {
   await ctx.render('login');
 })
-
 
 
 //【登录】
@@ -27,21 +22,17 @@ router.post('/login', async (ctx) => {
     "username": username,
     "pwd": pwd
   });
-
   var nowdate = timeway.nowdateway(0).date1;
   var random16 = toolway.randomWord(false, 16);
-  console.log("【random16】 " + random16)
-
-
-  console.log("【登陆数量】");
-  console.log(data)
+  // console.log("【random16】 " + random16)
+  // console.log("【登陆数量】");
+  // console.log(data)
   if (data.length > 0) {
     let deltrackdata = await Susers.del('tracklog', {
       uid: data[0]._id
     });
-    console.log("【删除登录key】")
-    console.log(deltrackdata.result)
-
+    // console.log("【删除登录key】")
+    // console.log(deltrackdata.result)
     let addtrackdata = await Susers.add('tracklog', {
       uid: data[0]._id,
       username: data[0].username,
@@ -51,13 +42,6 @@ router.post('/login', async (ctx) => {
     // console.log(trackdata)  result: { n: 1, ok: 1 }
     try {
       if (addtrackdata.result.ok) {
-        // let trackdata = await Susers.find('tracklog', {
-        //   uid: data[0]._id,
-        //   randomkey: random16
-        // });
-        // console.log("【trackdata】")
-        // console.log(trackdata)
-        // if (trackdata.length > 0) {//aaaaaaaaaaaaaaaa
           const token = jwt.sign({
             randomkey: random16,
             ukey: data[0]._id,
@@ -82,15 +66,6 @@ router.post('/login', async (ctx) => {
             message: '登录成功',
             code: 1
           };
-        // } else {//''''''''''''''''
-        //   ctx.body = {
-        //     success: true,
-        //     data: [],
-        //     message: '登录成功',
-        //     code: 3
-        //   };
-        // }
-
       } else {
         ctx.body = {
           success: true,
@@ -99,11 +74,9 @@ router.post('/login', async (ctx) => {
           code: 1
         };
       }
-
-
-
     } catch (err) {
-      console.log(err);
+      console.log("【登录异常】"+JSON.stringify(err));
+      log4js.logway("【登录异常】", "error", "【err】:" + JSON.stringify(err))
       ctx.body = {
         success: false,
         data: [],

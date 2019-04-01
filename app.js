@@ -18,7 +18,7 @@ const log4js = require('./Logs/log4js');
 const secret = require("./Config/Config.js").secret;
 const appkey = require("./Config/Config.js").appkey;
 
-const appservice = require("./app/service/users.js");
+const db = require("./Config/DBConfig.js");
 
 
 //【controller】本地控制器
@@ -47,7 +47,7 @@ const userinfo = require("./app/api/userinfo");
 
 //Token 路由拦截中心
 app.use(async (ctx, next) => { // 我这里知识把登陆和注册请求去掉了，其他的多有请求都需要进行token校验 
-  if (!ctx.url.match(/^\/login/) && !ctx.url.match(/^\/public.*/) && !ctx.url.match(/^\/register/)) {
+  if (!ctx.url.match(/^\/login/) && !ctx.url.match(/^\/public.*/) && !ctx.url.match(/^\/register/) && !ctx.url.match(/^\/logout/)) {
     // Authentication Error
     let token = ctx.cookies.get('uid');
     let result;
@@ -68,27 +68,26 @@ app.use(async (ctx, next) => { // 我这里知识把登陆和注册请求去掉�
     } catch (error) {
       result = false;
     }
-console.log(jwtdata.ukey)
-console.log(jwtdata.randomkey)
+    if (Object.prototype.toString.call(jwtdata) == "[object Object]") {
+      let trackdata = await db.find('tracklog', {
+        "uid":db.getObjectId(jwtdata.ukey) , "randomkey": jwtdata.randomkey
+      });
+      console.log("【总路径 trackdata】")
+      console.log(trackdata)
 
-    // if (Object.prototype.toString.call(jwtdata) == "[object Object]") {
-    //   let trackdata = await appservice.find('tracklog', {
-    //     "uid": jwtdata.ukey,
-    //     "randomkey": jwtdata.randomkey
-    //   });
-    //   console.log("【trackdata】123123")
-    //   console.log(trackdata)
-    //   if (trackdata.length > 0) {
-    //     result = true;
-    //   } else {
-    //     result = false;
-    //   }
-    // } else {
-    //   result = false;
-    // }
-
-
+      if (trackdata.length > 0) {
+        result = true;
+      } else {
+        result = false;
+      }
+    } else {
+      result = false;
+    }
     if (result == false) {
+      ctx.cookies.set('uid', '', {
+        signed: false,
+        maxAge: 0
+      })
       return await ctx.redirect("/login");
     } else {
       return await next();
@@ -216,8 +215,6 @@ app.use(users.routes(), users.allowedMethods());
 
 //【api】路由
 app.use(userinfo.routes(), userinfo.allowedMethods());
-
-
 
 
 // error-handling
