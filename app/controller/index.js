@@ -1,22 +1,47 @@
 const router = require('koa-router')();
 const DB = require("../../Config/DBConfig.js");
+const mysqlDB = require("../../Config/MySqlConfig.js");
+const aes256way = require("../../util/safety.js"); //拓展方法池
+const aeskey= require("../../Config/Config.js").aes256key; //私钥
+const aesiv= require("../../Config/Config.js").ivkey; //私钥
+const ipaddress = require("../../util/ip.js"); //拓展方法池
 
 
-// router.get("/", async (ctx, next) => {
-//   await ctx.render("index", {
-//     title: "Hello Koa 2!"
-//   });
-// });
+//测试mysl链接测试
+//aes加密解密
+router.get("/mysqlDB", async (ctx, next) => {
+       let mysqldbtest;
+       try {
+        mysqldbtest=  await mysqlDB.findtableData(" users ",{"username ":"233"});
+       } catch (error) {
+          console.log("链接测试失败！") 
+       }
 
-// router.get("/string", async (ctx, next) => {
-//   ctx.body = "koa2 string";
-// });
+       console.log(aeskey)
+       console.log(aesiv)
+       let aaa;
+       try {
+        aaa=  aes256way.encryption("123456",aeskey,aesiv);
+    } catch (error) {
+        console.log("加密失败！") 
+     }
+   var   bbbb=  aes256way.decryption(aaa,aeskey,aesiv);
 
-// router.get("/json", async (ctx, next) => {
-//   ctx.body = {
-//     title: "koa2 json"
-//   };
-// });
+       console.log(aaa)
+       console.log(bbbb)
+    //    console.log(ctx.socket)
+
+     console.log(  ipaddress.getClientIP(ctx))
+     
+       ctx.body = "www";
+});
+
+
+
+
+
+
+
 
 //------------------【Mongodb测试】
 //显示学员信息

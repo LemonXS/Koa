@@ -8,6 +8,8 @@ const jwt = require('jsonwebtoken')
 const secret = require("../../Config/Config.js").secret; //私钥
 const toolway = require("../../util/tool.js"); //拓展方法池
 const timeway = require("../../util/timeway.js"); //拓展方法池
+const ipaddress = require("../../util/ip.js"); //拓展方法池
+
 
 router.get('/login', async (ctx) => {
   await ctx.render('login');
@@ -24,6 +26,7 @@ router.post('/login', async (ctx) => {
   });
   var nowdate = timeway.nowdateway(0).date1;
   var random16 = toolway.randomWord(false, 16);
+  var ipstr=ipaddress.getClientIP(ctx);
   // console.log("【random16】 " + random16)
   // console.log("【登陆数量】");
   // console.log(data)
@@ -37,7 +40,8 @@ router.post('/login', async (ctx) => {
       uid: data[0]._id,
       username: data[0].username,
       randomkey: random16,
-      logintime: nowdate
+      logintime: nowdate,
+      ip:ipstr
     });
     // console.log(trackdata)  result: { n: 1, ok: 1 }
     try {
@@ -46,13 +50,14 @@ router.post('/login', async (ctx) => {
             randomkey: random16,
             ukey: data[0]._id,
             name: username,
+            ip:ipstr
           }, secret, {
             expiresIn: '1h'
           }) //token签名 有效期为1小时
-          // ctx.session.uid = token;
-          ctx.cookies.set('uid', token, {
+          // ctx.session.guid = token;
+          ctx.cookies.set('guid', token, {
             signed: false,
-            domain: '127.0.0.1', // 写cookie所在的域名 
+            // domain: '127.0.0.1', // 写cookie所在的域名 
             path: '/', // 写cookie所在的路径 
             maxAge: 2 * 60 * 60 * 1000, // cookie有效时长 
             //  expires:new Date('2019-03-28'), // cookie失效时间 
@@ -97,7 +102,7 @@ router.post('/login', async (ctx) => {
 //【退出登录】
 router.post('/logout', async (ctx) => {
   console.log("【退出登录】")
-  ctx.cookies.set('uid', '', {
+  ctx.cookies.set('guid', '', {
     signed: false,
     maxAge: 0
   })

@@ -18,8 +18,8 @@ const log4js = require('./Logs/log4js');
 const secret = require("./Config/Config.js").secret;
 const appkey = require("./Config/Config.js").appkey;
 
-const db = require("./Config/DBConfig.js");
-
+const db = require("./Config/DBConfig.js");//拓展方法池
+// const ipaddress = require("../../util/ip.js"); //拓展方法池 ip
 
 //【controller】本地控制器
 const index = require("./app/controller/index");
@@ -47,9 +47,9 @@ const userinfo = require("./app/api/userinfo");
 
 //Token 路由拦截中心
 app.use(async (ctx, next) => { // 我这里知识把登陆和注册请求去掉了，其他的多有请求都需要进行token校验 
-  if (!ctx.url.match(/^\/login/) && !ctx.url.match(/^\/public.*/) && !ctx.url.match(/^\/register/) && !ctx.url.match(/^\/logout/)) {
+  if (!ctx.url.match(/^\/login/) && !ctx.url.match(/^\/public.*/) && !ctx.url.match(/^\/register/) && !ctx.url.match(/^\/logout/) && !ctx.url.match(/^\/mysqlDB/)) {
     // Authentication Error
-    let token = ctx.cookies.get('uid');
+    let token = ctx.cookies.get('guid');
     let result;
     let jwtdata = "";
     try {
@@ -70,7 +70,7 @@ app.use(async (ctx, next) => { // 我这里知识把登陆和注册请求去掉�
     }
     if (Object.prototype.toString.call(jwtdata) == "[object Object]") {
       let trackdata = await db.find('tracklog', {
-        "uid":db.getObjectId(jwtdata.ukey) , "randomkey": jwtdata.randomkey
+        "uid":db.getObjectId(jwtdata.ukey) , "randomkey": jwtdata.randomkey,"ip":jwtdata.ip
       });
       console.log("【总路径 trackdata】")
       console.log(trackdata)
@@ -84,7 +84,7 @@ app.use(async (ctx, next) => { // 我这里知识把登陆和注册请求去掉�
       result = false;
     }
     if (result == false) {
-      ctx.cookies.set('uid', '', {
+      ctx.cookies.set('guid', '', {
         signed: false,
         maxAge: 0
       })
