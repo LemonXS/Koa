@@ -47,7 +47,7 @@ const userinfo = require("./app/api/userinfo");
 
 //Token 路由拦截中心
 app.use(async (ctx, next) => { // 我这里知识把登陆和注册请求去掉了，其他的多有请求都需要进行token校验 
-  if (!ctx.url.match(/^\/login/) && !ctx.url.match(/^\/public.*/) && !ctx.url.match(/^\/register/) && !ctx.url.match(/^\/logout/) && !ctx.url.match(/^\/mysqlDB/)) {
+  if (!ctx.url.match(/^\/login/) && !ctx.url.match(/^\/public.*/) && !ctx.url.match(/^\/register/) && !ctx.url.match(/^\/logout/) && !ctx.url.match(/^\/mysqlDB/) && !ctx.url.match(/^\/404/) && !ctx.url.match(/^\/500/)) {
     // Authentication Error
     let token = ctx.cookies.get('guid');
     let result;
@@ -114,10 +114,6 @@ app.use(async (ctx, next) => { // 我这里知识把登陆和注册请求去掉�
 //     next();
 //   }
 // })
-
-
-
-
 
 
 
@@ -215,6 +211,22 @@ app.use(users.routes(), users.allowedMethods());
 
 //【api】路由
 app.use(userinfo.routes(), userinfo.allowedMethods());
+
+
+
+
+
+
+app.use(async (ctx,next) => {
+     let status=ctx.response.status;
+      if (status === 404) {
+        await ctx.render("error/404");
+    } else if (status === 500) {
+        await ctx.render("error/500");
+    }else{
+      await next();
+    }
+});
 
 
 // error-handling

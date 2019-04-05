@@ -11,6 +11,14 @@ const timeway = require("../../util/timeway.js"); //拓展方法池
 const ipaddress = require("../../util/ip.js"); //拓展方法池
 
 
+router.get('/404', async (ctx) => {
+  await ctx.render('error/404');
+})
+router.get('/500', async (ctx) => {
+  await ctx.render('error/500');
+})
+
+
 router.get('/login', async (ctx) => {
   await ctx.render('login');
 })
