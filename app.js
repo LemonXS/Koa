@@ -11,6 +11,13 @@ const session = require('koa-session');
 const cors = require('koa2-cors');
 //token
 const jwt = require('jsonwebtoken')
+// const aes256way = require("./util/safety.js"); //拓展方法池
+// const aeskey= require("./Config/Config.js").aes256key; //私钥
+// const aesiv= require("./Config/Config.js").ivkey; //私钥
+
+
+
+
 // const jwtKoa = require('koa-jwt')
 // const util = require('util')
 // const verify = util.promisify(jwt.verify) // 解密
@@ -47,7 +54,15 @@ const userinfo = require("./app/api/userinfo");
 
 //Token 路由拦截中心
 app.use(async (ctx, next) => { // 我这里知识把登陆和注册请求去掉了，其他的多有请求都需要进行token校验 
-  if (!ctx.url.match(/^\/login/) && !ctx.url.match(/^\/public.*/) && !ctx.url.match(/^\/register/) && !ctx.url.match(/^\/logout/) && !ctx.url.match(/^\/mysqlDB/) && !ctx.url.match(/^\/404/) && !ctx.url.match(/^\/500/)) {
+
+  if (!ctx.url.match(/^\/login/)
+   && !ctx.url.match(/^\/public.*/) 
+   && !ctx.url.match(/^\/register/) 
+   && !ctx.url.match(/^\/logout/) 
+   && !ctx.url.match(/^\/404/) 
+   && !ctx.url.match(/^\/500/)
+   && !ctx.url.match(/^\/mysqlDB/) 
+   ) {
     // Authentication Error
     let token = ctx.cookies.get('guid');
     let result;
