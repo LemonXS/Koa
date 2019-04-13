@@ -39,6 +39,23 @@ class Db{
           }
       })
     }
+    dbconn(){
+        let _that=this;
+        return new Promise((resolve,reject)=>{
+            if(!_that.dbClient){         /*1、解决数据库多次连接的问题*/
+                MongoClient.connect(Config.dbUrl,{useNewUrlParser:true},(err,client)=>{
+                    if(err){
+                        reject(err)
+                    }else{
+                        _that.dbClient=client.db(Config.dbName);
+                        resolve(_that.dbClient)
+                    }
+                })
+            }else{
+                resolve(_that.dbClient);
+            }
+        })
+    }
     find(collectionName,json){
        return new Promise((resolve,reject)=>{
             this.connect().then((db)=>{

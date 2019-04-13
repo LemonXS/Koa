@@ -9,6 +9,10 @@ const secret = require("../../Config/Config.js").secret; //私钥
 const toolway = require("../../util/tool.js"); //拓展方法池
 const timeway = require("../../util/timeway.js"); //拓展方法池
 const ipaddress = require("../../util/ip.js"); //拓展方法池
+const aes256way = require("../../util/safety.js"); //拓展方法池
+const aeskey= require("../../Config/Config.js").aes256key; //私钥
+const aesiv= require("../../Config/Config.js").ivkey; //私钥
+
 
 
 router.get('/404', async (ctx) => {
@@ -51,7 +55,6 @@ router.post('/login', async (ctx) => {
       logintime: nowdate,
       ip:ipstr
     });
-    // console.log(trackdata)  result: { n: 1, ok: 1 }
     try {
       if (addtrackdata.result.ok) {
           const token = jwt.sign({
@@ -62,8 +65,14 @@ router.post('/login', async (ctx) => {
           }, secret, {
             expiresIn: '1h'
           }) //token签名 有效期为1小时
-          // ctx.session.guid = token;
-          ctx.cookies.set('guid', token, {
+
+          let asesign;
+        try {
+            asesign=  aes256way.encryption(token,aeskey,aesiv);
+           console.log("------【asesign加密成功】-------")
+          //  console .log(asesign)
+           // ctx.session.guid = token;
+           ctx.cookies.set('guid', asesign, {
             signed: false,
             // domain: '127.0.0.1', // 写cookie所在的域名 
             path: '/', // 写cookie所在的路径 
@@ -72,13 +81,24 @@ router.post('/login', async (ctx) => {
             httpOnly: false, // 是否只用于http请求中获取 
             overwrite: false // 是否允许重写 
           });
-
+          log4js.logway("【登录记录】", "info", "【记录】:"+"  用户标识："+data[0]._id + "  用户名称："+data[0].username)
           ctx.body = {
             success: true,
             data: [],
             message: '登录成功',
             code: 1
           };
+        } catch (error) {
+           asesign="";
+           console.log("------【asesign----加密失败】-------")
+           //  console .log(asesign)
+           ctx.body = {
+            success: true,
+            data: [],
+            message: '登录成功',
+            code: 1
+          };
+        }
       } else {
         ctx.body = {
           success: true,
@@ -108,7 +128,7 @@ router.post('/login', async (ctx) => {
 })
 
 //【退出登录】
-router.post('/logout', async (ctx) => {
+router.get('/logout', async (ctx) => {
   console.log("【退出登录】")
   ctx.cookies.set('guid', '', {
     signed: false,

@@ -10,12 +10,23 @@ function getObjectId( option) {
 }
 
 
+/**
+ *db的实现自己随便写
+ * @param {*} option
+ * @returns
+ */
+function db( option) {
+    return DBConfig.dbconn();
+}
+
+
+
+
 
 // 【登录】
 function login(option) {
     return DBConfig.findOne('user', option);
 }
-
 
 /**
  * 【添加】
@@ -50,6 +61,7 @@ function del(toption, option) {
 
 
 exports.getObjectId=getObjectId;
+exports.db=db;
 exports.login = login;
 exports.add = add;
 exports.del = del;

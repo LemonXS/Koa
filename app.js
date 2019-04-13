@@ -11,10 +11,10 @@ const session = require('koa-session');
 const cors = require('koa2-cors');
 //token
 const jwt = require('jsonwebtoken')
-// const aes256way = require("./util/safety.js"); //拓展方法池
-// const aeskey= require("./Config/Config.js").aes256key; //私钥
-// const aesiv= require("./Config/Config.js").ivkey; //私钥
-
+const aes256way = require("./util/safety.js"); //拓展方法池
+const aeskey= require("./Config/Config.js").aes256key; //私钥
+const aesiv= require("./Config/Config.js").ivkey; //私钥
+const ipaddress = require("./util/ip.js"); //拓展方法池
 
 
 
@@ -67,11 +67,19 @@ app.use(async (ctx, next) => { // 我这里知识把登陆和注册请求去掉�
     let token = ctx.cookies.get('guid');
     let result;
     let jwtdata = "";
+    let   aseverify;
     try {
-      result = await jwt.verify(token, secret, function (err, decoded) {
+      aseverify=  aes256way.decryption(token,aeskey,aesiv);
+      console.log("----【aes256way解密---成功】-----");
+    } catch (error) {
+      aseverify="";
+      console.log("----【aes256way解密---失败】-----");
+    }
+    try {
+      result = await jwt.verify(aseverify, secret, function (err, decoded) {
         if (!err) {
-          console.log("【总路径 Token 监控】")
-          console.log(decoded)
+          // console.log("【总路径 Token 监控】")
+          // console.log(decoded)
           // console.log(decoded); //会输出解密的，如果过了60秒，则有错误。
           jwtdata = decoded;
           return decoded;
@@ -83,14 +91,15 @@ app.use(async (ctx, next) => { // 我这里知识把登陆和注册请求去掉�
     } catch (error) {
       result = false;
     }
+
     if (Object.prototype.toString.call(jwtdata) == "[object Object]") {
       let trackdata = await db.find('tracklog', {
         "uid":db.getObjectId(jwtdata.ukey) , "randomkey": jwtdata.randomkey,"ip":jwtdata.ip
       });
-      console.log("【总路径 trackdata】")
-      console.log(trackdata)
 
-      if (trackdata.length > 0) {
+      console.log("【总路径 trackdata表】");
+      console.log(trackdata);
+      if (trackdata.length > 0 && jwtdata.ip==ipaddress.getClientIP(ctx)) {
         result = true;
       } else {
         result = false;
@@ -234,6 +243,7 @@ app.use(userinfo.routes(), userinfo.allowedMethods());
 
 app.use(async (ctx,next) => {
      let status=ctx.response.status;
+     console.log("【状态】："+status)
       if (status === 404) {
         await ctx.render("error/404");
     } else if (status === 500) {

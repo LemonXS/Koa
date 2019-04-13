@@ -5,39 +5,60 @@ const aes256way = require("../../util/safety.js"); //拓展方法池
 const aeskey= require("../../Config/Config.js").aes256key; //私钥
 const aesiv= require("../../Config/Config.js").ivkey; //私钥
 const ipaddress = require("../../util/ip.js"); //拓展方法池
-
+const assert = require('assert');
 
 //测试mysl链接测试
 //aes加密解密
 router.get("/mysqlDB", async (ctx, next) => {
-       let mysqldbtest;
+
+    assert.equal(1, 2);
+
+       console.log("-----------------MySql-----------------------");
        try {
-        mysqldbtest=  await mysqlDB.findtableData(" users ",{"username ":"233"});
+        await mysqlDB.findtableData(" users ",{"username ":"233"});
+        console.log("【mysql链接测试成功】")
        } catch (error) {
-          console.log("链接测试失败！") 
+          console.log("【mysql链接测试失败】") 
+          console.log(error)
        }
-
-       console.log(aeskey)
-       console.log(aesiv)
-       let aaa;
-       try {
-        aaa=  aes256way.encryption("123456",aeskey,aesiv);
-    } catch (error) {
-        console.log("加密失败！") 
-     }
-   var   bbbb=  aes256way.decryption(aaa,aeskey,aesiv);
-
-       console.log(aaa)
-       console.log(bbbb)
-    //    console.log(ctx.socket)
-
-     console.log(  ipaddress.getClientIP(ctx))
+       console.log("-----------------MongoDB-----------------------");
+        await DB.dbconn().then((db)=>{
+            console.log("【mongoDB链接测试成功】")
+             db.collection('user').insertOne({username:"11111",age:"1232323"},function(err,obj){
+                console.log("【mongoDB链接测试成功】")
+                 console.log(err)
+                 console.log(obj.result)
+             })
+        }).catch((err)=>{
+         console.log("【mongoDB链接测试--失败】")
+            console.log(err)
+        });
      
-       ctx.body = "www";
+
+
+console.log("")
+console.log("")
+console.log("")
+       console.log("【ase密钥】"+aeskey)
+       console.log("【ase向量】"+aesiv)
+       let aseen;
+       try {
+        aseen=  aes256way.encryption("123456",aeskey,aesiv);
+        console.log("【ase-256加密---成功】");
+       } catch (error) {
+        console.log("【ase-256加密---失败】"); 
+       }
+       let asede
+      try {
+        asede=  aes256way.decryption(aseen,aeskey,aesiv);
+        console.log("【ase-256解密---成功】");
+      } catch (error) {
+        console.log("【ase-256解密---失败】");
+      }
+      
+      console.log("【ip获取】："+  ipaddress.getClientIP(ctx))
+      ctx.body = "我是【ase-加密解密】测试";
 });
-
-
-
 
 
 
