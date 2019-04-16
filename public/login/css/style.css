@@ -1,4 +1,11 @@
-﻿.bxs-row {
+﻿
+body{
+    background-image: url(/public/images/custom/img10.jpg);
+    background-repeat: no-repeat;
+    width:100%;height:100%;
+    background-size:100%;
+}
+.bxs-row {
     overflow: hidden;
     margin-bottom:6px;
 }
@@ -156,3 +163,6 @@ cursor: pointer
 .re-btn a:hover {
 background-position: 0 -1193px
 }
+
+
+
