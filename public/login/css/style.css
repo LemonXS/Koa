@@ -1,5 +1,6 @@
 ﻿.bxs-row {
-    margin-bottom:12px;
+    overflow: hidden;
+    margin-bottom:6px;
 }
 .logo-box {
     width:404px;
@@ -15,10 +16,10 @@
     position:absolute;
     width:320px;left:0;
     top:0;
-    padding: 42px 42px 36px;
+    padding: 30px 42px 36px;
     transition:all 0.8s;
 }
-.username,.password,.btn {
+.username,.password,.yzm,.btn {
     height: 44px;
     width: 100%;
     padding: 0 10px;
@@ -61,11 +62,21 @@
     padding-top:55px;
 }
 .err {
-    margin:12px 0 0;
+    margin:6px 0 0;
     line-height:12px;
     height:12px;
     font-size:12px;
     color:red;
+}
+
+
+.input_err {
+    color:red;
+    border:1px solid red;
+}
+.input_succ {
+    color:black;
+    border:1px solid #9da3a6;
 }
 
 .slider-btn {

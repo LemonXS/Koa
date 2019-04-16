@@ -1,83 +1,105 @@
 layui.use(['layer'], function(){
     var layer = layui.layer;
-          imgVer({
-              el:'$("#imgVer")',
-              width:'260',
-              height:'116',
-              img:[
-                  '/public/login/images/logo_1.jpg',
-                  '/public/login/images/logo_2.jpg',
-                  '/public/login/images/logo_3.jpg'
-              ],
-              success:function (result) {
-                  //alert('执行登录函数');
-                  $(".login").css({
-                      "left":"0",
-                      "opacity":"1"
-                  });
-                  $(".verBox").css({
-                      "left":"404px",
-                      "opacity":"0"
-                  });
-                  console.log("【滑块成功】");
-                  console.log(result);
-                  $("#div_tips").empty();
-  
+          $(".submit").on('click',function () {
+              var uname=$(".username").val().trim();
+              var pwd=$(".password").val().trim();
+              var yzm=$(".yzm").val().trim();
+              $(".username").removeClass("input_succ").addClass("input_succ");
+              $(".password").removeClass("input_succ").addClass("input_succ");
+              $(".yzm").removeClass("input_succ").addClass("input_succ");
+              if(uname.length<6 || issql(uname)) {
+                  $(".username").removeClass("input_succ").addClass("input_err");
+                  layer.msg('账号格式错误', {icon: 0});
+                  return false;
+              }
+               if(pwd.length<6 || issql(pwd)) {
+                  $(".password").removeClass("input_succ").addClass("input_err");
+                  layer.msg('密码格式错误', {icon: 0});
+                  return false;
+              } 
+               if(yzm.length !=4 || issql(yzm)){
+                  $(".yzm").removeClass("input_succ").addClass("input_err");
+                  layer.msg('验证码格式错误', {icon: 0});
+                  return false;
+              } 
+
+               {
                   var uname=$(".username").val().trim();
                   var pwd=$(".password").val().trim();
+                  var yzm=$(".yzm").val().trim();
                      $.ajax({
                       url:"/login",
                       type:"post",
                       dataType:"json",
-                      data:{username:uname,
-                      pwd:pwd},
+                      data:{
+                          username:uname,
+                          pwd:pwd,
+                          yzm,yzm},
                       success:function(obj){
                           if(obj.success==true){
                              layer.msg('登陆成功', {icon: 6});
                              window.location.href="/"
                           }else{
                             if(obj.code==-1){
-                                layer.msg('【账号密码错误】', {icon: 5});
+                                layer.msg('【账号或密码错误】', {icon: 5});
+                                $(".yzm").text("");
+                                $("#imgyzm").click();
                                 console.log(obj.message)
                             }
                             if(obj.code==2){
                                 layer.msg('【登录异常】', {icon: 5});
+                                $(".yzm").text("");
+                                $("#imgyzm").click();
                                 console.log(obj.message);
                             }
-                             
+                            if(obj.code==3){
+                                layer.msg('【验证码错误】', {icon: 5});
+                                $(".yzm").text("");
+                                $("#imgyzm").click();
+                                console.log(obj.message);
+                            }
                           }
                       },
                       error:function(err){
                           console.log("异常ERR："+JSON.stringify(err))
                       }
                   })
-              },
-              error:function (herr) {
-              console.log("【herr】"+JSON.stringify(herr))
-              }
-          });
-          $(".submit").on('click',function () {
-              var uname=$(".username").val().trim();
-              var pwd=$(".password").val().trim();
-              if(uname.length<6) {
-                  $(".username").attr("style","border:1px solid red;")
-                  layer.msg('账号必须最少6位数', {icon: 0});
-              } else if(pwd.length<6) {
-                  $(".password").attr("style","border:1px solid red;")
-                  layer.msg('密码必须最少6位数', {icon: 0});
-              } else {
-                  $(".username").removeAttr("style","border:1px solid #9DA3A6;")
-                  $(".password").removeAttr("style","border:1px solid #9DA3A6;")
-  
-                  $(".login").css({
-                      "left":"-404px",
-                      "opacity":"0"
-                  });
-                  $(".verBox").css({
-                      "left":"0",
-                      "opacity":"1"
-                  });
               }
           })
-         
   });
+
+
+// $("#yzmclcik").click(function(){
+
+// })
+
+
+
+
+
+
+  /*是否带有小数*/
+function    isDecimal(strValue )  {  
+    var  objRegExp= /^\d+\.\d+$/;
+    return  objRegExp.test(strValue);  
+ }  
+ 
+ /*校验是否中文名称组成 */
+ function ischina(str) {
+     var reg=/^[\u4E00-\u9FA5]{2,4}$/;   /*定义验证表达式*/
+     return reg.test(str);     /*进行验证*/
+ }
+ 
+ /*校验是否全由8位数字组成 */
+ function isStudentNo(str) {
+     var reg=/^[0-9]{8}$/;   /*定义验证表达式*/
+     return reg.test(str);     /*进行验证*/
+ }
+
+ /*校验是sql注入 */
+ function issql(str) {
+    var reg= /select|update|delete|exec|count|'|"|=|;|>|<|%/i;   /*定义验证表达式*/
+    return reg.test(str);     /*进行验证*/
+}
+
+

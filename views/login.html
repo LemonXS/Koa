@@ -5,8 +5,6 @@
 <title>Login</title>
 <link type="text/css" rel="stylesheet" href="/public/layui/css/layui.css">
 <link type="text/css" rel="stylesheet" href="/public/login/css/style.css">
-
-
 </head>
 <body>
 <div class="logo-box">
@@ -22,25 +20,30 @@
 <input type="password" class="password" placeholder="密码">
 <p class="err err-password"></p>
 </div>
+
 <div class="bxs-row">
+      <div style="width:100%;vertical-align: middle;">
+        <input style="width:70%;float: left;" type="text" class="yzm" placeholder="验证码">
+        <div style="width:30%;float: right;"   >
+            <img id="imgyzm" src="/api/yzmcode" onclick="$(event.target).attr('src','/api/yzmcode?'+Math.random())" > 
+        </div>
+      </div>
+    <p class="err err-yzm"></p>
+</div>
+
+<div class="bxs-row" style="margin-top: 18px;">
 <input type="submit" class="submit btn" value="登录">
 </div>
-</div>
-<div class="verBox">
-<div id="imgVer" style="display:inline-block;"></div>
+
 </div>
 </div>
 
 </body>
-
-
 <!-- <script src="/public/javascripts/jquery-1.4.4.min.js"></script> -->
 <script src="/public/login/js/jquery-1.10.2.js"></script>
-<script src="/public/login/js/img_ver.js"></script>
+<!-- <script src="/public/login/js/img_ver.js"></script> -->
 <script src="/public/layui/layui.js"></script>
 <script src="/public/login/js/login.js"></script>
 <script>
-
- 
 </script>
 </html>

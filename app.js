@@ -31,11 +31,11 @@ const db = require("./Config/DBConfig.js");//拓展方法池
 //【controller】本地控制器
 const index = require("./app/controller/index");
 const users = require("./app/controller/users");
+
 //【api】对外开放的API专用
 const userinfo = require("./app/api/userinfo");
-
-
-
+//【api】【验证码】
+const yzm = require("./app/api/yzm");
 
 
 
@@ -61,6 +61,7 @@ app.use(async (ctx, next) => { // 我这里知识把登陆和注册请求去掉�
    && !ctx.url.match(/^\/logout/) 
    && !ctx.url.match(/^\/404/) 
    && !ctx.url.match(/^\/500/)
+   && !ctx.url.match(/^\/api/) 
    && !ctx.url.match(/^\/mysqlDB/) 
    ) {
     // Authentication Error
@@ -235,10 +236,8 @@ app.use(users.routes(), users.allowedMethods());
 
 //【api】路由
 app.use(userinfo.routes(), userinfo.allowedMethods());
-
-
-
-
+//【api】【验证码】
+app.use(yzm.routes(), yzm.allowedMethods());
 
 
 app.use(async (ctx,next) => {
