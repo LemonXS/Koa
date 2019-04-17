@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <link type="text/css" rel="stylesheet" href="/public/layui/css/layui.css">
+  <style>
+  .div{
+    width:100%;
+    height: 40px;
+    border:1px solid #ff8000;
+    margin: 10px;
+  }
+  </style>
+</head>
+<body>
+<div class="div">
+<a href="testget">测试axios是否可以在后端使用</a>
+</div>
+
+<div class="div">
+    <a href="#" id="clienpost">测试axios是前端使用</a>
+</div>
+    
+</body>
+<script src="/public/javascripts/jquery-1.4.4.min.js"></script>
+<script src="/public/javascripts/axios.min.js"></script>
+<script src="/public/layui/layui.js"></script>
+<script>
+
+
+
+$("#clienpost").click(function(){
+  
+  axios.interceptors.request.use(function (config) {
+    console.log("【config】")
+    console.log(config)
+    // 在发送请求之前做些什么
+    return config;
+  }, function (error) {
+    console.log("【error】")
+    // 对请求错误做些什么
+    return Promise.reject(error);
+  });
+  axios.post('/api/testpost', {
+    firstName: 'Fred',
+    lastName: 'Flintstone'
+  })
+  .then(function (response) {
+      console.log("成功")
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+
+
+})
+
+</script>
+</html>

@@ -48,7 +48,7 @@ console.log("")
        } catch (error) {
         console.log("【ase-256加密---失败】"); 
        }
-       let asede
+       let asede;
       try {
         asede=  aes256way.decryption(aseen,aeskey,aesiv);
         console.log("【ase-256解密---成功】");

@@ -1,49 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<title>Login</title>
-<link type="text/css" rel="stylesheet" href="/public/layui/css/layui.css">
-<link type="text/css" rel="stylesheet" href="/public/login/css/style.css">
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <link type="text/css" rel="stylesheet" href="/public/layui/css/layui.css">
+  <link type="text/css" rel="stylesheet" href="/public/login/css/style.css">
 </head>
+
 <body>
-<div class="logo-box">
-<div class="login">
-<div class="bxs-row" style="text-align:center;font-size:40px;">
-    Login
-</div>
-<div class="bxs-row">
-<input type="text" class="username" value="" placeholder="用户名">
-<p class=" err err-username"></p>
-</div>
-<div class="bxs-row">
-<input type="password" class="password" placeholder="密码">
-<p class="err err-password"></p>
-</div>
-
-<div class="bxs-row">
-      <div style="width:100%;vertical-align: middle;">
-        <input style="width:70%;float: left;" type="text" class="yzm" placeholder="验证码">
-        <div style="width:30%;float: right;"   >
-            <img id="imgyzm" src="/api/yzmcode" onclick="$(event.target).attr('src','/api/yzmcode?'+Math.random())" > 
-        </div>
+  <div class="logo-box">
+    <div class="login">
+      <div class="bxs-row" style="text-align:center;font-size:40px;">
+        Login
       </div>
-    <p class="err err-yzm"></p>
-</div>
+      <div class="bxs-row">
+        <input type="text" class="username" value="" placeholder="用户名">
+        <p class=" err err-username"></p>
+      </div>
+      <div class="bxs-row">
+        <input type="password" class="password" placeholder="密码">
+        <p class="err err-password"></p>
+      </div>
+      <div class="bxs-row">
+        <div style="width:100%;vertical-align: middle;">
+          <input style="width:70%;float: left;" type="text" class="yzm" placeholder="验证码">
+          <div style="width:30%;float: right;">
+            <img id="imgyzm" src="/api/yzmcode" onclick="$(event.target).attr('src','/api/yzmcode?'+Math.random())">
+          </div>
+        </div>
+        <p class="err err-yzm"></p>
+      </div>
+      <div class="bxs-row" style="margin-top: 18px;">
+        <input type="submit" class="submit btn" value="登录">
+      </div>
 
-<div class="bxs-row" style="margin-top: 18px;">
-<input type="submit" class="submit btn" value="登录">
-</div>
-
-</div>
-</div>
+    </div>
+  </div>
 
 </body>
-<!-- <script src="/public/javascripts/jquery-1.4.4.min.js"></script> -->
 <script src="/public/login/js/jquery-1.10.2.js"></script>
-<!-- <script src="/public/login/js/img_ver.js"></script> -->
+<script src="/public/javascripts/axios.min.js"></script>
 <script src="/public/layui/layui.js"></script>
 <script src="/public/login/js/login.js"></script>
-<script>
-</script>
+
 </html>
