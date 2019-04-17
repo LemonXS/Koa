@@ -27,21 +27,16 @@ router.get('/login', async (ctx) => {
   await ctx.render('login');
 })
 
+
 //【登录】
 router.post('/login', async (ctx) => {
   let username = ctx.request.body.username;
   let pwd = ctx.request.body.pwd;
-  let yzm = ctx.request.body.yzm.toLowerCase();
+  let yzm = ctx.request.body.yzm;
   console.log("-----------------------【登录校验验证码】--------------------")
   console.log(yzm)
   console.log(ctx.session.captcha)
-  var  yzmsign= ""
-    try {
-      yzmsign= aes256way.encryption(yzm,aeskey,aesiv);
-    } catch (error) {
-      yzmsign="";
-    }
-  if(yzmsign== ctx.session.captcha){
+  if(yzm== ctx.session.captcha){
 
     let data = await Susers.login({
       "username": username,

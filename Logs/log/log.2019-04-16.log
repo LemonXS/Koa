@@ -16,15 +16,8 @@
 [2019-04-16T16:19:22.243] [INFO] 【登录记录】 - 【记录】:  用户标识：5c99dd7f93c3264064238cfd  用户名称：admins
 [2019-04-16T16:19:42.544] [INFO] 【登录记录】 - 【记录】:  用户标识：5c99dd7f93c3264064238cfd  用户名称：admins
 [2019-04-16T16:37:28.187] [INFO] 【登录记录】 - 【记录】:  用户标识：5c99dd7f93c3264064238cfd  用户名称：admins
-[2019-04-16T20:37:29.450] [INFO] 【登录记录】 - 【记录】:  用户标识：5ca74186f1a36c1b68a0ca99  用户名称：admins
-[2019-04-16T20:45:40.600] [INFO] 【登录记录】 - 【记录】:  用户标识：5ca74186f1a36c1b68a0ca99  用户名称：admins
-[2019-04-16T21:14:39.015] [INFO] 【登录记录】 - 【记录】:  用户标识：5ca74186f1a36c1b68a0ca99  用户名称：admins
-[2019-04-16T21:17:54.660] [INFO] 【登录记录】 - 【记录】:  用户标识：5ca74186f1a36c1b68a0ca99  用户名称：admins
-[2019-04-16T21:20:17.152] [INFO] 【登录记录】 - 【记录】:  用户标识：5ca74186f1a36c1b68a0ca99  用户名称：admins
-[2019-04-16T21:29:49.607] [INFO] 【登录记录】 - 【记录】:  用户标识：5ca74186f1a36c1b68a0ca99  用户名称：admins
-[2019-04-16T21:31:42.883] [INFO] 【登录记录】 - 【记录】:  用户标识：5ca74186f1a36c1b68a0ca99  用户名称：admins
-[2019-04-16T22:21:45.580] [INFO] 【登录记录】 - 【记录】:  用户标识：5ca74186f1a36c1b68a0ca99  用户名称：admins
-[2019-04-16T22:22:40.869] [INFO] 【登录记录】 - 【记录】:  用户标识：5ca74186f1a36c1b68a0ca99  用户名称：admins
-[2019-04-16T22:24:52.862] [INFO] 【登录记录】 - 【记录】:  用户标识：5ca74186f1a36c1b68a0ca99  用户名称：admins
-[2019-04-16T22:28:27.292] [INFO] 【登录记录】 - 【记录】:  用户标识：5ca74186f1a36c1b68a0ca99  用户名称：admins
-[2019-04-16T22:30:12.909] [INFO] 【登录记录】 - 【记录】:  用户标识：5ca74186f1a36c1b68a0ca99  用户名称：admins
+[2019-04-16T16:51:16.208] [INFO] 【登录记录】 - 【记录】:  用户标识：5c99dd7f93c3264064238cfd  用户名称：admins
+[2019-04-16T16:54:31.539] [INFO] 【登录记录】 - 【记录】:  用户标识：5c99dd7f93c3264064238cfd  用户名称：admins
+[2019-04-16T17:15:10.081] [ERROR] 【错误中心】 - 【err】:TypeError: Cannot read property 'remoteAddress' of undefined  【ctx】: {"request":{"method":"GET","url":"/add","header":{"host":"127.0.0.1","connection":"keep-alive","cache-control":"max-age=0","accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8","upgrade-insecure-requests":"1","user-agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36","referer":"http://127.0.0.1/","accept-encoding":"gzip, deflate, sdch","accept-language":"zh-CN,zh;q=0.8","cookie":"koa:sess=eyJjYXB0Y2hhIjoibmJwdSIsIl9leHBpcmUiOjE1NTU0OTEyNTcwOTEsIl9tYXhBZ2UiOjg2NDAwMDAwfQ==; koa:sess.sig=NZ5RRumjqXlpE6eQoPUoursjF8g; guid=EWLJlI/1vS79OCZabqyB4Pv3J2vCQrdm1HD/5JyBcRRRDMmA6QR+t20egOrBAs0lrZ4d5cW8AGd2gstxG+1ZHIphy1NZKL8COE7VFIckZqWUvCkmto1jMmDBWWN9EHbPdq1FIvfcqlo9ugqOi3BAOkggyiQIIyuQM6r+41wSvnBZpGRKxrMBafRMIGdO5YFaEmZBXrvfYMG3K3fvXXcSXD3TLQH8wXuapaor4wYALLjy2eiU/EfUB/zPSqZGaJIY/yzjSZDWqxpGVRj0PaFnULlIPXiPSFbUDpNwQxA9XP6ITckYud6UkvPZEJZF8csRUpTtOX3QYNeYaC9JrtGHerUgkK56Yk99TDzV7+zUUMg="}},"response":{"status":404,"message":"Not Found","header":{}},"app":{"subdomainOffset":2,"proxy":false,"env":"development"},"originalUrl":"/add","req":"<original node req>","res":"<original node res>","socket":"<original node socket>"}
+[2019-04-16T17:15:34.625] [INFO] 【登录记录】 - 【记录】:  用户标识：5c99dd7f93c3264064238cfd  用户名称：admins
+[2019-04-16T17:19:12.504] [INFO] 【登录记录】 - 【记录】:  用户标识：5c99dd7f93c3264064238cfd  用户名称：admins

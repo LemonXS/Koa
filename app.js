@@ -97,6 +97,7 @@ app.use(async (ctx, next) => { // 我这里知识把登陆和注册请求去掉�
       let trackdata = await db.find('tracklog', {
         "uid":db.getObjectId(jwtdata.ukey) , "randomkey": jwtdata.randomkey,"ip":jwtdata.ip
       });
+
       console.log("【总路径 trackdata表】");
       console.log(trackdata);
       if (trackdata.length > 0 && jwtdata.ip==ipaddress.getClientIP(ctx)) {
@@ -117,20 +118,7 @@ app.use(async (ctx, next) => { // 我这里知识把登陆和注册请求去掉�
       return await next();
     }
   } else {
-    //判断用户是否已经登录，在线状态则跳转到主页
-    if(ctx.url.match(/^\/login/)){
-      if( ctx.cookies.get('guid')==undefined || ctx.cookies.get('guid')==""){
-        ctx.cookies.set('guid', '', {
-          signed: false,
-          maxAge: 0
-        })
-        return await next();
-       }else{
-        return await ctx.redirect("/");
-       }
-    }else{
-      return await next();
-    }
+    return await next();
   }
 });
 
@@ -210,7 +198,7 @@ render(app, {
 //session
 app.keys = appkey;
 const CONFIG = {
-  key: 'ysid', //cookie key (default is koa:sess)
+  key: 'koa:sess', //cookie key (default is koa:sess)
   maxAge: 1000 * 60 * 60 * 2, // cookie的过期时间 maxAge in ms (default is 1 days)
   overwrite: true, //是否可以overwrite    (默认default true)
   httpOnly: true, //cookie是否只有服务器端可以访问 httpOnly or not (default true)

@@ -1,17 +1,6 @@
-
-  document.onkeydown = function(e){
-    var ev = document.all ? window.event : e;
-    if(ev.keyCode==13) {
-        $(".submit").click();
-    }
-}
-
-
 layui.use(['layer'], function(){
     var layer = layui.layer;
           $(".submit").on('click',function () {
-            console.log("【cookie】");
-            console.log(document.cookie);
               var uname=$(".username").val().trim();
               var pwd=$(".password").val().trim();
               var yzm=$(".yzm").val().trim();
@@ -78,6 +67,11 @@ layui.use(['layer'], function(){
               }
           })
   });
+
+
+// $("#yzmclcik").click(function(){
+
+// })
 
 
 
