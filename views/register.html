@@ -3,39 +3,39 @@
 <head>
   <title>注册</title>
 </head>
-<body>
-
-        <input  type="button" id="btn_sbmit" value="提交"/>
-
+<body   >
+<div id="div_key" >
+        <div style="width:400px;height:30px;border:1px solid red;"><input type="text" id="txt_name"></div>
+        <div style="width:400px;height:30px;border:1px solid red;"><input type="text" id="txt_pwd"></div>
+        <div style="width:400px;height:30px;border:1px solid red;"><input type="text" id="txt_confirmpwd"></div>
+        <div style="width:400px;height:30px;border:1px solid red;"><input type="text" id="txt_yzm"></div>
+        <div style="width:400px;height:30px;border:1px solid red;" id="div_btn_add" >
+            <input type="button"   value="提交"  @click="clickway"   @keyup.space="clickway"  />
+        </div>
+</div>
 </body>
-<script src="/javascripts/jquery-1.4.4.min.js"></script>
-<script>
+<script src="/public/javascripts/jquery-1.4.4.min.js" ></script>
+<script src="/public/javascripts/vue.js" ></script>
 
-$("#btn_sbmit").click(function(){
- var username=$("#username").val();
- var pwd=$("#pwd").val();
- $("#div_tips").empty();
-   $.ajax({
-    url:"/logout",
-    type:"post",
-    dataType:"json",
-    data:{username:username,
-    pwd:pwd},
-    success:function(obj){
-        if(obj.msg==true){
-            console.log("【登陆成功】")
-            console.log(obj)
-            $("#div_tips").text("【登陆成功】:"+obj.data[0].username);
-        }else{
-            console.log("【账号密码错误】")
-            $("#div_tips").text("【账号密码错误】");
-        }
-    },
-    error:function(err){
-        console.log("ERR："+JSON.stringify(err))
-    }
-})
-})
+<script>
+        var vue_add= new Vue({
+          el: '#div_btn_add',
+          methods: {
+            clickway: function () {
+              var txt_name=$("#txt_name").val();
+              var txt_pwd=$("#txt_pwd").val();
+              var txt_confirmpwd=$("#txt_confirmpwd").val();
+              var txt_yzm=$("#txt_yzm").val();
+              console.log("【txt_name】："+txt_name)
+              console.log("【txt_pwd】："+txt_pwd)
+              console.log("【txt_confirmpwd】："+txt_confirmpwd)
+              console.log("【txt_yzm】："+txt_yzm)
+            }
+         }
+        })
+        // vue_add.clickway() ;
+
+
 
 
 </script>

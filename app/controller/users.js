@@ -27,6 +27,7 @@ router.get('/login', async (ctx) => {
   await ctx.render('login');
 })
 
+
 //【登录】
 router.post('/login', async (ctx) => {
   let username = ctx.request.body.username;
@@ -161,5 +162,10 @@ router.get('/logout', async (ctx) => {
 
 
 
+
+
+router.get('/register', async (ctx) => {
+  await ctx.render('register');
+})
 
 module.exports = router
