@@ -33,15 +33,18 @@ router.post('/login', async (ctx) => {
   let username = ctx.request.body.username;
   let pwd = ctx.request.body.pwd;
   let yzm = ctx.request.body.yzm.toLowerCase();
-  console.log("-----------------------【登录校验验证码】--------------------")
-  console.log(yzm)
-  console.log(ctx.session.captcha)
+
   var  yzmsign= ""
     try {
       yzmsign= aes256way.encryption(yzm,aeskey,aesiv);
     } catch (error) {
       yzmsign="";
     }
+    console.log("-----------------------【登录校验验证码】--------------------")
+    console.log("【原     】  "+yzm)
+    console.log("【加   密】  "+yzmsign)
+    console.log("【session】  "+ctx.session.captcha)
+    console.log(yzmsign==ctx.session.captcha?true:false)
   if(yzmsign== ctx.session.captcha){
 
     let data = await Susers.login({
