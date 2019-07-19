@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+</body>
+<script src="/public/javascripts/jquery-1.4.4.min.js"></script>
+<script src="/public/javascripts/axios.min.js"></script>
+<script>
+    // console.log(window.location.hash.substr(1))
+
+    //拿到token
+    var accesstoken = getQueryString("access_token");
+    // console.log(accesstoken);
+    getopenid(accesstoken);
+    //通过token获取openid
+    function getopenid(access_token) {
+        axios.post('/proxy_openid', {
+                access_token: access_token
+            })
+            .then(function (response) {
+                console.log(response);
+                var code= response.data.code;
+                if(code==200){
+                var msg = response.data.msg;
+                var openid = response.data.openid;
+                var client_id = response.data.client_id;
+                getuserinfo(openid, client_id,access_token);
+                }else{
+                    alert("异常错误");
+                    window.location.href="/login";
+                }
+               
+            })
+            .catch(function (error) {
+                console.log(error);
+                window.location.href="/login";
+            });
+
+    }
+      //通过openid获取用户信息
+    function getuserinfo(openid, client_id,access_token) {
+        axios.post('/proxy_userinfo', {
+            openid: openid,
+            client_id: client_id,
+            access_token:access_token
+            })
+            .then(function (obj) {
+
+                if (obj.success == true) {
+                    layer.msg('登陆成功', {
+                        icon: 6
+                    });
+                    window.location.href = "/"
+                } else {
+                    layer.msg('【登录异常】', {
+                            icon: 5
+                        });
+                        window.location.href="/login";
+                }
+            
+            })
+            .catch(function (error) {
+                console.log(error);
+                window.location.href="/login";
+            });
+    }
+
+
+    //获取url参数
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.hash.substr(1).match(reg);
+        if (r != null) return decodeURI(r[2]);
+        return null;
+    }
+</script>
+
+</html>

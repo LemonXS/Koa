@@ -10,9 +10,7 @@ const assert = require('assert');
 //测试mysl链接测试
 //aes加密解密
 router.get("/mysqlDB", async (ctx, next) => {
-
     assert.equal(1, 2);
-
        console.log("-----------------MySql-----------------------");
        try {
         await mysqlDB.findtableData(" users ",{"username ":"233"});
@@ -36,9 +34,7 @@ router.get("/mysqlDB", async (ctx, next) => {
      
 
 
-console.log("")
-console.log("")
-console.log("")
+
        console.log("【ase密钥】"+aeskey)
        console.log("【ase向量】"+aesiv)
        let aseen;
@@ -62,17 +58,17 @@ console.log("")
 
 
 
-
-
 //------------------【Mongodb测试】
-//显示学员信息
-router.get('/',async (ctx)=>{
-      var result=await DB.find('user',{});
-      console.log("find条件查找后的返回："+JSON.stringify(result));
-      await ctx.render('index',{
-          list:result
-      });
-  })
+
+
+ //显示学员信息
+  router.get('/show',async (ctx)=>{
+    var result=await DB.find('user',{});
+    console.log("find条件查找后的返回："+JSON.stringify(result));
+    await ctx.render('show',{
+        list:result
+    });
+})
   //增加学员
   router.get('/add',async (ctx)=>{
       await ctx.render('add');

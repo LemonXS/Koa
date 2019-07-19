@@ -15,12 +15,14 @@ const aes256way = require("./util/safety.js"); //拓展方法池
 const aeskey= require("./Config/Config.js").aes256key; //私钥
 const aesiv= require("./Config/Config.js").ivkey; //私钥
 const ipaddress = require("./util/ip.js"); //拓展方法池
-
+const tokenutil = require("./util/token.js");//token加密 解密
 
 
 // const jwtKoa = require('koa-jwt')
 // const util = require('util')
 // const verify = util.promisify(jwt.verify) // 解密
+
+
 const log4js = require('./Logs/log4js');
 const secret = require("./Config/Config.js").secret;
 const appkey = require("./Config/Config.js").appkey;
@@ -29,8 +31,14 @@ const db = require("./Config/DBConfig.js");//拓展方法池
 // const ipaddress = require("../../util/ip.js"); //拓展方法池 ip
 
 //【controller】本地控制器
+const Main = require("./app/controller/main");//主入口
 const index = require("./app/controller/index");
 const users = require("./app/controller/users");
+const QQauthorization = require("./app/controller/user/qq/QQauthorization");
+
+
+
+
 
 //【api】对外开放的API专用
 const test = require("./app/api/test");
@@ -39,22 +47,11 @@ const yzm = require("./app/api/yzm");
 
 
 
-// app.use(jwtKoa({
-//   secret
-// }).unless({
-//   // path: [/^\/api\/login/] //数组中的路径不需要通过jwt验证
-//   path: [
-//     /^\/login/,
-//     /^\/register/,
-//     /^\/javascripts.*/
-//     //  /^((?!\/api).)*$/ // 设置除了私有接口外的其它资源，可以不需要认证访问
-//   ]
-// }));
 
 
-//Token 路由拦截中心
+
+// Token 路由拦截中心
 app.use(async (ctx, next) => { // 我这里知识把登陆和注册请求去掉了，其他的多有请求都需要进行token校验 
-
   if (!ctx.url.match(/^\/login/)
    && !ctx.url.match(/^\/public.*/) 
    && !ctx.url.match(/^\/register/) 
@@ -63,47 +60,52 @@ app.use(async (ctx, next) => { // 我这里知识把登陆和注册请求去掉�
    && !ctx.url.match(/^\/500/)
    && !ctx.url.match(/^\/api/) 
    && !ctx.url.match(/^\/mysqlDB/) 
+
+   && !ctx.url.match(/^\/proxy/) 
+   && !ctx.url.match(/^\/oauth2.0.*/) 
+
    ) {
     // Authentication Error
     let token = ctx.cookies.get('guid');
     let result;
-    let jwtdata = "";
     let   aseverify;
     try {
-      aseverify=  aes256way.decryption(token,aeskey,aesiv);
+      aseverify=aes256way.decryption(token);//解密aes256
       console.log("----【aes256way解密---成功】-----");
     } catch (error) {
       aseverify="";
       console.log("----【aes256way解密---失败】-----");
+      // console.log(error)
     }
     try {
-      result = await jwt.verify(aseverify, secret, function (err, decoded) {
-        if (!err) {
-          // console.log("【总路径 Token 监控】")
-          // console.log(decoded)
-          // console.log(decoded); //会输出解密的，如果过了60秒，则有错误。
-          jwtdata = decoded;
-          return decoded;
-        } else {
-          console.log("【Token-err】：" + err)
-          return false;
-        }
-      })
+      //token 解密
+      result=await tokenutil.deToken(aseverify);
     } catch (error) {
       result = false;
+      console.log("----【TOKEN-err】-----");
+      consolele.log(error)
     }
 
-    if (Object.prototype.toString.call(jwtdata) == "[object Object]") {
-      let trackdata = await db.find('tracklog', {
-        "uid":db.getObjectId(jwtdata.ukey) , "randomkey": jwtdata.randomkey,"ip":jwtdata.ip
-      });
-      console.log("【总路径 trackdata表】");
-      console.log(trackdata);
-      if (trackdata.length > 0 && jwtdata.ip==ipaddress.getClientIP(ctx)) {
-        result = true;
-      } else {
-        result = false;
-      }
+    if (Object.prototype.toString.call(result) == "[object Object]") {
+     console.log("【解密的监听】")
+     console.log(result)
+
+
+
+      // let trackdata = await db.find('tracklog', {
+      //   "uid":db.getObjectId(result.ukey) , "randomkey": result.randomkey,"ip":result.ip
+      // });
+      // console.log("【总路径 trackdata表】");
+      // console.log(trackdata);
+      // console.log("----------------------ip----------")
+      // console.log(trackdata.length> 0)
+      // console.log(result.ip)
+      // console.log(ipaddress.getClientIP(ctx))
+      // if (trackdata.length > 0 && result.ip==ipaddress.getClientIP(ctx)) {
+      //   result = true;
+      // } else {
+      //   result = false;
+      // }
     } else {
       result = false;
     }
@@ -134,7 +136,6 @@ app.use(async (ctx, next) => { // 我这里知识把登陆和注册请求去掉�
   }
 });
 
-
 // app.use(async (ctx, next) =>  {
 //   let trackdata =  appservice.find('tracklog', {
 //     uid: decoded.ukey,
@@ -151,9 +152,6 @@ app.use(async (ctx, next) => { // 我这里知识把登陆和注册请求去掉�
 //     next();
 //   }
 // })
-
-
-
 
 // //允许跨域
 app.use(cors());
@@ -219,8 +217,10 @@ const CONFIG = {
   renew: false, //(boolean) renew session when session is nearly expired,
 };
 app.use(session(CONFIG, app));
+
 // 设置值 ctx.session.username = "张三";
 // 获取值 ctx.session.username
+
 
 // //session中保存了页面访问次数，每次请求的时候，会增加计数再把结果返回给用户。
 // app.use(ctx => {
@@ -243,8 +243,11 @@ app.use(async (ctx, next) => {
 });
 
 // routes
+app.use(Main.routes(), Main.allowedMethods());//主入口
 app.use(index.routes(), index.allowedMethods());
 app.use(users.routes(), users.allowedMethods());
+app.use(QQauthorization.routes(), QQauthorization.allowedMethods());
+
 
 //【api】路由
 app.use(test.routes(), test.allowedMethods());
@@ -252,6 +255,8 @@ app.use(test.routes(), test.allowedMethods());
 app.use(yzm.routes(), yzm.allowedMethods());
 
 
+
+//错误页面 --状态返回
 app.use(async (ctx,next) => {
      let status=ctx.response.status;
      console.log("【状态】："+status)

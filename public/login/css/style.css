@@ -165,4 +165,18 @@ background-position: 0 -1193px
 }
 
 
-
+div.footimg{
+    width:100%;
+    float: left;
+  }
+  div.footimg  img{
+   padding-right: 10px;
+  }
+ .wjmm{
+    font-size:12px;
+      display:block;
+  }
+  div.footspan{
+    float: right;
+    line-height: 24px;
+  }

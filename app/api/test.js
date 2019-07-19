@@ -13,7 +13,7 @@ await ctx.render('test');
 
 //测试 axios 是否可以在后端使用 【结果：可行】
 router.get('/testget', async (ctx) => {
-  axios.get('https://maoyan.com/films/248172', {
+ await axios.get('https://maoyan.com/films/248172', {
   }).then(function (response) {
     console.log("成功")
     console.log(response);
@@ -22,9 +22,6 @@ router.get('/testget', async (ctx) => {
     console.log(error);
   });
 })
-
-
-
 
 //测试 axios 是否可以在后端使用 【结果：可行】
 router.post('/testpost', async (ctx) => {
