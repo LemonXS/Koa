@@ -1,62 +1,76 @@
 const router = require('koa-router')()
-const log4js = require('../../Logs/log4js');
+const log4js = require('../../../Logs/log4js');
 // router.prefix('/users') //很重要，可以在当前地址前面添加一个 前缀 /xxx
-const Susers = require("../service/users.js");
+const S_users = require("../../service/users.js");
 const jwt = require('jsonwebtoken')
 const uuid = require('node-uuid');//guid  生成唯一key
-// const util = require('util')
+
+
 // const verify = util.promisify(jwt.verify) // 解密
-const secret = require("../../Config/Config.js").secret; //私钥
-const toolway = require("../../util/tool.js"); //拓展方法池
-const timeway = require("../../util/timeway.js"); //拓展方法池
-const ipaddress = require("../../util/ip.js"); //拓展方法池
-const aes256way = require("../../util/safety.js"); //拓展方法池
-const aeskey= require("../../Config/Config.js").aes256key; //私钥
-const aesiv= require("../../Config/Config.js").ivkey; //私钥
-const tokenutil = require("../../util/token.js");
+const secret = require("../../../Config/Config.js").secret; //私钥
+const toolway = require("../../../util/tool.js"); //拓展方法池
+const timeway = require("../../../util/timeway.js"); //拓展方法池
+const ipaddress = require("../../../util/ip.js"); //拓展方法池
+const aes256way = require("../../../util/safety.js"); //拓展方法池
+const aeskey= require("../../../Config/Config.js").aes256key; //私钥
+const aesiv= require("../../../Config/Config.js").ivkey; //私钥
+const tokenutil = require("../../../util/token.js");
 
 
 
 
 
-
+//【404页面】
 router.get('/404', async (ctx) => {
   await ctx.render('error/404');
 })
+//【500页面】
 router.get('/500', async (ctx) => {
   await ctx.render('error/500');
 })
+//【退出登录】
+router.get('/logout', async (ctx) => {
+  console.log("【退出登录】")
+  ctx.cookies.set('guid', '', {
+    signed: false,
+    maxAge: 0
+  })
+  await ctx.redirect("user/login");
+})
 
-
+//---------------------------------------------------------登录模块--------------------------------------
+//【登录页面】
 router.get('/login', async (ctx) => {
-  // console.log("-------------uuidStr-------------");
+  console.log("---------------------------【当前用户ip】")
+  console.log(ipaddress.getClientIP(ctx))
+
+
+  // console.log("-------------uuidStr(生成唯一值)-------------");
   // var uuidStr=uuid.v1();
   //  console.log(uuidStr)
-  // console.log("-------------nowdate-------------");
+  // console.log("-------------nowdate(当前时间无格式)-------------");
   // var nowdate = timeway.nowdateway(0).date0;
   // console.log(nowdate)
-  // console.log("-------------random16-------------");
+  // console.log("-------------random16(随机16位)-------------");
   // var random16 = toolway.randomWord(false, 16);
   // console.log(random16)
-  // console.log("-------------enToken-------------");
+  // console.log("-------------enToken(生成token)-------------");
   // let enTokenStr= tokenutil.enToken({a:"123",b:"456"},"1Q2W3E");
   // console.log(enTokenStr)
-  // console.log("-------------enAse256-------------");
+  // console.log("-------------enAse256(加密token)-------------");
   // var enaes256Str= aes256way.encryption(enTokenStr);
   // console.log(enaes256Str)
 
-  // console.log("-------------deAse256-------------");
+  // console.log("-------------deAse256(解密token)-------------");
   // var deaes256Str=aes256way.decryption(enaes256Str);
   // console.log(deaes256Str)
 
-  // console.log("-------------deToken-------------");
+  // console.log("-------------deToken(解出token的内容)-------------");
   // let deTokenStr= await tokenutil.deToken(deaes256Str,"1Q2W3E");
   // console.log(deTokenStr)
   await ctx.render('user/login');
 })
-
-
-//【登录】
+//【本地登录验证】
 router.post('/login', async (ctx) => {
   let username = ctx.request.body.username;
   let pwd = ctx.request.body.pwd;
@@ -166,22 +180,13 @@ router.post('/login', async (ctx) => {
   }
 })
 
-//【退出登录】
-router.get('/logout', async (ctx) => {
-  console.log("【退出登录】")
-  ctx.cookies.set('guid', '', {
-    signed: false,
-    maxAge: 0
-  })
-  await ctx.redirect("user/login");
-})
-
-
-
-
-
+//---------------------------------------------------------注册模块--------------------------------------
+//【注册页面】
 router.get('/register', async (ctx) => {
   await ctx.render('user/register');
 })
+
+
+
 
 module.exports = router

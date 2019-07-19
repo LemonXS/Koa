@@ -33,7 +33,7 @@ const db = require("./Config/DBConfig.js");//拓展方法池
 //【controller】本地控制器
 const Main = require("./app/controller/main");//主入口
 const index = require("./app/controller/index");
-const users = require("./app/controller/users");
+const users = require("./app/controller/user/users");
 const QQauthorization = require("./app/controller/user/qq/QQauthorization");
 
 
@@ -50,91 +50,91 @@ const yzm = require("./app/api/yzm");
 
 
 
-// Token 路由拦截中心
-app.use(async (ctx, next) => { // 我这里知识把登陆和注册请求去掉了，其他的多有请求都需要进行token校验 
-  if (!ctx.url.match(/^\/login/)
-   && !ctx.url.match(/^\/public.*/) 
-   && !ctx.url.match(/^\/register/) 
-   && !ctx.url.match(/^\/logout/) 
-   && !ctx.url.match(/^\/404/) 
-   && !ctx.url.match(/^\/500/)
-   && !ctx.url.match(/^\/api/) 
-   && !ctx.url.match(/^\/mysqlDB/) 
+// // Token 路由拦截中心
+// app.use(async (ctx, next) => { // 我这里知识把登陆和注册请求去掉了，其他的多有请求都需要进行token校验 
+//   if (!ctx.url.match(/^\/login/)
+//    && !ctx.url.match(/^\/public.*/) 
+//    && !ctx.url.match(/^\/register/) 
+//    && !ctx.url.match(/^\/logout/) 
+//    && !ctx.url.match(/^\/404/) 
+//    && !ctx.url.match(/^\/500/)
+//    && !ctx.url.match(/^\/api/) 
+//    && !ctx.url.match(/^\/mysqlDB/) 
 
-   && !ctx.url.match(/^\/proxy/) 
-   && !ctx.url.match(/^\/oauth2.0.*/) 
+//    && !ctx.url.match(/^\/proxy/) 
+//    && !ctx.url.match(/^\/oauth2.0.*/) 
 
-   ) {
-    // Authentication Error
-    let token = ctx.cookies.get('guid');
-    let result;
-    let   aseverify;
-    try {
-      aseverify=aes256way.decryption(token);//解密aes256
-      console.log("----【aes256way解密---成功】-----");
-    } catch (error) {
-      aseverify="";
-      console.log("----【aes256way解密---失败】-----");
-      // console.log(error)
-    }
-    try {
-      //token 解密
-      result=await tokenutil.deToken(aseverify);
-    } catch (error) {
-      result = false;
-      console.log("----【TOKEN-err】-----");
-      consolele.log(error)
-    }
+//    ) {
+//     // Authentication Error
+//     let token = ctx.cookies.get('guid');
+//     let result;
+//     let   aseverify;
+//     try {
+//       aseverify=aes256way.decryption(token);//解密aes256
+//       console.log("----【aes256way解密---成功】-----");
+//     } catch (error) {
+//       aseverify="";
+//       console.log("----【aes256way解密---失败】-----");
+//       // console.log(error)
+//     }
+//     try {
+//       //token 解密
+//       result=await tokenutil.deToken(aseverify);
+//     } catch (error) {
+//       result = false;
+//       console.log("----【TOKEN-err】-----");
+//       consolele.log(error)
+//     }
 
-    if (Object.prototype.toString.call(result) == "[object Object]") {
-     console.log("【解密的监听】")
-     console.log(result)
+//     if (Object.prototype.toString.call(result) == "[object Object]") {
+//      console.log("【解密的监听】")
+//      console.log(result)
 
 
 
-      // let trackdata = await db.find('tracklog', {
-      //   "uid":db.getObjectId(result.ukey) , "randomkey": result.randomkey,"ip":result.ip
-      // });
-      // console.log("【总路径 trackdata表】");
-      // console.log(trackdata);
-      // console.log("----------------------ip----------")
-      // console.log(trackdata.length> 0)
-      // console.log(result.ip)
-      // console.log(ipaddress.getClientIP(ctx))
-      // if (trackdata.length > 0 && result.ip==ipaddress.getClientIP(ctx)) {
-      //   result = true;
-      // } else {
-      //   result = false;
-      // }
-    } else {
-      result = false;
-    }
-    if (result == false) {
-      ctx.cookies.set('guid', '', {
-        signed: false,
-        maxAge: 0
-      })
-      return await ctx.redirect("/login");
-    } else {
-      return await next();
-    }
-  } else {
-    //判断用户是否已经登录，在线状态则跳转到主页
-    if(ctx.url.match(/^\/login/)){
-      if( ctx.cookies.get('guid')==undefined || ctx.cookies.get('guid')==""){
-        ctx.cookies.set('guid', '', {
-          signed: false,
-          maxAge: 0
-        })
-        return await next();
-       }else{
-        return await ctx.redirect("/");
-       }
-    }else{
-      return await next();
-    }
-  }
-});
+//       // let trackdata = await db.find('tracklog', {
+//       //   "uid":db.getObjectId(result.ukey) , "randomkey": result.randomkey,"ip":result.ip
+//       // });
+//       // console.log("【总路径 trackdata表】");
+//       // console.log(trackdata);
+//       // console.log("----------------------ip----------")
+//       // console.log(trackdata.length> 0)
+//       // console.log(result.ip)
+//       // console.log(ipaddress.getClientIP(ctx))
+//       // if (trackdata.length > 0 && result.ip==ipaddress.getClientIP(ctx)) {
+//       //   result = true;
+//       // } else {
+//       //   result = false;
+//       // }
+//     } else {
+//       result = false;
+//     }
+//     if (result == false) {
+//       ctx.cookies.set('guid', '', {
+//         signed: false,
+//         maxAge: 0
+//       })
+//       return await ctx.redirect("/login");
+//     } else {
+//       return await next();
+//     }
+//   } else {
+//     //判断用户是否已经登录，在线状态则跳转到主页
+//     if(ctx.url.match(/^\/login/)){
+//       if( ctx.cookies.get('guid')==undefined || ctx.cookies.get('guid')==""){
+//         ctx.cookies.set('guid', '', {
+//           signed: false,
+//           maxAge: 0
+//         })
+//         return await next();
+//        }else{
+//         return await ctx.redirect("/");
+//        }
+//     }else{
+//       return await next();
+//     }
+//   }
+// });
 
 // app.use(async (ctx, next) =>  {
 //   let trackdata =  appservice.find('tracklog', {

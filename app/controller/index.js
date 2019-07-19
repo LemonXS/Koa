@@ -1,5 +1,5 @@
 const router = require('koa-router')();
-const DB = require("../../Config/DBConfig.js");
+const mongoDB = require("../../Config/DBConfig.js");
 const mysqlDB = require("../../Config/MySqlConfig.js");
 const aes256way = require("../../util/safety.js"); //拓展方法池
 const aeskey= require("../../Config/Config.js").aes256key; //私钥
@@ -20,7 +20,7 @@ router.get("/mysqlDB", async (ctx, next) => {
           console.log(error)
        }
        console.log("-----------------MongoDB-----------------------");
-        await DB.dbconn().then((db)=>{
+        await mongoDB.dbconn().then((db)=>{
             console.log("【mongoDB链接测试成功】")
              db.collection('user').insertOne({username:"11111",age:"1232323"},function(err,obj){
                 console.log("【mongoDB链接测试成功】")
@@ -63,7 +63,7 @@ router.get("/mysqlDB", async (ctx, next) => {
 
  //显示学员信息
   router.get('/show',async (ctx)=>{
-    var result=await DB.find('user',{});
+    var result=await mongoDB.find('user',{});
     console.log("find条件查找后的返回："+JSON.stringify(result));
     await ctx.render('show',{
         list:result
@@ -82,7 +82,7 @@ router.get("/mysqlDB", async (ctx, next) => {
 
       //获取表单提交的数据
      // console.log(ctx.request.body);  //{ username: '王麻子', age: '12', sex: '1',pwd:"123456" }
-      let data=await DB.insert('user',ctx.request.body);
+      let data=await mongoDB.insert('user',ctx.request.body);
       
       //console.log(data);
       console.log("添加后的返回："+data);
@@ -107,7 +107,7 @@ router.get("/mysqlDB", async (ctx, next) => {
       //通过get传过来的id来获取用户信息
       let id=ctx.query.id;
       console.log("返回的id："+id);
-      let data=await DB.find('user',{"_id":DB.getObjectId(id)});
+      let data=await mongoDB.find('user',{"_id":mongoDB.getObjectId(id)});
       console.log("_id查找后的返回："+JSON.stringify(data));
       //获取用户信息
       await ctx.render('edit',{
@@ -126,7 +126,7 @@ router.get("/mysqlDB", async (ctx, next) => {
       var pwd=ctx.request.body.pwd;
       console.log("【doEdit】")
       console.log(ctx.request.body)
-      let data=await DB.update('user',{"_id":DB.getObjectId(id)},{
+      let data=await mongoDB.update('user',{"_id":mongoDB.getObjectId(id)},{
           "username":username,"age":age,"sex":sex,"pwd":pwd
       })
       console.log("修改后的返回："+data);
@@ -145,7 +145,7 @@ router.get("/mysqlDB", async (ctx, next) => {
   //删除学员
   router.get('/delete',async (ctx)=>{
       let id=ctx.query.id;
-      var data=await DB.remove('user',{"_id":DB.getObjectId(id)});
+      var data=await mongoDB.remove('user',{"_id":mongoDB.getObjectId(id)});
       console.log("删除后的返回："+data);
       if(data){
           ctx.redirect('/')

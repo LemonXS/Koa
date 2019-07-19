@@ -17,7 +17,7 @@ router.get('/proxy', async (ctx, next) => {
 //获取openid
 router.post('/proxy_openid', async (ctx, next) => {
   var access_token = ctx.request.body.access_token;
-  console.log(ctx.request.body)
+  // console.log(ctx.request.body)
   await axios.get('https://graph.qq.com/oauth2.0/me?access_token=' + access_token)
     .then(response => {
       console.log("----------------成功-----------------")
@@ -100,7 +100,7 @@ router.post('/proxy_userinfo', async (ctx, next) => {
     //     username: response.data.nickname,
     //     randomkey: random16,
     //     logintime: nowdate,
-    //     ip: ipstr
+    //     ip: ipstr 
     //   }).then((addresult) => {
     //     if (addresult.result.ok) {
             if (response.data.ret != 1002) {
@@ -128,8 +128,8 @@ router.post('/proxy_userinfo', async (ctx, next) => {
                   name: response.data.nickname,
                   ip: ipstr
                 }))
-                console.log(tokenstr);
-                console.log(asesign);
+                // console.log(tokenstr);
+                // console.log(asesign);
                 ctx.body = {
                   success: true,
                   data: [],

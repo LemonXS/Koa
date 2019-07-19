@@ -1,0 +1,15 @@
+--------------【mysql返回参数】--------------
+OkPacket {
+  fieldCount: 0,
+  affectedRows: 1,
+  insertId: 3,
+  serverStatus: 2,
+  warningCount: 0,
+  message: '',
+  protocol41: true,
+  changedRows: 0 }
+
+ 说明：
+  affectedRows  //受影响行数
+  insertId      //添加行的字段id
+  changedRows   //改变的行数
