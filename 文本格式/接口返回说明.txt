@@ -7,13 +7,13 @@
 }
 
 说明：
-code    //返回代码  返回：  0 代表成功 ,1 代表失败,2 注册成功,3 代表注册失败,4 代表未注册.... ，异常错误 9999
+code    //返回代码  返回： -1 代表验证码错误  0 代表成功 ,1 代表失败,2 注册成功,3 代表注册失败,4 代表未注册.... ，异常错误 9999
 success //是否成功  返回：  true/false
 msg     //返回说明  返回：  不返回则为 null,否则  自定义字符串
 data    //返回数据  返回：  不返回则为 null,否则  json/arr/string/number.....(格式自定义)
 
 
-
+{code:-1,success:true,msg:"验证码错误",data:{}};
 {code:0,success:true,msg:"登录成功",data:{}};
 {code:1,success:false,msg:"登录失败",data:null};
 {code:2,success:true,msg:"注册成功",data:{}};

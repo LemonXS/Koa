@@ -99,12 +99,7 @@ async function  user_TokenAdd(option){
 exports.user_TokenAdd=user_TokenAdd;
 
 
-
-
-
-
-/**
- * 路由token比对（验证）
+/**路由token比对（验证）
  * @param {*} uid       用户id
  * @param {*} identity_type   登录类型
  * @param {*} randomkey 登录随机码
@@ -113,10 +108,14 @@ exports.user_TokenAdd=user_TokenAdd;
  */
 async function  user_Token(option){
     let rows= await D_user.user_Token(option);
-    if(rows.length>0){
+    if(rows[0].length>0){
       return true;
     }else{
       return false;
     }
 }
+
+
+
+
 exports.user_Token=user_Token;

@@ -27,8 +27,17 @@ const log4js = require('./Logs/log4js');
 const secret = require("./Config/Config.js").secret;
 const appkey = require("./Config/Config.js").appkey;
 
-const db = require("./Config/DBConfig.js");//拓展方法池
+
+//用户逻辑表
+const S_users=require('./app/service/users');
+
+
+// const db = require("./Config/DBConfig.js");//拓展方法池
 // const ipaddress = require("../../util/ip.js"); //拓展方法池 ip
+
+
+
+
 
 //【controller】本地控制器
 const Main = require("./app/controller/main");//主入口
@@ -37,13 +46,117 @@ const users = require("./app/controller/user/users");
 const QQauthorization = require("./app/controller/user/qq/QQauthorization");
 
 
-
-
-
 //【api】对外开放的API专用
 const test = require("./app/api/test");
 //【api】【验证码】
 const yzm = require("./app/api/yzm");
+
+
+
+
+// Token 路由拦截中心
+app.use(async (ctx, next) => { // 我这里知识把登陆和注册请求去掉了，其他的多有请求都需要进行token校验 
+  if (!ctx.url.match(/^\/login/)
+   && !ctx.url.match(/^\/public.*/) 
+   && !ctx.url.match(/^\/register/) 
+   && !ctx.url.match(/^\/logout/) 
+   && !ctx.url.match(/^\/404/) 
+   && !ctx.url.match(/^\/500/)
+   && !ctx.url.match(/^\/api/) 
+   && !ctx.url.match(/^\/mysqlDB/) 
+
+   && !ctx.url.match(/^\/proxy/) 
+   && !ctx.url.match(/^\/oauth2.0.*/) 
+   && !ctx.url.match(/^\/proxy_openid/) 
+   && !ctx.url.match(/^\/proxy_userinfo/) 
+
+
+   ) {
+    // Authentication Error
+    let token = ctx.cookies.get('guid');
+    let result;
+    let   aseverify;
+    try {
+      aseverify=aes256way.decryption(token);//解密aes256
+      console.log("----【aes256way解密---成功】-----");
+    } catch (error) {
+      aseverify="";
+      console.log("----【aes256way解密---失败】-----");
+    }
+    try {
+      //token 解密
+      result=await tokenutil.deToken(aseverify);
+    } catch (error) {
+      result = false;
+      console.log("----【TOKEN-err】-----");
+      // consolele.log(error)
+    }
+
+    if (Object.prototype.toString.call(result) == "[object Object]") {
+     console.log("【解密的监听】")
+     console.log(result)
+      let verifyToken=  await  S_users.user_Token([result.uid,result.identity_type,result.randomkey,result.ip]);
+      if(verifyToken){
+        return await next();
+      } else {
+        ctx.cookies.set('guid', '', {
+          signed: false,
+          maxAge: 0
+        })
+        return await ctx.redirect("/login");
+      }
+    } else {
+      ctx.cookies.set('guid', '', {
+        signed: false,
+        maxAge: 0
+      })
+      return await ctx.redirect("/login");
+    }
+  } else {
+    //判断用户是否已经登录，在线状态则跳转到主页
+    if(ctx.url.match(/^\/login/)){
+      if( ctx.cookies.get('guid')==undefined || ctx.cookies.get('guid')==""){
+        ctx.cookies.set('guid', '', {
+          signed: false,
+          maxAge: 0
+        })
+        return await next();
+       }else{
+        return await ctx.redirect("/");
+       }
+    }else{
+      return await next();
+    }
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -152,6 +265,9 @@ const yzm = require("./app/api/yzm");
 //     next();
 //   }
 // })
+
+
+
 
 // //允许跨域
 app.use(cors());

@@ -7,6 +7,10 @@ const ipaddress = require("../../util/ip.js"); //拓展方法池
 const toolway = require("../../util/tool.js"); //拓展方法池
 const timeway = require("../../util/timeway.js"); //拓展方法池
 
+const aes256way = require("../../util/safety.js"); //拓展方法池
+const tokenutil = require("../../util/token.js");
+
+
 router.prefix('/api') //很重要，可以在当前地址前面添加一个 前缀 /xxx
 
 
@@ -26,10 +30,15 @@ router.get('/testget', async (ctx) => {
   });
 })
 
+
+
+
+
 router.post('/testpost', async (ctx) => {
-let identity_type="qq";
-let identifier="Helloworld";
+let identity_type="local";
+let identifier="admins";
 let credential="123456";
+
     credential=(credential!=''?toolway.md5(credential):'');
   let user_ip=ipaddress.getClientIP(ctx);
   let user_randomStr=toolway.randomWord(false, 16);
@@ -135,5 +144,43 @@ ctx.body= {code:9999,success:false,msg:"异常错误",data:null};
 //  ctx.response.status=200;
 //  ctx.body=resData
 })
+
+
+router.post('/testpost_token', async (ctx) => {
+
+
+  let tokenstr=  tokenutil.enToken({
+    randomkey:'9fRncxLhvG1vJ6uU',
+    uid:'c06668a0-af67-11e9-a74c-e12bacab5eb7' ,
+    identity_type:'local' ,
+    ip:'127.0.0.1'
+  });
+  let enaes256Str= aes256way.encryption(tokenstr);
+  ctx.cookies.set('guid', enaes256Str, {
+  signed: false,
+  path: '/', // 写cookie所在的路径 
+  maxAge: 2 * 60 * 60 * 1000, // cookie有效时长 
+  httpOnly: false, // 是否只用于http请求中获取 
+  overwrite: false // 是否允许重写 
+  });
+
+
+
+let aseverify=aes256way.decryption(enaes256Str);//解密aes256
+let result=await tokenutil.deToken(aseverify);
+    if (Object.prototype.toString.call(result) == "[object Object]") {
+     console.log("【测试解token成功】")
+     console.log(result)
+     var verifyToken=  await  S_users.user_Token([result.uid,result.identity_type,result.randomkey,result.ip]);
+     ctx.body={"verifyToken":verifyToken};
+    }else{
+      console.log("【测试解token失败】")
+      console.log(result)
+      ctx.body={"verifyToken":false};
+    }
+
+})
+
+
 
 module.exports = router

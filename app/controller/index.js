@@ -1,5 +1,5 @@
 const router = require('koa-router')();
-const mongoDB = require("../../Config/DBConfig.js");
+// const mongoDB = require("../../Config/DBConfig.js");
 const mysqlDB = require("../../Config/MySqlConfig.js");
 const aes256way = require("../../util/safety.js"); //拓展方法池
 const aeskey= require("../../Config/Config.js").aes256key; //私钥

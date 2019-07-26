@@ -54,35 +54,43 @@ layui.use(['layer'], function () {
                 yzm
             },
             success: function (obj) {
-                if (obj.success == true) {
+                if (obj.code == 0 && obj.success == true) {
                     layer.msg('登陆成功', {
                         icon: 6
                     });
                     window.location.href = "/"
                 } else {
-                    if (obj.code == -1) {
+                    if (obj.code == 1) {
                         layer.msg('【账号或密码错误】', {
                             icon: 5
                         });
                         $(".yzm").text("");
                         $("#imgyzm").click();
-                        console.log(obj.message)
+                        // console.log(obj.message)
                     }
-                    if (obj.code == 2) {
+                    if (obj.code == 9999) {
                         layer.msg('【登录异常】', {
                             icon: 5
                         });
                         $(".yzm").text("");
                         $("#imgyzm").click();
-                        console.log(obj.message);
+                        // console.log(obj.message);
                     }
-                    if (obj.code == 3) {
+                    if (obj.code == -1) {
                         layer.msg('【验证码错误】', {
                             icon: 5
                         });
                         $(".yzm").text("");
                         $("#imgyzm").click();
-                        console.log(obj.message);
+                        // console.log(obj.message);
+                    }
+                    if (obj.code == 4) {
+                        layer.msg('【用户名或密码错误】', {
+                            icon: 5
+                        });
+                        $(".yzm").text("");
+                        $("#imgyzm").click();
+                        // console.log(obj.message);
                     }
                 }
             },

@@ -4,7 +4,6 @@
 <head>
     <link rel='stylesheet' href='/stylesheets/style.css' />
 </head>
-
 <body>
 </body>
 <script src="/public/javascripts/jquery-1.4.4.min.js"></script>
@@ -22,24 +21,27 @@
                 access_token: access_token
             })
             .then(function (response) {
-                console.log(response);
                 var code= response.data.code;
-                if(code==200){
-                var msg = response.data.msg;
-                var openid = response.data.openid;
-                var client_id = response.data.client_id;
-                getuserinfo(openid, client_id,access_token);
-                }else{
-                    alert("异常错误");
+                if(code==0){
+                window.location.href="/";
+                }
+                if(code==1){
+                    alert(response.data.msg)
                     window.location.href="/login";
                 }
-               
+                if(code==3){
+                    alert(response.data.msg)
+                    window.location.href="/login";
+                }
+                if(code==9999){
+                    alert(response.data.msg)
+                    window.location.href="/login";
+                }
             })
             .catch(function (error) {
-                console.log(error);
+                alert(error)
                 window.location.href="/login";
             });
-
     }
       //通过openid获取用户信息
     function getuserinfo(openid, client_id,access_token) {
@@ -68,7 +70,6 @@
                 window.location.href="/login";
             });
     }
-
 
     //获取url参数
     function getQueryString(name) {
