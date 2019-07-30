@@ -90,3 +90,13 @@ async function  user_register_verify(option) {
 exports.user_register_verify=user_register_verify;
 
 
+
+/**用户基本信息
+ * @param {*} uid  用户id
+ * @param {*} identity_type   登录类型
+ * @returns
+ */
+async function  user_userinfo(option) {
+    return await  query(" call p_user_userinfo(?,?)",option)
+   }
+exports.user_userinfo=user_userinfo;

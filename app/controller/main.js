@@ -2,7 +2,7 @@ const router = require('koa-router')()
 const log4js = require('../../Logs/log4js');
 // router.prefix('/users') //很重要，可以在当前地址前面添加一个 前缀 /xxx
 
-
+const S_users = require("../service/users.js");
 // const jwt = require('jsonwebtoken')
 // const uuid = require('node-uuid');//guid  生成唯一key
 // const secret = require("../../Config/Config.js").secret; //私钥
@@ -26,8 +26,10 @@ router.get('/', async (ctx) => {
         // console.log(deTokenStr)
         if(deTokenStr!=false){
             console.log("---------------------------------------【Cookie验证成功】------------------------------------")
+           
+            let userinfoData= await   S_users.user_userinfo([deTokenStr.uid,deTokenStr.identity_type]);
             await ctx.render('index',{
-                title:JSON.stringify(deTokenStr)
+                title:JSON.stringify(userinfoData)
             });
         }else{
             console.log("---------------------------------------【Cookie解码失败】------------------------------------")
