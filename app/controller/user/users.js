@@ -41,8 +41,8 @@ router.get('/logout', async (ctx) => {
 //---------------------------------------------------------登录模块--------------------------------------
 //【登录页面】
 router.get('/login', async (ctx) => {
-  console.log("---------------------------【当前用户ip】")
-  console.log(ipaddress.getClientIP(ctx))
+  // console.log("---------------------------【当前用户ip】")
+  // console.log(ipaddress.getClientIP(ctx))
 
 
   // console.log("-------------uuidStr(生成唯一值)-------------");
@@ -150,124 +150,98 @@ router.post('/login', async (ctx) => {
   }
 })
 
-{
-// //【本地登录验证】
-// router.post('/login', async (ctx) => {
-//   let username = ctx.request.body.username;
-//   let pwd = ctx.request.body.pwd;
-//   let yzm = ctx.request.body.yzm.toLowerCase();
-//   var  yzmsign= ""
-//     try {
-//       yzmsign= aes256way.encryption(yzm);
-//     } catch (error) {
-//       yzmsign="";
-//     }
-//     // console.log("-----------------------【登录校验验证码】--------------------")
-//     // console.log("【原     】  "+yzm)
-//     // console.log("【加   密】  "+yzmsign)
-//     // console.log("【session】  "+ctx.session.captcha)
-//     // console.log(yzmsign==ctx.session.captcha?true:false)
-//   if(yzmsign== ctx.session.captcha){
-//     let data = await Susers.login({
-//       "username": username,
-//       "pwd": pwd
-//     });
-//     var nowdate = timeway.nowdateway(0).date1;//当前时间到毫米（无格式：20190714140001999）
-//     var random16 = toolway.randomWord(false, 16);//随机16未字符串
-//     var ipstr=ipaddress.getClientIP(ctx);//拿到ip
-//     if (data.length > 0) {
-//       // 删除以前Cookie登录的记录
-//       let deltrackdata = await Susers.del('tracklog', {
-//         uid: data[0]._id
-//       });
-//       //更新当前Cookie登录的记录
-//       let addtrackdata = await Susers.add('tracklog', {
-//         uid: data[0]._id,
-//         username: data[0].username,
-//         randomkey: random16,
-//         logintime: nowdate,
-//         ip:ipstr
-//       });
-//       try {
-//         if (addtrackdata.result.ok) {
-//           //生成token
-//           let tokenstr=  tokenutil.enToken({
-//               randomkey: random16,
-//               ukey: data[0]._id,
-//               name: username,
-//               ip:ipstr
-//             });
-//           try {
-//               //把token加密
-//               let enaes256Str= aes256way.encryption(tokenstr);
-//               console.log("------【asesign加密成功】-------")
-//               ctx.cookies.set('guid', enaes256Str, {
-//               signed: false,
-//               path: '/', // 写cookie所在的路径 
-//               maxAge: 2 * 60 * 60 * 1000, // cookie有效时长 
-//               httpOnly: false, // 是否只用于http请求中获取 
-//               overwrite: false // 是否允许重写 
-//             });
-//             log4js.logway("【登录记录】", "info", "【本地记录】:"+"  用户标识："+data[0]._id + "  用户名称："+data[0].username)
-//             ctx.body = {
-//               success: true,
-//               data: [],
-//               message: '登录成功',
-//               code: 1
-//             };
-//           } catch (error) {
-//              asesign="";
-//              console.log("------【asesign----加密失败】-------")
-//              ctx.body = {
-//               success: false,
-//               data: [],
-//               message: '登录遇到错误',
-//               code: 1
-//             };
-//           }
-//         } else {
-//           ctx.body = {
-//             success: true,
-//             data: [],
-//             message: '登录成功',
-//             code: 1
-//           };
-//         }
-//       } catch (err) {
-//         console.log("【登录异常】"+JSON.stringify(err));
-//         log4js.logway("【登录异常】", "error", "【err】:" + JSON.stringify(err))
-//         ctx.body = {
-//           success: false,
-//           data: [],
-//           message: '登录异常',
-//           code: 2
-//         };
-//       }
-//     } else {
-//       ctx.body = {
-//         success: false,
-//         data: [],
-//         message: '用户名或密码错误',
-//         code: -1
-//       };
-//     }
-//   }else{
-//     ctx.body = {
-//       success: false,
-//       data: [],
-//       message: '验证码错误',
-//       code: 3
-//     };
-//   }
-// })
-}
 //---------------------------------------------------------注册模块--------------------------------------
-//【注册页面】
-router.get('/register', async (ctx) => {
-  await ctx.render('user/register');
+//【本地注册】
+router.post('/register', async (ctx) => {
+  let identity_type="local";
+  let identifier= ctx.request.body.u;
+  let credential= ctx.request.body.p;
+       credential=toolway.md5(credential);
+  let user_ip=ipaddress.getClientIP(ctx);
+  let user_randomStr=toolway.randomWord(false, 16);
+
+
+//代表未注册
+var Random_uid=toolway.getuuid();//用户唯一id
+var Random_nickname=toolway.getRandomName();//随机用户名称
+var Random_gender=(toolway.getRandomBool()==true?'男':'女');
+var Random_birthday=timeway.getnewdateway().date1;//用户系统生日
+var Random_face=toolway.getFace();
+
+
+
+
+let V_resData= await   S_users.user_register_verify([identity_type,identifier]);
+
+if(V_resData){
+  let U_resData= await   S_users.user_Uregister([
+    Random_uid,Random_nickname,Random_gender,Random_birthday,Random_face,identity_type,1
+   ]);
+  //  console.log("---------------【user注册】--------------");
+  //  console.log(U_resData)
+   let U_code= U_resData.code;
+   let U_success= U_resData.success;
+   let U_msg= U_resData.msg;
+   let U_data= U_resData.data;
+  if(U_code==2 && U_success==true){
+      let UA_resData= await   S_users.user_UAregister([
+        Random_uid,identity_type,identifier,credential,user_ip,1,null,null,null
+     ]);
+    //  console.log("---------------【user-auths注册】--------------");
+    //  console.log(UA_resData)
+     let UA_code= UA_resData.code;
+     let UA_success= UA_resData.success;
+     let UA_msg= UA_resData.msg;
+     let UA_data= UA_resData.data;
+     if(UA_code==2 && UA_success==true){
+       let T_resData= await   S_users.user_TokenAdd([
+         Random_uid,identity_type,user_randomStr,user_ip
+       ]);
+      //  console.log("---------------【user-token注册】--------------");
+      //  console.log(T_resData)
+       let T_code= T_resData.code;
+       let T_success= T_resData.success;
+       let T_msg= T_resData.msg;
+       let T_data= T_resData.data;
+      if(T_code==2 && T_success==true){
+       //这是返回前端的成功位置
+       //在这个地方还要进行 token的加密和价签
+    
+       let enTokenStr=  tokenutil.enToken({
+        randomkey:user_randomStr,
+        uid:Random_uid,
+        identity_type:identity_type ,
+        ip:user_ip
+      });
+   
+       let enAes256Str= aes256way.encryption(enTokenStr);
+       ctx.cookies.set('guid', enAes256Str, {
+       signed: false,
+       path: '/', // 写cookie所在的路径 
+       maxAge: 2 * 60 * 60 * 1000, // cookie有效时长 
+       httpOnly: false, // 是否只用于http请求中获取 
+       overwrite: false // 是否允许重写 
+       });
+        ctx.body= {code:0,success:true,msg:"登录成功",data:null};
+      }else{
+        ctx.body= {code:1,success:false,msg:"登陆失败",data:null};
+      }
+     }else{
+        ctx.body= {code:3,success:false,msg:"注册失败",data:null};
+     }
+    }
+}else{
+  ctx.body= {code:5,success:false,msg:"用户名已存在",data:null};
+}
+
+
+
+
+
+
+
+
+
 })
-
-
-
 
 module.exports = router

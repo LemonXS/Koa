@@ -114,8 +114,26 @@ async function  user_Token(option){
       return false;
     }
 }
-
-
-
-
 exports.user_Token=user_Token;
+
+
+/**注册时验证 该用户名是否已存在
+ * @param {*} identity_type   登录类型
+ * @param {*} identifier 登录名
+ * @returns
+ */
+async function  user_register_verify(option){
+    let rows= await D_user.user_register_verify(option);
+    try {
+        if(rows[0].length==0){
+            return true;
+          }else{
+            return false;
+          }
+    } catch (error) {
+        console.log("【user_register_verify】"+JSON.stringify(error))
+        return false;
+    }
+}
+exports.user_register_verify=user_register_verify;
+

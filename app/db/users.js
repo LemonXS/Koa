@@ -79,5 +79,14 @@ async function  user_Token(option) {
 exports.user_Token=user_Token;
 
 
+/**注册时验证 该用户名是否已存在
+ * @param {*} identity_type   登录类型
+ * @param {*} identifier 登录名
+ * @returns
+ */
+async function  user_register_verify(option) {
+    return await  query(" call p_user_register_verify(?,?)",option)
+   }
+exports.user_register_verify=user_register_verify;
 
 

@@ -57,8 +57,8 @@ const yzm = require("./app/api/yzm");
 // Token 路由拦截中心
 app.use(async (ctx, next) => { // 我这里知识把登陆和注册请求去掉了，其他的多有请求都需要进行token校验 
   if (!ctx.url.match(/^\/login/)
+   && !ctx.url.match(/^\/register/)
    && !ctx.url.match(/^\/public.*/) 
-   && !ctx.url.match(/^\/register/) 
    && !ctx.url.match(/^\/logout/) 
    && !ctx.url.match(/^\/404/) 
    && !ctx.url.match(/^\/500/)

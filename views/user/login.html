@@ -1,71 +1,584 @@
-<!DOCTYPE html>
-<html lang="en">
-
+﻿<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Login</title>
-  <link type="text/css" rel="stylesheet" href="/public/layui/css/layui.css">
-  <link type="text/css" rel="stylesheet" href="/public/login/css/style.css">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<title>登录</title>
+	<link rel="stylesheet" href="/public/login/css/normalize.css">
+	<link rel="stylesheet" href="/public/login/css/login.css">
+	<link rel="stylesheet" href="/public/login/css/sign-up-login.css">
+	<link rel="stylesheet" type="text/css" href="/public/login/css/font-awesome.4.6.0.css">
+	<link rel="stylesheet" href="/public/login/css/inputeffect.css" />
+	<link rel="stylesheet" href="/public/login/css/tooltips.css" />
+	<link type="text/css" rel="stylesheet" href="/public/layui/css/layui.css">
+	<style type="text/css">
+		html {
+			width: 100%;
+			height: 100%;
+		}
 
+		body {
+
+			background-repeat: no-repeat;
+
+			background-position: center center #2D0F0F;
+
+			background-color: #00BDDC;
+
+			background-image: url(/public/login/images/snow.jpg);
+
+			background-size: 100% 100%;
+
+		}
+
+		.snow-container {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			pointer-events: none;
+			z-index: 100001;
+		}
+
+		/* @charset "UTF-8"; */
+
+		.input--verify_code {
+			float: left;
+			width: 60%
+		}
+
+		.verify-code-canvas {
+			width: 100px;
+			height: 43px;
+			display: inline-block;
+			position: relative;
+			cursor: pointer;
+			background-color: #fff;
+			top: 15px;
+			right: 10px
+		}
+
+
+		#login .wrapper	.sign-in-htm  section.content{
+			height:200px;
+			/* background-color: red; */
+		}
+
+		#login .wrapper	.sign-in-htm  section.content  #login-verify-code-canvas{
+			height:40px;
+			line-height:40px;
+		}
+
+
+
+
+        /* 三种登录的样式 */
+		.qqlogin{height:25px;}
+		.wechatlogin{height:20px;}
+		.weibologin{height:20px;}
+	</style>
 </head>
 
 <body>
-  <div class="logo-box">
-    <div class="login">
-      <div class="bxs-row" style="text-align:center;font-size:40px;">
-        Login
-      </div>
-      <div class="bxs-row">
-        <input type="text" class="username" value="" placeholder="用户名">
-        <p class=" err err-username"></p>
-      </div>
-      <div class="bxs-row">
-        <input type="password" class="password" placeholder="密码">
-        <p class="err err-password"></p>
-      </div>
-      <div class="bxs-row">
-        <div style="width:100%;vertical-align: middle;">
-          <input style="width:70%;float: left;" type="text" class="yzm" placeholder="验证码">
-          <div style="width:30%;float: right;">
-            <img id="imgyzm" src="/api/yzmcode" onclick="$(event.target).attr('src','/api/yzmcode?'+Math.random())">
-          </div>
-        </div>
-        <p class="err err-yzm"></p>
-      </div>
-      <div class="bxs-row" style="margin-top: 18px;">
-        <input type="submit" class="submit btn" value="登录">
-      </div>
-      <div class="bxs-row footimg">
-        <div class="layui-btn-group">
-          <a href="https://graph.qq.com/oauth2.0/authorize?response_type=token&client_id=101490224&redirect_uri=http://localhost:3000/proxy&scope=get_user_info,list_album,upload_pic,do_like&state=1" target="_self"><img class="qqlogin" src="/public/images/material/qq24.png" title="QQ登录"></a>
-          <img class="wechatlogin" src="/public/images/material/wechat24.png" title="微信登录">
-          <img class="weibologin" src="/public/images/material/weibo24.png" title="微博登录">
-        </div>
-        <div class="layui-btn-group footspan" >
-           <a href="javascript:;" id="C_wjmm"> <span class="wjmm">忘记密码？</span></a>
-        </div>
-      </div>
-    </div>
-  </div>
+	<div class="snow-container"></div>
+	<div id="login">
+		<input id="tab-1" type="radio" name="tab" class="sign-in hidden" checked />
+		<input id="tab-2" type="radio" name="tab" class="sign-up hidden" />
+		<input id="tab-3" type="radio" name="tab" class="sign-out hidden" />
+		<div class="wrapper">
+			
+			<!-- 【登录】 -->
+			<div class="login sign-in-htm">
+				<form class="container offset1 loginform">
 
+					<div id="owl-login" class="login-owl">
+						<div class="hand"></div>
+						<div class="hand hand-r"></div>
+						<div class="arms">
+							<div class="arm"></div>
+							<div class="arm arm-r"></div>
+						</div>
+					</div>
+					<div class="pad input-container">
+						<section class="content">
+							<span class="input input--hideo">
+								<input class="input__field input__field--hideo" value="admin" type="text"
+									id="login-username" autocomplete="off" placeholder="请输入用户名" tabindex="1"
+									maxlength="15" />
+								<label class="input__label input__label--hideo" for="login-username">
+									<i class="fa fa-fw fa-user icon icon--hideo"></i>
+									<span class="input__label-content input__label-content--hideo"></span>
+								</label>
+							</span>
+							<span class="input input--hideo">
+								<input class="input__field input__field--hideo" type="password" id="login-password"
+									placeholder="请输入密码" tabindex="2" maxlength="15" />
+								<label class="input__label input__label--hideo" for="login-password">
+									<i class="fa fa-fw fa-lock icon icon--hideo"></i>
+									<span class="input__label-content input__label-content--hideo"></span>
+								</label>
+							</span>
+							<span class="input input--hideo input--verify_code">
+								<input class="input__field input__field--hideo" type="text" id="login-verify-code"
+									autocomplete="off" placeholder="请输入验证码" tabindex="3" maxlength="4" />
+								<label class="input__label input__label--hideo" for="login-verify-code">
+									<i class="fa fa-fw fa-bell-o icon icon--hideo"></i>
+									<span class="input__label-content input__label-content--hideo"></span>
+								</label>
+							</span>
+							<img  class="verify-code-canvas" id="login-verify-code-canvas" src="/api/yzmcode" onclick="$(event.target).attr('src','/api/yzmcode?'+Math.random())">
+							<!-- <img src="/public/login/images/snow.jpg" class="verify-code-canvas" id="login-verify-code-canvas"> -->
+							<!-- <canvas class="verify-code-canvas" id="login-verify-code-canvas"></canvas> -->
+						</section>
+					</div>
+					<div class="form-actions">
+						<a tabindex="1" class="btn pull-left btn-link text-muted" onclick="goto_forget()">忘记密码?</a>
+
+						<a tabindex="1" style="margin-right:10px;" href="https://graph.qq.com/oauth2.0/authorize?response_type=token&client_id=101490224&redirect_uri=http://localhost:3000/proxy&scope=get_user_info,list_album,upload_pic,do_like&state=1" target="_self"><img class="qqlogin" src="/public/images/material/qq24.png" title="QQ登录"></a>
+						<a tabindex="1" style="margin-right:10px;" ><img class="wechatlogin" src="/public/images/material/wechat24.png" title="微信登录"></a>
+						<a tabindex="1" style="margin-right:10px;" ><img class="weibologin" src="/public/images/material/weibo24.png" title="微博登录"></a>
+								
+						<a tabindex="5" class="btn btn-link text-muted" onclick="goto_register()">注册</a>
+						<input class="btn btn-primary" type="button" tabindex="3" onclick="login()" value="登录"
+							style="color:white;" />
+					</div>
+				</form>
+			</div>
+			
+            <!-- 【重置密码】 -->
+			<div class="login sign-out-htm">
+				<form action="#" method="post" class="container offset1 loginform">
+
+					<div id="owl-login" class="forget-owl">
+						<div class="hand"></div>
+						<div class="hand hand-r"></div>
+						<div class="arms">
+							<div class="arm"></div>
+							<div class="arm arm-r"></div>
+						</div>
+					</div>
+					<div class="pad input-container">
+						<section class="content">
+							<span class="input input--hideo">
+								<input class="input__field input__field--hideo" type="text" id="forget-username"
+									autocomplete="off" placeholder="请输入用户名" />
+								<label class="input__label input__label--hideo" for="forget-username">
+									<i class="fa fa-fw fa-user icon icon--hideo"></i>
+									<span class="input__label-content input__label-content--hideo"></span>
+								</label>
+							</span>
+							<span class="input input--hideo">
+								<input class="input__field input__field--hideo" type="password" id="forget-password"
+									placeholder="请重置密码" />
+								<label class="input__label input__label--hideo" for="forget-password">
+									<i class="fa fa-fw fa-lock icon icon--hideo"></i>
+									<span class="input__label-content input__label-content--hideo"></span>
+								</label>
+							</span>
+						</section>
+					</div>
+					<div class="form-actions">
+						<a class="btn pull-left btn-link text-muted" onclick="goto_login()">返回登录</a>
+						<input class="btn btn-primary" type="button" onclick="forget()" value="重置密码" style="color:white;" />
+					</div>
+				</form>
+			</div>
+			
+			<!-- 【注册】 -->
+			<div class="login sign-up-htm">
+				<form action="#" method="post" class="container offset1 loginform">
+					<div id="owl-login" class="register-owl">
+						<div class="hand"></div>
+						<div class="hand hand-r"></div>
+						<div class="arms">
+							<div class="arm"></div>
+							<div class="arm arm-r"></div>
+						</div>
+					</div>
+					<div class="pad input-container">
+						<section class="content">
+							<span class="input input--hideo">
+								<input class="input__field input__field--hideo" type="text" id="register-username"
+									autocomplete="off" placeholder="请输入用户名" maxlength="15" />
+								<label class="input__label input__label--hideo" for="register-username">
+									<i class="fa fa-fw fa-user icon icon--hideo"></i>
+									<span class="input__label-content input__label-content--hideo"></span>
+								</label>
+							</span>
+							<span class="input input--hideo">
+								<input class="input__field input__field--hideo" type="password" id="register-password"
+									placeholder="请输入密码" maxlength="15" />
+								<label class="input__label input__label--hideo" for="register-password">
+									<i class="fa fa-fw fa-lock icon icon--hideo"></i>
+									<span class="input__label-content input__label-content--hideo"></span>
+								</label>
+							</span>
+							<span class="input input--hideo">
+								<input class="input__field input__field--hideo" type="password" id="register-repassword"
+									placeholder="请确认密码" maxlength="15" />
+								<label class="input__label input__label--hideo" for="register-repassword">
+									<i class="fa fa-fw fa-lock icon icon--hideo"></i>
+									<span class="input__label-content input__label-content--hideo"></span>
+								</label>
+							</span>
+						</section>
+					</div>
+					<div class="form-actions">
+						<a class="btn pull-left btn-link text-muted" onclick="goto_login()">返回登录</a>
+						<input class="btn btn-primary" type="button" onclick="register()" value="注册"
+							style="color:white;" />
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script src="/public/login/js/jquery-1.10.2.js"></script>
+	<script src="/public/login/js/jquery.pure.tooltips.js"></script>
+	<script src="/public/javascripts/axios.min.js"></script>
+    <script src="/public/layui/layui.js"></script>
+	<script>
+
+		$(function () {
+			$('#login #login-password').focus(function () {
+				$('.login-owl').addClass('password');
+			}).blur(function () {
+				$('.login-owl').removeClass('password');
+			});
+			$('#login #register-password').focus(function () {
+				$('.register-owl').addClass('password');
+			}).blur(function () {
+				$('.register-owl').removeClass('password');
+			});
+			$('#login #register-repassword').focus(function () {
+				$('.register-owl').addClass('password');
+			}).blur(function () {
+				$('.register-owl').removeClass('password');
+			});
+			$('#login #forget-password').focus(function () {
+				$('.forget-owl').addClass('password');
+			}).blur(function () {
+				$('.forget-owl').removeClass('password');
+			});
+		});
+
+        //跳转到注册
+		function goto_register() {
+			$("#register-username").val("");
+			$("#register-password").val("");
+			$("#register-repassword").val("");
+			$("#tab-2").prop("checked", true);
+		}
+
+
+		//跳转到登录
+		function goto_login() {
+			$("#login-username").val("");
+			$("#login-password").val("");
+			$("#login-verify-code").val("");
+			$("#login-verify-code-canvas").click();
+			$("#tab-1").prop("checked", true);
+		}
+
+		//跳转到重置密码
+		function goto_forget() {
+			alert("功能正在开发中");
+			return false;
+			// $("#forget-username").val("");
+			// $("#forget-password").val("");
+			// $("#tab-3").prop("checked", true);
+		}
+
+
+		// $(".qqlogin").click(function(){alert("正在开发中")});
+		$(".wechatlogin").click(function(){alert("正在开发中")});
+		$(".weibologin").click(function(){alert("正在开发中")});
+
+
+        //登录【完成】
+		function login() { 
+			var username = $("#login-username").val().trim(),
+				password = $("#login-password").val().trim(),
+				verifycode = $("#login-verify-code").val().trim();
+			//判断用户名密码是否为空
+			if (username == "") {
+				$.pt({
+					target: $("#login-username"),
+					position: 'r',
+					align: 't',
+					width: 'auto',
+					height: 'auto',
+					content: "用户名不能为空"
+				});
+				return;
+			}
+			if (password == "") {
+				$.pt({
+					target: $("#login-password"),
+					position: 'r',
+					align: 't',
+					width: 'auto',
+					height: 'auto',
+					content: "密码不能为空"
+				});
+				return;
+			}
+			if (verifycode == "" || verifycode.length!=4) {
+				$.pt({
+					target: $("#login-verify-code-canvas"),
+					position: 'r',
+					align: 't',
+					width: 'auto',
+					height: 'auto',
+					content: "验证码格式错误"
+				});
+				return;
+			}
+
+			//用户名只能6-15位字母或数字
+			var regExp = new RegExp("^[a-zA-Z0-9_]{6,15}$");
+			if (!regExp.test(username)) {
+				$.pt({
+					target: $("#login-username"),
+					position: 'r',
+					align: 't',
+					width: 'auto',
+					height: 'auto',
+					content: "用户名必须为15位以下的字母或数字"
+				});
+				return;
+			}
+			//登录
+			//调用后台登录验证的方法
+			layui.use(['layer'], function () {
+			 var layer = layui.layer;
+			 $.ajax({
+            url: "/login",
+            type: "post",
+            dataType: "json",
+            data: {
+                username: username,
+                pwd:password,
+                yzm:verifycode
+            },
+            success: function (obj) {
+                if (obj.code == 0 && obj.success == true) {
+                    layer.msg('登陆成功', {
+                        icon: 1
+                    });
+                    window.location.href = "/"
+                } else {
+                    if (obj.code == 1) {
+                        layer.msg('【账号或密码错误】', {
+                            icon: 0
+                        });
+                        $("#login-verify-code").text("");
+                        $("#login-verify-code-canvas").click();
+                        // console.log(obj.message)
+                    }
+                    if (obj.code == 9999) {
+                        layer.msg('【登录异常】', {
+                            icon: 2
+                        });
+                        $("#login-verify-code").text("");
+                        $("#login-verify-code-canvas").click();
+                        // console.log(obj.message);
+                    }
+                    if (obj.code == -1) {
+                        layer.msg('【验证码错误】', {
+                            icon: 0
+                        });
+                        $("#login-verify-code").text("");
+                        $("#login-verify-code-canvas").click();
+                        // console.log(obj.message);
+                    }
+                    if (obj.code == 4) {
+                        layer.msg('【用户名或密码错误】', {
+                            icon: 0
+                        });
+                        $("#login-verify-code").text("");
+                        $("#login-verify-code-canvas").click();
+                        // console.log(obj.message);
+                    }
+                }
+            },
+            error: function (err) {
+                console.log("异常ERR：" + JSON.stringify(err))
+            }
+        })
+
+			});
+
+
+		}
+
+		//注册【开发中】
+		function register() {
+			var username = $("#register-username").val().trim(),
+				password = $("#register-password").val().trim(),
+				repassword = $("#register-repassword").val().trim();
+			//判断用户名密码是否为空
+			if (username == "") {
+				$.pt({
+					target: $("#register-username"),
+					position: 'r',
+					align: 't',
+					width: 'auto',
+					height: 'auto',
+					content: "用户名不能为空"
+				});
+				return false;
+			}
+			if (password == "") {
+				$.pt({
+					target: $("#register-password"),
+					position: 'r',
+					align: 't',
+					width: 'auto',
+					height: 'auto',
+					content: "密码不能为空"
+				});
+				return false;
+			} else {
+				if (password != repassword) {
+					$.pt({
+						target: $("#register-repassword"),
+						position: 'r',
+						align: 't',
+						width: 'auto',
+						height: 'auto',
+						content: "两次输入的密码不一致"
+					});
+					return false;
+				}
+			}
+			//用户名只能6-15位的字母或数字
+			var regExp = new RegExp("^[a-zA-Z0-9_]{6,15}$");
+			if (!regExp.test(username)) {
+				$.pt({
+					target: $("#register-username"),
+					position: 'r',
+					align: 't',
+					width: 'auto',
+					height: 'auto',
+					content: "用户名必须为15位以下的字母或数字"
+				});
+				return false;
+			}
+			if (!regExp.test(password)) {
+				$.pt({
+					target: $("#register-password"),
+					position: 'r',
+					align: 't',
+					width: 'auto',
+					height: 'auto',
+					content: "密码为6-16位字母数字下划线"
+				});
+				return false;
+			}
+			layui.use(['layer'], function () {
+			 var layer = layui.layer;
+			 $.ajax({
+            url: "/register",
+            type: "post",
+            dataType: "json",
+            data: {
+                u: username,
+                p:password
+            },
+            success: function (obj) {
+                if (obj.code == 0 && obj.success == true) {
+                    layer.msg('登录成功', {
+                        icon: 1
+                    });
+                    window.location.href = "/"
+				} else if(obj.code == 5 && obj.success == false) {
+					layer.msg('用户名已存在', {
+                        icon: 0
+					});
+					//   // window.location.href = "/login"
+				}else if(obj.code == 1 && obj.success == false) {
+					layer.msg('注册成功但登录失败', {
+                        icon: 0
+                    });
+                    // window.location.href = "/login"
+                }else{
+					layer.msg('注册成功失败', {
+                        icon: 2
+                    });
+                    // window.location.href = "/login"
+				}
+            },
+            error: function (err) {
+				layer.msg('异常错误', {
+                        icon: 2
+                    });
+                console.log("异常ERR：" + JSON.stringify(err))
+            }
+		})
+	   })
+		
+	
+	
+	}
+
+		//重置密码【开发中】
+		function forget() {
+			var username = $("#forget-username").val().trim(),
+				password = $("#forget-password").val().trim();
+			//判断用户名密码是否为空
+			if (username == "") {
+				$.pt({
+					target: $("#forget-username"),
+					position: 'r',
+					align: 't',
+					width: 'auto',
+					height: 'auto',
+					content: "用户名不能为空"
+				});
+				return false;
+			}
+			if (password == "") {
+				$.pt({
+					target: $("#forget-password"),
+					position: 'r',
+					align: 't',
+					width: 'auto',
+					height: 'auto',
+					content: "密码不能为空"
+				});
+				return false;
+			}
+			//用户名只能是15位以下的字母或数字
+			var regExp = new RegExp("^[a-zA-Z0-9_]{1,15}$");
+			if (!regExp.test(username)) {
+				$.pt({
+					target: $("#forget-username"),
+					position: 'r',
+					align: 't',
+					width: 'auto',
+					height: 'auto',
+					content: "用户名必须为15位以下的字母或数字"
+				});
+				return false;
+			}
+			if (!regExp.test(password)) {
+				$.pt({
+					target: $("#register-password"),
+					position: 'r',
+					align: 't',
+					width: 'auto',
+					height: 'auto',
+					content: "密码为6-16位字母数字下划线"
+				});
+				return false;
+			}
+
+
+
+			
+		}
+	</script>
 </body>
-<script src="/public/login/js/jquery-1.10.2.js"></script>
-<script src="/public/javascripts/axios.min.js"></script>
-<script src="/public/layui/layui.js"></script>
-<script src="/public/login/js/login.js"></script>
-<script>
-  // $(".qqlogin").click(function () {
-  //   alert("QQ登录【开发中】")
-  // });
-  $(".wechatlogin").click(function () {
-    alert("微信登录【开发中】")
-  });
-  $(".weibologin").click(function () {
-    alert("微博登录【开发中】")
-  });
-  $("#C_wjmm").click(function(){
-  alert("忘记密码【开发中】");
-  })
-</script>
 
 </html>
