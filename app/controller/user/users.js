@@ -35,7 +35,7 @@ router.get('/logout', async (ctx) => {
     signed: false,
     maxAge: 0
   })
-  await ctx.redirect("user/login");
+  await ctx.redirect("/login");
 })
 
 //---------------------------------------------------------登录模块--------------------------------------

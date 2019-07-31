@@ -15,6 +15,13 @@ const aes256way = require("../../util/safety.js"); //拓展方法池
 const tokenutil = require("../../util/token.js");
 
 
+router.get('/index', async (ctx) => {
+    await ctx.render('index',{
+        title:"HAHA"
+    });
+})
+
+
 
 router.get('/', async (ctx) => {
     let tokencookie = ctx.cookies.get('guid');
