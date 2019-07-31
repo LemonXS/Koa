@@ -11,7 +11,7 @@
  Target Server Version : 50717
  File Encoding         : 65001
 
- Date: 24/07/2019 16:00:18
+ Date: 30/07/2019 17:16:51
 */
 
 SET NAMES utf8mb4;
@@ -32,7 +32,7 @@ CREATE TABLE `user`  (
   `createtime` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '注册日期',
   `status` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '状态  0关闭  1开启（正常）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for user_auths
@@ -51,7 +51,7 @@ CREATE TABLE `user_auths`  (
   `extend2` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '扩展字段2',
   `extend3` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '扩展字段3',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for user_token
@@ -65,7 +65,7 @@ CREATE TABLE `user_token`  (
   `randomkey` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '登录随机字符串',
   `ip` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '登录ip',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 52 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for user_track
@@ -142,6 +142,22 @@ END
 delimiter ;
 
 -- ----------------------------
+-- Procedure structure for p_user_register_verify
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `p_user_register_verify`;
+delimiter ;;
+CREATE PROCEDURE `p_user_register_verify`(in _identity_type VARCHAR(225),
+in _identifier VARCHAR(225))
+BEGIN
+
+-- 验证该用户是否存在
+select  * from user_auths where  identifier=_identifier and identity_type=_identity_type;
+
+END
+;;
+delimiter ;
+
+-- ----------------------------
 -- Procedure structure for p_user_token
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `p_user_token`;
@@ -154,6 +170,31 @@ BEGIN
 
 -- 得到登陆用户的最新 token(查询)
 select  * from  user_token where uid=_uid and identity_type=_identity_type and randomkey=_randomkey and ip=_ip order by id DESC limit 1;
+
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Procedure structure for p_user_userinfo
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `p_user_userinfo`;
+delimiter ;;
+CREATE PROCEDURE `p_user_userinfo`(in _uid VARCHAR(225),
+in _identity_type VARCHAR(225))
+BEGIN
+-- 用户信息
+select u.id as id
+,u.uid as uid
+,u.nick_name as  nick_name
+,u.gender as  gender
+,u.birthday as birthday
+,u.face as face
+,ua.identity_type as identity_type
+,ua.identifier as identifier
+,ua.ip as ip
+from  `user` u left join user_auths ua on u.uid=ua.uid where ua.uid=_uid and ua.identity_type=_identity_type;
+
 
 END
 ;;
