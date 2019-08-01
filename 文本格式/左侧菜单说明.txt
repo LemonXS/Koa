@@ -1,0 +1,17 @@
+    {
+        "title": "我是一级菜单", //标题
+        "fontFamily": "iconfont",//可以自定义使用哪种icon   如：iconfont  或 layui-icon 等。。。。
+        "icon": "icon-evaluate", //此处放icon的class
+        "href": "/add",   //跳转路径 （如果有子集，此属性删除或为空）
+        "isClose": false, //在tab上是否显示关闭按钮
+        "spread": true,   //在tab中是否允许 被关闭
+        "isCheck": true   //是否在页面加载完毕后自动打开(只对一级菜单生效)
+        // "target": "_blank", //在新窗口打开（建议不要开启，注释---多用于login）
+         "children": [
+            {
+                //可拥有父菜单属性，需要再次定义
+                "title": "我是二级菜单",
+                "href": "pages/tripartite/qrcode.html"
+            }
+        ]
+    },

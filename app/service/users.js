@@ -145,6 +145,11 @@ exports.user_register_verify=user_register_verify;
  */
 async function  user_userinfo(option){
     let rows= await D_user.user_userinfo(option);
-    return rows[0];
+    if(rows[0].length==0){
+        return [];
+    }else{
+        return rows[0][0];
+    }
+    
 }
 exports.user_userinfo=user_userinfo;

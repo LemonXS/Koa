@@ -15,13 +15,11 @@ const aes256way = require("../../util/safety.js"); //拓展方法池
 const tokenutil = require("../../util/token.js");
 
 
-router.get('/index', async (ctx) => {
-    await ctx.render('index',{
-        title:"HAHA"
-    });
-})
-
-
+// router.get('/index', async (ctx) => {
+//     await ctx.render('index',{
+//         title:"HAHA"
+//     });
+// })
 
 router.get('/', async (ctx) => {
     let tokencookie = ctx.cookies.get('guid');
@@ -35,8 +33,9 @@ router.get('/', async (ctx) => {
             console.log("---------------------------------------【Cookie验证成功】------------------------------------")
            
             let userinfoData= await   S_users.user_userinfo([deTokenStr.uid,deTokenStr.identity_type]);
+            // console.log(JSON.stringify(userinfoData))
             await ctx.render('index',{
-                title:JSON.stringify(userinfoData)
+                title:userinfoData
             });
         }else{
             console.log("---------------------------------------【Cookie解码失败】------------------------------------")

@@ -1,9 +1,9 @@
 [
     {
-        "title": "主页一",
+        "title": "首页",
         "fontFamily": "iconfont",
         "icon": "icon-evaluate",
-        "href": "pages/home.html",
+        "href": "/api/test",
         "isClose": false,
         "spread": true,
         "isCheck": true
@@ -12,12 +12,12 @@
         "title": "主页二",
         "fontFamily": "layui-icon",
         "icon": "layui-icon-home",
-        "href": "pages/home2.html"
+        "href": "/PageTemplate"
     },
     {
         "title": "字体图标",
         "icon": "&#xe644;",
-        "href": "pages/other/okfont.html",
+        "href": "/add",
         "spread": false
     },
     {

@@ -143,7 +143,6 @@ layui.config({
     //         noticeFun();
     //     }
     // }();
-
     function noticeFun() {
         var srcWidth = okUtils.getBodyWidth();
         layer.open({

@@ -1,0 +1,2 @@
+1.Get请求title携带格式
+{"id":13,"uid":"c06668a0-af67-11e9-a74c-e12bacab5eb7","nick_name":"皮宜豪","gender":"女","birthday":"2019-07-26 13:39:35","face":"http://127.0.0.1:3000/public/images/face/face06.jpeg","identity_type":"local","identifier":"admins","ip":"127.0.0.1"}
