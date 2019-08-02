@@ -1,3 +1,4 @@
+window.onload=function(){
 // /^http(s*):\/\//.test(location.href) || alert('请先部署到 localhost 下再访问');
 layui.config({
     base: '/public/layui/lay/zdymodules/'//模块存放的目录
@@ -19,7 +20,7 @@ layui.config({
     okTab.render(function () {
         //左侧导航渲染完成之后的操作
 
-
+        $("#navBar").find("li.layui-this").find("a").trigger("click");
     }); //渲染左侧导航
 
     // 添加新窗口
@@ -150,9 +151,9 @@ layui.config({
             title: "系统公告",
             btn: "我知道啦",
             btnAlign: 'c',
-            content: "ok-admin v2.0上线啦(^し^)<br />" +
-                "在此郑重承诺该模板<span style='color:#5cb85c'>永久免费</span>为大家提供" +
-                "<br />若有更好的建议欢迎<span id='noticeQQ'>加入QQ群</span>一起聊",
+            content: "后台管理 v2.0上线啦(^し^)<br />" +
+                "正在开发权限模块" +
+                "<br />",
             yes: function (index) {
                 if (srcWidth > 800) {
                     layer.tips('公告跑到这里去啦', '#notice', {
@@ -217,16 +218,6 @@ layui.config({
             });
         });
     });
-
-    // console.log("       _                     _       _       \n" +
-    //     "      | |                   | |     (_)      \n" +
-    //     "  ___ | |  _ _____ _____  __| |____  _ ____  \n" +
-    //     " / _ \\| |_/ |_____|____ |/ _  |    \\| |  _ \\ \n" +
-    //     "| |_| |  _ (      / ___ ( (_| | | | | | | | |\n" +
-    //     " \\___/|_| \\_)     \\_____|\\____|_|_|_|_|_| |_|\n" +
-    //     "                                             \n" +
-    //     "版本：v2.0\n" +
-    //     "作者：bobi\n" +
-    //     "邮箱：bobi1234@foxmail.com\n" +
-    //     "描述：一个很赞的，扁平化风格的，响应式布局的后台管理模版，旨为后端程序员减压！");
 });
+
+}

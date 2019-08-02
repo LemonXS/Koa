@@ -26,10 +26,7 @@ border-bottom: 1px solid #e6dfdf;
    color:rgba(17, 166, 235, 0.733);
 }
 
-/* 左侧导航总样式 */
-#div_leftnav{
-z-index: 1000;
-}
+
 
 /* 底部总样式 */
 #div_foot{
@@ -42,6 +39,73 @@ z-index: 1000;
 #div_header #userInfo  a{
    color: black;
 }
+
+
+
+/* 左侧导航总样式 */
+#div_leftnav{
+   /* 【删掉之前请释放 z-index】 */
+/* z-index: 1000;    */
+background-color: white!important;
+}
+
+/* ---------------左侧菜单 ---白色的配置(删除便是黑色)--------------- */
+/* logo样式 */
+#div_leftnav .okadmin-side .user-photo{border:none;}
+#div_leftnav .okadmin-logo{
+  background-color: white;
+  color: black;
+}
+
+/* 左侧所有字体样式 */
+#div_leftnav  .layui-nav *{
+   color:black;
+}
+/* 一级菜单 箭头图标（最外层）*/
+#div_leftnav .layui-nav .layui-nav-more{
+    border-top-color: rgba(21, 3, 7, 0.7);
+}
+
+/* 一级菜单 箭头图标（点击后的样式）*/
+ #div_leftnav .layui-nav .layui-nav-mored,#div_leftnav .layui-nav-itemed>a span.layui-nav-more{
+    margin-top: -9px;
+    border-style: dashed dashed solid;
+    border-color: #ffffff transparent transparent;
+    border-color: transparent transparent #280a0aa3;
+}
+
+
+
+/* 一级菜单选中后 子菜单背景颜色 */
+#div_leftnav .layui-nav-itemed>.layui-nav-child{
+   background-color: rgba(189, 235, 203, 0.43) !important;
+}
+
+#div_leftnav   .layui-nav-tree .layui-nav-item a:hover{
+   background-color: #7c7c7cad!important;
+}
+/* 左侧用户头像信息 字体样式 */
+#div_leftnav  .user-photo p{
+   color:black;
+}
+/* ---------------左侧菜单 ---END--------------- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 </style>
@@ -70,7 +134,7 @@ z-index: 1000;
                <iframe frameborder="0" scrolling="no" class="iframe-style" src="./api/weather" frameborder="0"></iframe>
             </div>
             <!--<div id="tp-weather-widget"></div>-->
-        
+        </li>
       </ul>
       <ul class="layui-nav layui-layout-right">
          <li class="no-line layui-nav-item layui-hide-xs">
@@ -181,9 +245,7 @@ z-index: 1000;
 <script src="/public/index/nprogress/nprogress.js"></script>
 <script src="/public/index/js/index.js"></script>
 <script >
-window.onload=function(){
-   $("#navBar .layui-this a").click();
-}
+
 </script>
 </body>
 </html>
