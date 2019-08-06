@@ -133,14 +133,12 @@
 						</section>
 					</div>
 					<div class="form-actions">
-						<a tabindex="1" class="btn pull-left btn-link text-muted" onclick="goto_forget()">忘记密码?</a>
-
-						<a tabindex="1" style="margin-right:10px;" href="https://graph.qq.com/oauth2.0/authorize?response_type=token&client_id=101490224&redirect_uri=http://localhost:3000/proxy&scope=get_user_info,list_album,upload_pic,do_like&state=1" target="_self"><img class="qqlogin" src="/public/images/material/qq24.png" title="QQ登录"></a>
-						<a tabindex="1" style="margin-right:10px;" ><img class="wechatlogin" src="/public/images/material/wechat24.png" title="微信登录"></a>
-						<a tabindex="1" style="margin-right:10px;" ><img class="weibologin" src="/public/images/material/weibo24.png" title="微博登录"></a>
-								
-						<a tabindex="5" class="btn btn-link text-muted" onclick="goto_register()">注册</a>
-						<input class="btn btn-primary" type="button" tabindex="3" onclick="login()" value="登录"
+						<a tabindex="5" class="btn pull-left btn-link text-muted" onclick="goto_forget()">忘记密码?</a>
+						<a tabindex="6" style="margin-right:10px;" href="https://graph.qq.com/oauth2.0/authorize?response_type=token&client_id=101490224&redirect_uri=http://localhost:3000/proxy&scope=get_user_info,list_album,upload_pic,do_like&state=1" target="_self"><img class="qqlogin" src="/public/images/material/qq24.png" title="QQ登录"></a>
+						<a tabindex="7" style="margin-right:10px;" ><img class="wechatlogin" src="/public/images/material/wechat24.png" title="微信登录"></a>
+						<a tabindex="8" style="margin-right:10px;" ><img class="weibologin" src="/public/images/material/weibo24.png" title="微博登录"></a>	
+						<a tabindex="9" class="btn btn-link text-muted" onclick="goto_register()">注册</a>
+						<input class="btn btn-primary" type="button" tabindex="4" onclick="login()" value="登录"
 							style="color:white;" />
 					</div>
 				</form>
@@ -517,9 +515,8 @@
             }
 		})
 	   })
-		
-	
-	
+
+	   
 	}
 
 		//重置密码【开发中】

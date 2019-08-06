@@ -52,7 +52,8 @@ const QQauthorization = require("./app/controller/user/qq/QQauthorization");
 const test = require("./app/api/test");
 //【api】【验证码】
 const yzm = require("./app/api/yzm");
-
+//【api】【短信】
+const sms = require("./app/api/sms");
 
 
 
@@ -373,7 +374,8 @@ app.use(QQauthorization.routes(), QQauthorization.allowedMethods());
 app.use(test.routes(), test.allowedMethods());
 //【api】【验证码】
 app.use(yzm.routes(), yzm.allowedMethods());
-
+//【api】【短信接口】
+app.use(sms.routes(), sms.allowedMethods());
 
 
 //错误页面 --状态返回
