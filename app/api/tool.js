@@ -7,6 +7,10 @@ router.get('/weather', async (ctx) => {
     await ctx.render('tool/weather');
 })
 
+//彩带花
+router.get('/flowers', async (ctx) => {
+    await ctx.render('tool/flowers');
+})
 
 
 module.exports = router

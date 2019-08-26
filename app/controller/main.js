@@ -73,4 +73,7 @@ router.get('/', async (ctx) => {
 router.get('/PageTemplate', async (ctx) => {
     await ctx.render('PageTemplate');
 })
+
+
+
 module.exports = router
