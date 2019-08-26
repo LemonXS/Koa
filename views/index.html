@@ -130,6 +130,8 @@ background-color: white!important;
          </li> -->
          <li class="ok-nav-item ok-hide-md">
             <!-- 天气信息 -->
+
+          
             <div class="weather-ok">
                <iframe frameborder="0" scrolling="no" class="iframe-style" src="./api/weather" frameborder="0"></iframe>
             </div>
@@ -240,12 +242,15 @@ background-color: white!important;
 </div>
 <div class="yy"></div>
 <!--js逻辑-->
-<script  type="text/javascript" src="/public/javascripts/jquery-1.4.4.min.js" ></script>
-<script src="/public/layui/layui.js"></script>
-<script src="/public/index/nprogress/nprogress.js"></script>
-<script src="/public/index/js/index.js"></script>
-<script >
+<script type="text/javascript" src="/public/javascripts/jquery-1.4.4.min.js" ></script>
+<script type="text/javascript" src="/public/layui/layui.js"></script>
+<script type="text/javascript" src="/public/index/nprogress/nprogress.js"></script>
+<script type="text/javascript" src="/public/index/js/index.js"></script>
+<script type="text/javascript">
 
+  if (window != window.parent) {
+          window.parent.location.reload(true);
+        }
 </script>
 </body>
 </html>

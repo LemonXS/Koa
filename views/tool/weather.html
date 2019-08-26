@@ -3,6 +3,8 @@
 <head>
    <title>中国天气</title>
    <style>
+      *{
+      } 
       #weather-float-he {
          position: fixed!important;
          z-index: 99999!important;
@@ -16,19 +18,28 @@
       }
       #weather-float-he div[data-v-0a6ec0b4] div{
          position:static!important;
+         pointer-events:none;
       }
       body,html{
          margin: 0;
          width: 100%;
          height: max-content;
       }
+      
    </style>
 </head>
 <body>
+
+
+<script type="text/javascript" src="/public/javascripts/jquery-1.4.4.min.js" ></script>
 <script type="text/javascript">
   WIDGET = {FID: 'FS17XUsOiV'}
 </script>
 <script type="text/javascript" src="https://apip.weatherdt.com/float/static/js/r.js?v=1111"></script>
+<script>
+
+$("#weather-float-he").find("div").eq(0).css("pointer-events","none");
+</script>
 </body>
 </html>
 <!-- ok-admin-weather -->

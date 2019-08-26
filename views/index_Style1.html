@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>出口退税数据分析平台</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="/public/images/favicon.png" type="image/x-icon" />
+    <link rel="stylesheet" href="/public/index/css/index.css" />
+    <link rel="stylesheet" href="/public/layui/css/layui.css" />
+    <link rel="stylesheet" href="/public/myicon/iconfont.css" media="all" />
+    <!-- <link rel="stylesheet" href="/public/iconfont/iconfont.css" media="all" /> -->
+    <!-- <link rel="stylesheet" href="/public/index/css/okfont.css"/> -->
+    <link rel="stylesheet" href="/public/index/nprogress/nprogress.css" />
+    <style>
+        #div_body .layui-header {
+            /* background-color: transparent; */
+            border-bottom: 1px solid #e6dfdf;
+            background-color: white;
+            z-index: 1111;
+        }
+
+
+        /* 头部  鼠标移入后的颜色 */
+        #div_header .layui-nav .layui-nav-item a:hover,
+        .layui-nav .layui-this a {
+
+            color: rgba(17, 166, 235, 0.733);
+        }
+
+        /* logo样式 */
+        #div_header .layui-layout-left {
+            left: 0;
+            margin: 0;
+            padding: 0;
+        }
+
+        #div_logo {
+            margin: 0px;
+
+        }
+
+        /* 菜单切换按钮的定位 */
+        #div_menu {
+            height: 40px;
+            line-height: 40px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all .3s;
+            -webkit-transition: all .3s;
+            border-left: 1px solid #E6E6E6;
+            border-bottom: 1px solid #E6E6E6;
+            background: #FFF;
+            z-index: 10;
+
+        }
+
+        /* 菜单切换按钮 鼠标移入高亮 */
+        #div_menu:hover {
+            background-color: #F2F2F2;
+        }
+
+
+
+        /* 刷新按钮的位置 */
+        #div_pagerefresh {
+            height: 40px;
+            line-height: 40px;
+            position: absolute;
+            top: 0;
+            right: 40px;
+            width: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all .3s;
+            -webkit-transition: all .3s;
+            border-left: 1px solid #E6E6E6;
+            border-bottom: 1px solid #E6E6E6;
+            background: #FFF;
+            z-index: 10;
+        }
+
+
+        /* tab 右侧导航按钮位移》 */
+        #div_body .layui-icon-next {
+            right: 80px;
+        }
+
+        /* tab  左侧导航按钮位移《 */
+        #div_body .layui-icon-prev {
+            left: 40px;
+        }
+
+        /* tab选项卡 距离左侧右侧的一个位置 */
+        #div_body .content-body .ok-tab .layui-tab-title {
+            margin: 0 120px 0 80px;
+        }
+
+
+        /* 左侧导航总样式 */
+        #div_leftnav {
+            z-index: 1000;
+        }
+
+        /* 左侧导航头部logo */
+        #div_leftnav .okadmin-logo {
+            padding: 0px;
+            background: white;
+        }
+
+        /* 底部总样式 */
+        #div_foot {
+            height: 30px;
+            line-height: 30px;
+        }
+
+
+        /* 用户头像下的用户信息点击后的样式 */
+        #div_header #userInfo a {
+            color: black;
+        }
+
+
+        /* ---------------左侧菜单 ---白色的配置(删除便是黑色)--------------- */
+        #div_leftnav {
+            background-color: white !important;
+        }
+
+        #div_leftnav .layui-nav * {
+            color: black;
+        }
+
+        /* 一级菜单 箭头图标（最外层）*/
+        #div_leftnav .layui-nav .layui-nav-more {
+            border-top-color: rgba(21, 3, 7, 0.7);
+        }
+
+        /* 一级菜单 箭头图标（点击后的样式）*/
+        #div_leftnav .layui-nav .layui-nav-mored,
+        #div_leftnav .layui-nav-itemed>a span.layui-nav-more {
+            margin-top: -9px;
+            border-style: dashed dashed solid;
+            border-color: #ffffff transparent transparent;
+            border-color: transparent transparent black;
+        }
+
+
+
+        /* 一级菜单选中后 子菜单背景颜色 */
+        #div_leftnav .layui-nav-itemed>.layui-nav-child {
+            background-color: rgba(189, 235, 203, 0.43) !important;
+        }
+
+        #div_leftnav .layui-nav-tree .layui-nav-item a:hover {
+            background-color: rgb(198, 198, 204);
+
+        }
+
+        /* ---------------左侧菜单 ---END--------------- */
+    </style>
+</head>
+
+<body class="layui-layout-body">
+    <div id="div_body" class="layui-layout layui-layout-admin okadmin">
+        <!--头部导航-->
+        <div id="div_header" class="layui-header okadmin-header">
+
+            <ul class="layui-nav layui-layout-left">
+                <li class="layui-nav-item" id="div_logo">
+                    <img src="/public/images/logo.jpg" style="height:48px;width:100%;background-repeat: none;">
+                </li>
+                <!-- <li class="layui-nav-item">
+            <a class="ok-menu ok-show-menu" href="javascript:;" title="菜单切换">
+               <i class="layui-icon layui-icon-shrink-right" id="ok_app_menu"></i>
+            </a>
+         </li> -->
+                <!-- <li class="layui-nav-item">
+                    <a class="ok-refresh" href="javascript:;" title="刷新">
+                        <i class="layui-icon layui-icon-refresh-3"></i>
+                    </a>
+                </li> -->
+                <!-- <li class="layui-nav-item">
+            <a href="javascript:;" class="iconfont icon-time" id="timeshow"></a>	
+         </li> -->
+                <!-- <li class="layui-nav-item ok-input-search">
+            <input type="text" placeholder="搜索..." class="layui-input layui-input-search"/>
+         </li> -->
+                <!-- 天气信息 -->
+                <!-- <li class="ok-nav-item ok-hide-md">
+            <div class="weather-ok">
+               <iframe frameborder="0" scrolling="no" class="iframe-style" src="./api/weather" frameborder="0"></iframe>
+            </div>
+        </li> -->
+            </ul>
+            <ul class="layui-nav layui-layout-right">
+                <!-- <li class="no-line layui-nav-item layui-hide-xs">
+            <a id="notice" class="flex-vc pr10 pl10" href="javascript:;">
+               <i class="iconfont icon-notice"></i><cite>系统公告</cite>
+            </a>
+         </li> -->
+
+                <!-- 当前时间 -->
+                <li class="no-line layui-nav-item layui-hide-xs">
+                    <a href="javascript:;" class="iconfont icon-time" id="timeshow"></a>
+                </li>
+                <li class="layui-nav-item layui-hide-xs">
+                    <a id="fullScreen" class=" pr10 pl10" href="javascript:;">
+                        <i class="layui-icon layui-icon-screen-full"></i>
+                    </a>
+                </li>
+
+                <li class="no-line layui-nav-item">
+                    <a href="javascript:;">
+                        <%=(username==""?"　　　":username) %>
+                    </a>
+                    <dl id="userInfo" class="layui-nav-child">
+                        <dd><a lay-id="u-1" href="javascript:;" data-url="/changePwd">重置密码
+                                <!-- <span   class="layui-badge-dot"></span> -->
+                            </a></dd>
+                        <!-- <dd><a lay-id="u-2" href="javascript:;" data-url="pages/user/user-info.html">基本资料</a></dd>
+               <dd><a lay-id="u-3" href="javascript:;" data-url="pages/user/changePwd.html">安全设置</a></dd> -->
+                        <dd>
+                            <hr />
+                        </dd>
+                        <dd><a href="javascript:void(0)" id="logout">退出登录</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+        <!--遮罩层-->
+        <div class="ok-make"></div>
+        <!--左侧导航区域-->
+        <div id="div_leftnav" class="layui-side layui-side-menu  ok-left">
+            <div class="layui-side-scroll okadmin-side">
+                <!-- <div class="okadmin-logo">
+                    <img src="/public/images/logo.jpg" style="height:100%;width:100%;background-repeat: none;">
+                 </div> -->
+                <!--左侧导航菜单-->
+                <ul id="navBar" class="layui-nav okadmin-nav okadmin-bg-20222A layui-nav-tree">
+                    <li class="layui-nav-item layui-this">
+                        <a href="javascript:;" lay-id="1">
+                            <i is-close=false class="ok-icon ok-iconairplay"></i>
+                            首页
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 内容主体区域 -->
+        <div class="content-body">
+            <div class="layui-tab ok-tab" lay-filter="ok-tab" lay-allowClose="true" lay-unauto>
+
+                <div id="div_menu" class="ok-menu ok-show-menu" href="javascript:;" title="菜单切换">
+                    <!-- <a > -->
+                    <i class="layui-icon layui-icon-shrink-right" id="ok_app_menu"></i>
+                    <!-- </a> -->
+                </div>
+                <!--<div class="okadmin-pagetabs"></div>-->
+                <div data-id="left" id="okLeftMove" class="layui-icon okadmin-tabs-control layui-icon-prev okNavMove">
+                </div>
+                <div data-id="right" id="okRightMove" class="layui-icon okadmin-tabs-control layui-icon-next okNavMove">
+                </div>
+
+
+                <!-- <a class="ok-refresh" href="javascript:;" title="刷新">
+                        <i class="layui-icon layui-icon-refresh-3"></i>
+                    </a> -->
+                <!-- class="ok-menu ok-show-menu" -->
+                <div id="div_pagerefresh" class="ok-refresh" href="javascript:;" href="javascript:;" title="刷新">
+                    <i class="layui-icon layui-icon-refresh-3"></i>
+                </div>
+                <div class="layui-icon okadmin-tabs-control ok-right-nav-menu" style="right: 0;">
+                    <ul class="okadmin-nav">
+                        <li class="no-line okadmin-nav-item">
+                            <div class="okadmin-link layui-icon-down" href="javascript:;"></div>
+                            <dl id="tabAction" class="okadmin-nav-child layui-anim-upbit layui-anim">
+                                <dd><a data-num="1" href="javascript:;">关闭当前标签页</a></dd>
+                                <dd><a data-num="2" href="javascript:;">关闭其他标签页</a></dd>
+                                <dd><a data-num="3" href="javascript:;">关闭所有标签页</a></dd>
+                            </dl>
+                        </li>
+                    </ul>
+                </div>
+
+                <ul class="layui-tab-title ok-tab-title not-scroll">
+                    <!-- <li class="layui-this" lay-id="1" tab="index">
+                           <i class="ok-icon ok-iconairplay"></i>
+                           <cite is-close=false>首页</cite>
+                            </li> -->
+                </ul>
+
+                <div class="layui-tab-content ok-tab-content">
+                    <!-- <div class="layui-tab-item layui-show">
+               <iframe src='/add' frameborder="0" scrolling="yes" width="100%" height="100%"></iframe>
+            </div> -->
+                </div>
+            </div>
+        </div>
+
+        <!--底部信息-->
+        <div id="div_foot" class="layui-footer okadmin-text-center">
+            Copyright ©2019 万达信息
+
+        </div>
+    </div>
+    <div class="yy"></div>
+    <!--js逻辑-->
+    <script type="text/javascript" src="/public/javascripts/jquery-1.4.4.min.js" ></script>
+    <script type="text/javascript" src="/public/layui/layui.js"></script>
+    <script type="text/javascript" src="/public/index/nprogress/nprogress.js"></script>
+    <!-- <script type="text/javascript" src="/public/index/js/index.js"></script> -->
+
+    <script type="text/javascript">
+
+     //解决子框架嵌套的问题
+     if (window != window.parent) {
+          window.parent.location.reload(true);
+        }
+
+        // /^http(s*):\/\//.test(location.href) || alert('请先部署到 localhost 下再访问');
+        window.onload = function () {
+            layui.config({
+                base: '/public/layui/lay/zdymodules/' //模块存放的目录
+            }).use(['element', 'layer', 'okUtils', 'okTab'], function () {
+                // layui.use(['element', 'layer', 'okUtils', 'okTab'], function () {
+                var element = layui.element;
+                var okUtils = layui.okUtils;
+                // $ = layui.jquery,
+                var layer = layui.layer;
+                var  okTab = layui.okTab({
+                    url: "/public/index/data/navs.json",
+                    openTabNum: 30, //允许同时选项卡的个数
+                    parseData: function (data) { //如果返回的结果和navs.json中的数据结构一致可省略这个方法
+                        return data;
+                    }
+                });
+                            okTab.render(function () {
+                            //左侧导航渲染完成之后的操作
+                            console.log("---------------加载完成-----------")
+                            $("#navBar").find("li.layui-this").find("a").trigger(
+                                "click");
+                        }); //渲染左侧导航
+
+                // $.ajax({
+                //     url: "/public/index/data/navs.json",
+                //     data: {},
+                //     type: "POST",
+                //     dataType: "json",
+                //     success: function (result) {
+                //           console.log("[][][][][[][]][][][[]")
+                //           console.log(result);
+                //         //   console.log("**********77&&&&&")
+
+                //         okTab = layui.okTab({
+                //             openTabNum: 30, //允许同时选项卡的个数
+                //             data: result
+                //         });
+
+                //         okTab.render(function () {
+                //             //左侧导航渲染完成之后的操作
+                //             console.log("---------------加载完成-----------")
+                //             $("#navBar").find("li.layui-this").find("a").trigger(
+                //                 "click");
+                //         }); //渲染左侧导航
+
+                //     },
+                //     error: function (err) {
+                //         console.log("左侧菜单加载失败： " + JSON.stringify(err));
+                //         okTab = layui.okTab({
+                //             openTabNum: 30, //允许同时选项卡的个数
+                //             data: []
+                //         });
+                //         okTab.render(function () {
+                //             //左侧导航渲染完成之后的操作
+                //             console.log("---------------加载失败-----------")
+                //             $("#navBar").find("li.layui-this").find("a").trigger(
+                //                 "click");
+                //         }); //渲染左侧导航
+
+                //     }
+                // })
+
+                // 添加新窗口
+                $("body").on("click", "#navBar .layui-nav-item a,#userInfo a", function () {
+                    //如果不存在子级
+                    if ($(this).siblings().length == 0) {
+                        okTab.tabAdd($(this));
+                    }
+                    $(this).parent("li").siblings().removeClass("layui-nav-itemed"); //关闭其他的二级标签
+                });
+
+                /**
+                 * 左边菜单显隐功能
+                 * @type {boolean}
+                 */
+                $(".ok-menu").click(function () {
+                    $(".layui-layout-admin").toggleClass("ok-left-hide");
+                    $(this).find('i').toggleClass("ok-menu-hide");
+                });
+
+                //移动端的处理事件Start
+                $("body").on("click", ".layui-layout-admin .ok-left a[data-url],.ok-make", function () {
+                    if ($(".layui-layout-admin").hasClass("ok-left-hide")) {
+                        $(".layui-layout-admin").removeClass("ok-left-hide");
+                        $(".ok-menu").find('i').removeClass("ok-menu-hide");
+                    }
+                });
+                //移动端的处理事件End
+
+                //tab左右移动
+                $("body").on("click", ".okNavMove", function () {
+                    var moveId = $(this).attr("data-id");
+                    var that = this;
+                    okTab.navMove(moveId, that);
+                    // console.log(width);
+                });
+
+                //刷新当前tab页
+                $("body").on("click", ".ok-refresh", function () {
+                    okTab.refresh(this);
+                });
+
+                //关闭tab页
+                $("body").on("click", "#tabAction a", function () {
+                    var num = $(this).attr('data-num');
+                    okTab.tabClose(num);
+                });
+
+                //全屏/退出全屏
+                $("body").on("keydown", function (event) {
+                    event = event || window.event || arguments.callee.caller.arguments[0];
+                    if (event && event.keyCode == 27) { // 按 Esc
+                        console.log("Esc");
+                        $("#fullScreen").children("i").eq(0).removeClass("okicon-screen-restore");
+                    }
+                    if (event && event.keyCode == 122) { // 按 F11
+                        $("#fullScreen").children("i").eq(0).addClass("okicon-screen-restore");
+                    }
+                });
+
+                $("body").on("click", "#fullScreen", function () {
+                    if ($(this).children("i").hasClass("okicon-screen-restore")) {
+                        screenFun(2).then(function () {
+                            $(this).children("i").eq(0).removeClass(
+                                "okicon-screen-restore");
+                        });
+                    } else {
+                        screenFun(1).then(function () {
+                            $(this).children("i").eq(0).addClass("okicon-screen-restore");
+                        });
+                    }
+                });
+
+                /**
+                 * 全屏和退出全屏的方法
+                 * @param num
+                 * num为1代表全屏
+                 * num为2代表退出全屏
+                 */
+                function screenFun(num) {
+                    num = num || 1;
+                    num = num * 1;
+                    var docElm = document.documentElement;
+
+                    switch (num) {
+                        case 1:
+                            if (docElm.requestFullscreen) {
+                                docElm.requestFullscreen();
+                            } else if (docElm.mozRequestFullScreen) {
+                                docElm.mozRequestFullScreen();
+                            } else if (docElm.webkitRequestFullScreen) {
+                                docElm.webkitRequestFullScreen();
+                            } else if (docElm.msRequestFullscreen) {
+                                docElm.msRequestFullscreen();
+                            }
+                            break;
+                        case 2:
+                            if (document.exitFullscreen) {
+                                document.exitFullscreen();
+                            } else if (document.mozCancelFullScreen) {
+                                document.mozCancelFullScreen();
+                            } else if (document.webkitCancelFullScreen) {
+                                document.webkitCancelFullScreen();
+                            } else if (document.msExitFullscreen) {
+                                document.msExitFullscreen();
+                            }
+                            break;
+                    }
+
+                    return new Promise(function (res, rej) {
+                        res("返回值");
+                    });
+                }
+
+                /**
+                 * 系统公告
+                 */
+                $(document).on("click", "#notice", noticeFun);
+                // ! function () {
+                //     let notice = sessionStorage.getItem("notice");
+                //     if (notice != "true") {
+                //         noticeFun();
+                //     }
+                // }();
+                function noticeFun() {
+                    var srcWidth = okUtils.getBodyWidth();
+                    layer.open({
+                        type: 0,
+                        title: "系统公告",
+                        btn: "我知道啦",
+                        btnAlign: 'c',
+                        content: "ok-admin v2.0上线啦(^し^)<br />" +
+                            "在此郑重承诺该模板<span style='color:#5cb85c'>永久免费</span>为大家提供" +
+                            "<br />若有更好的建议欢迎<span id='noticeQQ'>加入QQ群</span>一起聊",
+                        yes: function (index) {
+                            if (srcWidth > 800) {
+                                layer.tips('公告跑到这里去啦', '#notice', {
+                                    tips: [1, '#000'],
+                                    time: 2000
+                                });
+                            }
+                            sessionStorage.setItem("notice", "true");
+                            layer.close(index);
+                        },
+                        cancel: function (index) {
+                            if (srcWidth > 800) {
+                                layer.tips('公告跑到这里去啦', '#notice', {
+                                    tips: [1, '#000'],
+                                    time: 2000
+                                });
+                            }
+                        }
+                    });
+                }
+
+                /**
+                 * 退出操作
+                 */
+                $("#logout").click(function () {
+                    layer.confirm("确定要退出吗？", {
+                        skin: 'layui-layer-lan',
+                        icon: 3,
+                        title: '提示',
+                        anim: 6
+                    }, function () {
+                        window.location = "/logout";
+                    });
+                });
+
+                /**
+                 * 锁定账户
+                 */
+                $("#lock").click(function () {
+                    layer.confirm("确定要锁定账户吗？", {
+                        skin: 'layui-layer-lan',
+                        icon: 4,
+                        title: '提示',
+                        anim: 1
+                    }, function (index) {
+                        layer.close(index);
+                        $(".yy").show();
+                        layer.prompt({
+                            btn: ['确定'],
+                            title: '输入密码解锁(123456)',
+                            closeBtn: 0,
+                            formType: 1
+                        }, function (value, index, elem) {
+                            if (value == "123456") {
+                                layer.close(index);
+                                $(".yy").hide();
+                            } else {
+                                layer.msg('密码错误', {
+                                    anim: 6
+                                });
+                            }
+                        });
+                    });
+                });
+
+            });
+
+
+        }
+
+        //定时器每秒调用一次fnDate()
+        setInterval(function () {
+            fnDate();
+        }, 1000);
+
+        //js 获取当前时间
+        function fnDate() {
+            var oDiv = document.getElementById("timeshow");
+            var date = new Date();
+            var year = date.getFullYear(); //当前年份
+            var month = date.getMonth(); //当前月份
+            var data = date.getDate(); //天
+            var hours = date.getHours(); //小时
+            var minute = date.getMinutes(); //分
+            var second = date.getSeconds(); //秒
+            var time = year + "-" + fnW((month + 1)) + "-" + fnW(data) + " " + fnW(hours) + ":" + fnW(minute) + ":" +
+                fnW(
+                    second);
+            oDiv.innerHTML = time;
+        }
+        //补位 当某个字段不是两位数时补0
+        function fnW(str) {
+            var num;
+            str >= 10 ? num = str : num = "0" + str;
+            return num;
+        }
+    </script>
+</body>
+
+</html>

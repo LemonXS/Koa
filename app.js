@@ -275,20 +275,21 @@ app.use(async (ctx, next) => { // 我这里知识把登陆和注册请求去掉�
 // //允许跨域
 app.use(cors());
 
-// //允许跨域
-// app.use(cors({
-//   origin: function (ctx) {
-//       if (ctx.url === '/cors') {
-//           return "*"; // 允许来自所有域名请求
-//       }
-//       return 'http://127.0.0.1:8080'; / 这样就能只允许 http://127.0.0.1:8080 这个域名的请求了
-//   },
-//   exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
-//   maxAge: 5,
-//   credentials: true,
-//   allowMethods: ['GET', 'POST', 'DELETE'],
-//   allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
-// }))
+//允许跨域
+app.use(cors({
+  origin: function (ctx) {
+      // if (ctx.url === '/cors') {
+      //     return "*"; // 允许来自所有域名请求
+      // }
+      // return 'http://127.0.0.1:8080'; // 这样就能只允许 http://127.0.0.1:8080 这个域名的请求了
+      return "*"; // 允许来自所有域名请求
+  },
+  exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
+  maxAge: 5,
+  credentials: true,
+  allowMethods: ['GET', 'POST', 'DELETE'],
+  allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
+}))
 
 
 
