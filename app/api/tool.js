@@ -12,5 +12,8 @@ router.get('/flowers', async (ctx) => {
     await ctx.render('tool/flowers');
 })
 
-
+//跨域测试
+router.post('/kuayu', async (ctx) => {
+    ctx.body={a:1,b:2,c:3};
+})
 module.exports = router

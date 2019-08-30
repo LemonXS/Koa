@@ -57,116 +57,116 @@ const sms = require("./app/api/sms");
 
 
 
-// Token 路由拦截中心
-app.use(async (ctx, next) => { // 我这里知识把登陆和注册请求去掉了，其他的多有请求都需要进行token校验 
-  if (!ctx.url.match(/^\/login/)
-   && !ctx.url.match(/^\/register/)
-   && !ctx.url.match(/^\/public.*/) 
-   && !ctx.url.match(/^\/logout/) 
-   && !ctx.url.match(/^\/404/) 
-   && !ctx.url.match(/^\/500/)
-   && !ctx.url.match(/^\/api/) 
-   && !ctx.url.match(/^\/mysqlDB/) 
-
-   && !ctx.url.match(/^\/proxy/) 
-   && !ctx.url.match(/^\/oauth2.0.*/) 
-   && !ctx.url.match(/^\/proxy_openid/) 
-   && !ctx.url.match(/^\/proxy_userinfo/) 
-
-
-   ) {
-    // Authentication Error
-    let token = ctx.cookies.get('guid');
-    let result;
-    let   aseverify;
-    try {
-      aseverify=aes256way.decryption(token);//解密aes256
-      console.log("----【aes256way解密---成功】-----");
-    } catch (error) {
-      aseverify="";
-      console.log("----【aes256way解密---失败】-----");
-    }
-    try {
-      //token 解密
-      result=await tokenutil.deToken(aseverify);
-    } catch (error) {
-      result = false;
-      console.log("----【TOKEN-err】-----");
-      // consolele.log(error)
-    }
-
-    if (Object.prototype.toString.call(result) == "[object Object]") {
-     console.log("【解密的监听】")
-     console.log(result)
-      let verifyToken=  await  S_users.user_Token([result.uid,result.identity_type,result.randomkey,result.ip]);
-      if(verifyToken){
-        return await next();
-      } else {
-        ctx.cookies.set('guid', '', {
-          signed: false,
-          maxAge: 0
-        })
-        return await ctx.redirect("/login");
-      }
-    } else {
-      ctx.cookies.set('guid', '', {
-        signed: false,
-        maxAge: 0
-      })
-      return await ctx.redirect("/login");
-    }
-  } else {
-    //判断用户是否已经登录，在线状态则跳转到主页
-    if(ctx.url.match(/^\/login/)){
-      if( ctx.cookies.get('guid')==undefined || ctx.cookies.get('guid')==""){
-        ctx.cookies.set('guid', '', {
-          signed: false,
-          maxAge: 0
-        })
-        return await next();
-       }else{
-        return await ctx.redirect("/");
-       }
-    }else{
-      return await next();
-    }
-  }
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // // Token 路由拦截中心
+// app.use(async (ctx, next) => { // 我这里知识把登陆和注册请求去掉了，其他的多有请求都需要进行token校验 
+//   if (!ctx.url.match(/^\/login/)
+//    && !ctx.url.match(/^\/register/)
+//    && !ctx.url.match(/^\/public.*/) 
+//    && !ctx.url.match(/^\/logout/) 
+//    && !ctx.url.match(/^\/404/) 
+//    && !ctx.url.match(/^\/500/)
+//    && !ctx.url.match(/^\/api/) 
+//    && !ctx.url.match(/^\/mysqlDB/) 
+
+//    && !ctx.url.match(/^\/proxy/) 
+//    && !ctx.url.match(/^\/oauth2.0.*/) 
+//    && !ctx.url.match(/^\/proxy_openid/) 
+//    && !ctx.url.match(/^\/proxy_userinfo/) 
+
+
+//    ) {
+//     // Authentication Error
+//     let token = ctx.cookies.get('guid');
+//     let result;
+//     let   aseverify;
+//     try {
+//       aseverify=aes256way.decryption(token);//解密aes256
+//       console.log("----【aes256way解密---成功】-----");
+//     } catch (error) {
+//       aseverify="";
+//       console.log("----【aes256way解密---失败】-----");
+//     }
+//     try {
+//       //token 解密
+//       result=await tokenutil.deToken(aseverify);
+//     } catch (error) {
+//       result = false;
+//       console.log("----【TOKEN-err】-----");
+//       // consolele.log(error)
+//     }
+
+//     if (Object.prototype.toString.call(result) == "[object Object]") {
+//      console.log("【解密的监听】")
+//      console.log(result)
+//       let verifyToken=  await  S_users.user_Token([result.uid,result.identity_type,result.randomkey,result.ip]);
+//       if(verifyToken){
+//         return await next();
+//       } else {
+//         ctx.cookies.set('guid', '', {
+//           signed: false,
+//           maxAge: 0
+//         })
+//         return await ctx.redirect("/login");
+//       }
+//     } else {
+//       ctx.cookies.set('guid', '', {
+//         signed: false,
+//         maxAge: 0
+//       })
+//       return await ctx.redirect("/login");
+//     }
+//   } else {
+//     //判断用户是否已经登录，在线状态则跳转到主页
+//     if(ctx.url.match(/^\/login/)){
+//       if( ctx.cookies.get('guid')==undefined || ctx.cookies.get('guid')==""){
+//         ctx.cookies.set('guid', '', {
+//           signed: false,
+//           maxAge: 0
+//         })
+//         return await next();
+//        }else{
+//         return await ctx.redirect("/");
+//        }
+//     }else{
+//       return await next();
+//     }
+//   }
+// });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // Token 路由拦截中心[弃用]
 // app.use(async (ctx, next) => { // 我这里知识把登陆和注册请求去掉了，其他的多有请求都需要进行token校验 
 //   if (!ctx.url.match(/^\/login/)
 //    && !ctx.url.match(/^\/public.*/) 
@@ -274,22 +274,22 @@ app.use(async (ctx, next) => { // 我这里知识把登陆和注册请求去掉�
 
 // //允许跨域
 app.use(cors());
-
-//允许跨域
-app.use(cors({
-  origin: function (ctx) {
-      // if (ctx.url === '/cors') {
-      //     return "*"; // 允许来自所有域名请求
-      // }
-      // return 'http://127.0.0.1:8080'; // 这样就能只允许 http://127.0.0.1:8080 这个域名的请求了
-      return "*"; // 允许来自所有域名请求
-  },
-  exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
-  maxAge: 5,
-  credentials: true,
-  allowMethods: ['GET', 'POST', 'DELETE'],
-  allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
-}))
+//或
+// //允许跨域
+// app.use(cors({
+//   origin: function (ctx) {
+//       if (ctx.url === '/cors') {
+//           return "*"; // 允许来自所有域名请求
+//       }
+//       return 'http://127.0.0.1'; // 这样就能只允许 http://127.0.0.1:8080 这个域名的请求了
+//       return "*"; // 允许来自所有域名请求
+//   },
+//   // exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
+//   maxAge: 5,
+//   credentials: true,
+//   allowMethods: ['GET', 'POST', 'DELETE'],
+//   allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
+// }))
 
 
 
