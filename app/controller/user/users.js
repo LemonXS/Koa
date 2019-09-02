@@ -121,8 +121,8 @@ router.post('/login', async (ctx) => {
         signed: false,
         path: '/', // 写cookie所在的路径 
         maxAge: 2 * 60 * 60 * 1000, // cookie有效时长 
-        httpOnly: false, // 是否只用于http请求中获取 
-        overwrite: false // 是否允许重写 
+        httpOnly: true , // 是否只用于http请求中获取 
+        overwrite: true // 是否允许重写 
         });
         ctx.body= {code:0,success:true,msg:"登录成功",data:{uid:R_data.uid,utype:identity_type}};
         }else{
@@ -232,15 +232,6 @@ if(V_resData){
 }else{
   ctx.body= {code:5,success:false,msg:"用户名已存在",data:null};
 }
-
-
-
-
-
-
-
-
-
 })
 
 module.exports = router

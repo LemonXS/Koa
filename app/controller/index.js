@@ -61,14 +61,4 @@ router.get("/mysqlDB", async (ctx, next) => {
 //------------------【Mongodb测试】
 
 
-  //增加学员
-  router.get('/add',async (ctx)=>{
-      await ctx.render('add');
-  })
-
-
- 
-
-
-
 module.exports = router
