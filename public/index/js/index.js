@@ -1,4 +1,4 @@
-window.onload=function(){
+// window.onload=function(){
 // /^http(s*):\/\//.test(location.href) || alert('请先部署到 localhost 下再访问');
 layui.config({
     base: '/public/layui/lay/zdymodules/'//模块存放的目录
@@ -220,4 +220,4 @@ layui.config({
     });
 });
 
-}
+// }

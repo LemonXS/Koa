@@ -1,4 +1,4 @@
-const query = require('../../Config/MySqlConfig');
+const query = require('../../../Config/MySqlConfig');
 
 
 /** 【登录接口】

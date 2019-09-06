@@ -69,7 +69,7 @@ layui.define(["element", "jquery"], function (exports) {
         /*console.log("maxMoveWidth：" + maxMoveWidth);
         console.log("superWidth：" + superWidth);
         console.log("contWidth：" + contWidth);*/
-        for (let i = 0; i < elePrevAll.length; i++) {
+        for (var i = 0; i < elePrevAll.length; i++) {
             leftWidth += $(elePrevAll[i]).outerWidth() * 1;
         }
         if (contWidth > superWidth) {
@@ -108,7 +108,7 @@ layui.define(["element", "jquery"], function (exports) {
          * 左侧菜单的样式和多级菜单的展开
          */
         $(".okadmin-side").find("li,dd").removeClass("layui-this").removeClass("layui-nav-itemed"); //关闭所有展开的菜单
-        for (let i = 0; i < menuSet.length; i++) {
+        for (var i = 0; i < menuSet.length; i++) {
             if ($(menuSet[i]).attr('lay-id') == thatLayId) {
                 $(menuSet[i]).parents("dd").addClass("layui-nav-itemed");
                 $(menuSet[i]).parents("li").addClass("layui-nav-itemed");
@@ -192,7 +192,7 @@ layui.define(["element", "jquery"], function (exports) {
             }
 
             if (thatTabNum >= openTabNum) {
-                layer.msg('最多只能同时打开' + openTabNum + '个选项卡哦。不然系统会卡的！');
+                layer.msg('最多只能同时打开' + openTabNum + '个选项卡。不然系统会卡的！');
                 return;
             }
             var contentIframe = ("<iframe src='{0}' lay-id='{1}'" +
@@ -203,7 +203,6 @@ layui.define(["element", "jquery"], function (exports) {
                 content: contentIframe,
                 id: tabId
             });
-
             // 切换选项卡
             element.tabChange(tabFilter, tabId);
             this.navMove("rightmax");
@@ -319,7 +318,7 @@ layui.define(["element", "jquery"], function (exports) {
             });
         } else if ($.type(_data) == 'array') {
             if (_data.length < 1) {
-                alert("菜单集合中无任何数据");
+                layer.msg("菜单集合中无任何数据");
             }
             var _data = _this.tabConfig.data;
             $("#navBar").html(_this.navBar(_data));
@@ -331,7 +330,7 @@ layui.define(["element", "jquery"], function (exports) {
                 fun();
             }
         } else {
-            alert("你的菜单配置有误请查看菜单配置说明");
+            layer.msg("你的菜单配置有误请查看菜单配置说明");
         }
     };
 
@@ -344,7 +343,7 @@ layui.define(["element", "jquery"], function (exports) {
                 $(_this).removeClass("refreshThis");
             }, 2000)
         } else {
-            layer.msg("客官请不要频繁点击哦！我会反应不过来的");
+            layer.msg("请不要频繁点击");
         }
     };
 
@@ -359,16 +358,16 @@ layui.define(["element", "jquery"], function (exports) {
         num = num || 1;
         num = num * 1; //强制转换成数字
         var that = this;
-        let openTabs = $('.ok-tab-title > li strong[lay-id]').not('strong[is-close=false]'), //获取已打开的tab元素(除开不会被关闭的导航)
+        var openTabs = $('.ok-tab-title > li strong[lay-id]').not('strong[is-close=false]'), //获取已打开的tab元素(除开不会被关闭的导航)
             thatLayID = $('.ok-tab-title > li.layui-this strong[lay-id]').not('strong[is-close=false]').attr(
                 "lay-id") || ''; //获取当前打开的tab元素ID(除开不会被关闭的导航)
 
         var filter = that.tabConfig.tabFilter;
         if (thatLayID.length < 1 && num == 1) {
-            layer.msg("您不能关闭当前页哦 (๑╹◡╹)ﾉ");
+            layer.msg("您不能关闭当前页");
             return;
         } else if (openTabs.length < 1) {
-            layer.msg("您好！当前没有可关闭的窗口了 (๑╹◡╹)ﾉ");
+            layer.msg("您好！当前没有可关闭的窗口了");
             return;
         }
         switch (num) {
@@ -383,7 +382,7 @@ layui.define(["element", "jquery"], function (exports) {
                         }
                     });
                 } else {
-                    layer.msg("您好！当前没有可关闭的窗口了 (๑╹◡╹)ﾉ");
+                    layer.msg("您好！当前没有可关闭的窗口了");
                     return;
                 }
                 break;
@@ -407,7 +406,7 @@ layui.define(["element", "jquery"], function (exports) {
     okTab.prototype.navMove = function (moveId, that) {
         var superEle = $(".ok-tab"), //父级元素
             contEle = $(".ok-tab-title"), //tab内容存放的父元素
-            superWidth = parseInt(superEle.width()) - 40 * 3, //可显示的宽度
+            superWidth = parseInt(superEle.width()) - 40 * 5, //可显示的宽度
             contWidth = parseInt(contEle.width()), //移动元素的总宽度
             elTabs = $(".ok-tab-title li"), //所有已存在的tab集合
             postLeft = contEle.position().left; //当前移动的位置

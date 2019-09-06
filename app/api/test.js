@@ -1,5 +1,5 @@
 const router = require('koa-router')()
-const S_users = require("../service/users.js");
+const S_users = require("../service/user/users.js");
 
 const log4js = require('../../Logs/log4js'); 
 const axios = require('axios');

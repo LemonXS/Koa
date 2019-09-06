@@ -29,7 +29,7 @@ const appkey = require("./Config/Config.js").appkey;
 
 
 //用户逻辑表
-const S_users=require('./app/service/users');
+const S_users=require('./app/service/user/users');
 
 
 // const db = require("./Config/DBConfig.js");//拓展方法池
@@ -44,12 +44,14 @@ const Main = require("./app/controller/main");//主入口
 const Tool = require("./app/api/tool");//插件
 
 const index = require("./app/controller/index");
+
+////【controller】本地控制器-->【用户】
 const users = require("./app/controller/user/users");
 const QQauthorization = require("./app/controller/user/qq/QQauthorization");
-
+const myProfile = require("./app/controller/user/myProfile");//个人中心
 
 ////【controller】本地控制器-->【系统设置】
-const myProfile = require("./app/controller/system/myProfile");//个人中心
+const menu = require("./app/controller/system/menu");//个人中心
 
 
 
@@ -64,81 +66,81 @@ const sms = require("./app/api/sms");
 
 
 
-// Token 路由拦截中心
-app.use(async (ctx, next) => { // 我这里知识把登陆和注册请求去掉了，其他的多有请求都需要进行token校验 
-  if (!ctx.url.match(/^\/login/)
-   && !ctx.url.match(/^\/register/)
-   && !ctx.url.match(/^\/public.*/) 
-   && !ctx.url.match(/^\/logout/) 
-   && !ctx.url.match(/^\/404/) 
-   && !ctx.url.match(/^\/500/)
-   && !ctx.url.match(/^\/api/) 
-   && !ctx.url.match(/^\/mysqlDB/) 
+// // Token 路由拦截中心
+// app.use(async (ctx, next) => { // 我这里知识把登陆和注册请求去掉了，其他的多有请求都需要进行token校验 
+//   if (!ctx.url.match(/^\/login/)
+//    && !ctx.url.match(/^\/register/)
+//    && !ctx.url.match(/^\/public.*/) 
+//    && !ctx.url.match(/^\/logout/) 
+//    && !ctx.url.match(/^\/404/) 
+//    && !ctx.url.match(/^\/500/)
+//    && !ctx.url.match(/^\/api/) 
+//    && !ctx.url.match(/^\/mysqlDB/) 
 
-   && !ctx.url.match(/^\/proxy/) 
-   && !ctx.url.match(/^\/oauth2.0.*/) 
-   && !ctx.url.match(/^\/proxy_openid/) 
-   && !ctx.url.match(/^\/proxy_userinfo/) 
+//    && !ctx.url.match(/^\/proxy/) 
+//    && !ctx.url.match(/^\/oauth2.0.*/) 
+//    && !ctx.url.match(/^\/proxy_openid/) 
+//    && !ctx.url.match(/^\/proxy_userinfo/) 
 
 
-   ) {
-    // Authentication Error
-    let token = ctx.cookies.get('guid');
-    let result;
-    let   aseverify;
-    try {
-      aseverify=aes256way.decryption(token);//解密aes256
-      console.log("----【aes256way解密---成功】-----");
-    } catch (error) {
-      aseverify="";
-      console.log("----【aes256way解密---失败】-----");
-    }
-    try {
-      //token 解密
-      result=await tokenutil.deToken(aseverify);
-    } catch (error) {
-      result = false;
-      console.log("----【TOKEN-err】-----");
-      // consolele.log(error)
-    }
+//    ) {
+//     // Authentication Error
+//     let token = ctx.cookies.get('guid');
+//     let result;
+//     let   aseverify;
+//     try {
+//       aseverify=aes256way.decryption(token);//解密aes256
+//       console.log("----【aes256way解密---成功】-----");
+//     } catch (error) {
+//       aseverify="";
+//       console.log("----【aes256way解密---失败】-----");
+//     }
+//     try {
+//       //token 解密
+//       result=await tokenutil.deToken(aseverify);
+//     } catch (error) {
+//       result = false;
+//       console.log("----【TOKEN-err】-----");
+//       // consolele.log(error)
+//     }
 
-    if (Object.prototype.toString.call(result) == "[object Object]") {
-     console.log("【解密的监听】")
-     console.log(result)
-      let verifyToken=  await  S_users.user_Token([result.uid,result.identity_type,result.randomkey,result.ip]);
-      if(verifyToken){
-        return await next();
-      } else {
-        ctx.cookies.set('guid', '', {
-          signed: false,
-          maxAge: 0
-        })
-        return await ctx.redirect("/login");
-      }
-    } else {
-      ctx.cookies.set('guid', '', {
-        signed: false,
-        maxAge: 0
-      })
-      return await ctx.redirect("/login");
-    }
-  } else {
-    //判断用户是否已经登录，在线状态则跳转到主页
-    if(ctx.url.match(/^\/login/)){
-      if( ctx.cookies.get('guid')==undefined || ctx.cookies.get('guid')==""){
-        ctx.cookies.set('guid', '', {
-          signed: false,
-          maxAge: 0
-        })
-        return await next();
-       }else{
-        return await ctx.redirect("/");
-       }
-    }else{
-      return await next();
-    }
-  }
-});
+//     if (Object.prototype.toString.call(result) == "[object Object]") {
+//      console.log("【解密的监听】")
+//      console.log(result)
+//       let verifyToken=  await  S_users.user_Token([result.uid,result.identity_type,result.randomkey,result.ip]);
+//       if(verifyToken){
+//         return await next();
+//       } else {
+//         ctx.cookies.set('guid', '', {
+//           signed: false,
+//           maxAge: 0
+//         })
+//         return await ctx.redirect("/login");
+//       }
+//     } else {
+//       ctx.cookies.set('guid', '', {
+//         signed: false,
+//         maxAge: 0
+//       })
+//       return await ctx.redirect("/login");
+//     }
+//   } else {
+//     //判断用户是否已经登录，在线状态则跳转到主页
+//     if(ctx.url.match(/^\/login/)){
+//       if( ctx.cookies.get('guid')==undefined || ctx.cookies.get('guid')==""){
+//         ctx.cookies.set('guid', '', {
+//           signed: false,
+//           maxAge: 0
+//         })
+//         return await next();
+//        }else{
+//         return await ctx.redirect("/");
+//        }
+//     }else{
+//       return await next();
+//     }
+//   }
+// });
 
 
 
@@ -278,12 +280,13 @@ app.use(Main.routes(), Main.allowedMethods());//主入口
 app.use(Tool.routes(), Tool.allowedMethods());//插件
 
 app.use(index.routes(), index.allowedMethods());
+
+////【controller】本地控制器-->【用户】
 app.use(users.routes(), users.allowedMethods());
 app.use(QQauthorization.routes(), QQauthorization.allowedMethods());
-
-////【controller】本地控制器-->【系统设置】
 app.use(myProfile.routes(), myProfile.allowedMethods());//个人中心
-
+////【controller】本地控制器-->【系统设置】
+app.use(menu.routes(), menu.allowedMethods());//菜单
 
 
 //【api】路由

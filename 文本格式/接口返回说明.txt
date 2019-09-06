@@ -23,4 +23,5 @@ data    //返回数据  返回：  不返回则为 null,否则  json/arr/string/
 {code:3,success:false,msg:"注册失败",data:null};
 {code:4,success:false,msg:'未注册',data:null};
 {code:5,success:false,msg:'用户名已存在',data:null};
+{code:200,success:true,msg:'成功',data:{}};
 {code:9999,success:false,msg:"异常错误",data:null};

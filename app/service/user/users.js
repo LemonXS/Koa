@@ -1,5 +1,5 @@
 const router = require('koa-router')()
-const D_user = require('../db/users');
+const D_user = require('../../db/user/users');
 
 /**【登录接口】
  * row[0] 判断当前是否为第一次登录(只看是否有此用户)

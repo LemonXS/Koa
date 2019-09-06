@@ -1,6 +1,6 @@
 const router = require('koa-router')()
 const jwt = require('jsonwebtoken')
-const S_users = require("../../../service/users.js");
+const S_users = require("../../../service/user/users.js");
 
 const toolway = require("../../../../util/tool.js"); //拓展方法池
 const timeway = require("../../../../util/timeway.js"); //拓展方法池
