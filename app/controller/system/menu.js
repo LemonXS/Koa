@@ -6,7 +6,6 @@ const S_menu = require("../../service/system/menu");
 
 //【浏览器--菜单加载】
 router.post('/navs', async (ctx) => {
-
     let resData=  await  S_menu.system_navs([]);
      ctx.body=resData;
   })
