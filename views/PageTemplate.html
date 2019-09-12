@@ -153,6 +153,11 @@
                 <div id="div_spanbox1" style="float: right;height:38px;line-height:30px;z-index: 99">
                     <span><img class="unflod" src="/public/images/material/unfold.png"></span>
                 </div>
+                <!-- 下载按钮 -->
+                <div id="div_spandown1" class="" style="float: right;height:38px;line-height:30px;z-index: 99;padding:0px 10px;">
+                    <span ><img src="/public/images/download.png" title="下载" style="display: inline-block;"></span>
+                    <span class="layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop  div_spandown_load" style="display:none;margin-left: -30px;"></span>
+                </div>
                 <!-- 标题 -->
                 <div style="width:100%;height:35px;line-height: 35px;">
                     <span>模块名</span>
@@ -161,6 +166,12 @@
             </div>
             <!-- 【内容】 -->
             <div id="div_module1">
+                    <!-- <div id="M1Tool" style="margin-bottom:5px;" class="layui-form">
+                        <div style="padding:5px 0;">
+                            <div  class="layui-inline"  > 
+                            </div>
+                        </div>
+                    </div> -->
                 <button type="button" class="layui-btn " id="btn_cx">查询&nbsp;<span style="display:none;" class=" layui-icon layui-icon-loading  layui-anim layui-anim-rotate layui-anim-loop"></span></button>
                 <p>  <input type="button" value="开启遮罩层" id="btnshow" class="layui-btn"></p>
                 <p>  <input type="button" value="关闭遮罩层" id="btnclose" class="layui-btn"></p>
@@ -194,6 +205,26 @@
             $(this).find("img").attr('src', '/public/images/material/unfold.png');
         }
     })
+      //下载开关
+    $("#div_spandown1").click(function(){
+        layui.use(['layer'], function () {
+                  var layer = layui.layer;
+                  if(!$("#div_spandown1").hasClass("unclick")){
+                    $("#div_spandown1").addClass("unclick");
+                    $("#div_spandown1").find('.div_spandown_load').show();
+                    console.log("【我是下载测试】");
+                  }else{
+                      layer.msg("正在下载,请稍等");
+                  }
+        });
+      
+            window.setTimeout(function(){
+                $("#div_spandown1").removeClass("unclick");
+                $("#div_spandown1").find('.div_spandown_load').hide();
+            },10000);
+    })
+
+
 
     $("#btn_cx").click(function(){
         $("#btn_cx").addClass("layui-btn-disabled");
@@ -212,7 +243,7 @@
     $("#btnclose").click(function(){
         $("#divzzc").hide();
     })
-
+    
 
 </script>
 

@@ -10,9 +10,10 @@ router.post('/navs', async (ctx) => {
      ctx.body=resData;
   })
 
-
-
-
-
-
+  
+  //菜单页面
+  router.get('/page_menu', async (ctx) => {
+    await ctx.render('system/page_menu');
+  })
+  
 module.exports = router
