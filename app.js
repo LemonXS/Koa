@@ -82,6 +82,7 @@ app.use(async (ctx, next) => { // 我这里知识把登陆和注册请求去掉�
    && !ctx.url.match(/^\/proxy_openid/) 
    && !ctx.url.match(/^\/proxy_userinfo/) 
    ) 
+  // if(false)
    {
     // Authentication Error
     let token = ctx.cookies.get('guid');

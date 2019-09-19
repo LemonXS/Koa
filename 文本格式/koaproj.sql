@@ -11,7 +11,7 @@
  Target Server Version : 50717
  File Encoding         : 65001
 
- Date: 05/09/2019 16:27:08
+ Date: 19/09/2019 10:05:02
 */
 
 SET NAMES utf8mb4;
@@ -184,7 +184,7 @@ CREATE TABLE `user_token`  (
   `randomkey` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '登录随机字符串',
   `ip` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '登录ip',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 78 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 85 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user_token
@@ -249,6 +249,13 @@ INSERT INTO `user_token` VALUES (74, 'ea644020-b1e0-11e9-98ac-7ff1aa8e4076', 'lo
 INSERT INTO `user_token` VALUES (75, 'ea644020-b1e0-11e9-98ac-7ff1aa8e4076', 'local', '2019-09-02 16:56:35', 'Xos2Ut9vgNJ6eQtP', '127.0.0.1');
 INSERT INTO `user_token` VALUES (76, 'ea644020-b1e0-11e9-98ac-7ff1aa8e4076', 'local', '2019-09-02 17:14:14', 'BeEjTNOlj69g9orw', '127.0.0.1');
 INSERT INTO `user_token` VALUES (77, 'ca8f7bf0-af7b-11e9-a4ab-13d9092110f4', 'qq', '2019-09-05 10:27:29', '0Upe3MVpC6LTZy3F', '::1');
+INSERT INTO `user_token` VALUES (78, 'c06668a0-af67-11e9-a74c-e12bacab5eb7', 'local', '2019-09-05 17:27:43', '31u8MylhlTzEhIFC', '::1');
+INSERT INTO `user_token` VALUES (79, 'c06668a0-af67-11e9-a74c-e12bacab5eb7', 'local', '2019-09-06 10:34:39', 'TQtQFXMg8Ubff2Sd', '127.0.0.1');
+INSERT INTO `user_token` VALUES (80, 'c06668a0-af67-11e9-a74c-e12bacab5eb7', 'local', '2019-09-06 12:16:45', 'tqAycYCn0HjESHr3', '127.0.0.1');
+INSERT INTO `user_token` VALUES (81, 'c06668a0-af67-11e9-a74c-e12bacab5eb7', 'local', '2019-09-12 15:14:06', '84ANXWlT5nSkE8kj', '127.0.0.1');
+INSERT INTO `user_token` VALUES (82, 'c06668a0-af67-11e9-a74c-e12bacab5eb7', 'local', '2019-09-18 16:44:43', 'dE5y3m6dmwW58GjU', '127.0.0.1');
+INSERT INTO `user_token` VALUES (83, 'c06668a0-af67-11e9-a74c-e12bacab5eb7', 'local', '2019-09-18 17:37:54', '1wDdBVpvfokv8mwU', '127.0.0.1');
+INSERT INTO `user_token` VALUES (84, 'c06668a0-af67-11e9-a74c-e12bacab5eb7', 'local', '2019-09-19 10:04:16', 'ySMKR0A5wXWJID2O', '127.0.0.1');
 
 -- ----------------------------
 -- Table structure for user_track
@@ -278,16 +285,46 @@ CREATE PROCEDURE `p_system_menu`()
 BEGIN
 
 
+
+select * from (select 
+id,parent_id,title,ifnull(icon,'') as icon,ifnull(path,'') as path,`status`,type,`order`
+from system_menu where parent_id =0 and `status`=1 order by `order` limit 9999999999999) u union all
+
+-- 查询所有 有效（当前一级菜单未  停用或删除下的子集）的子集项
+select * from (select 
+b.id,b.parent_id,b.title,ifnull(b.icon,'') as icon,ifnull(b.path,'') as path,b.`status`,b.type,b.`order`
+from system_menu a INNER  join system_menu b  where a.id=b.parent_id 
+and a.`status`=1 and b.`status`=1 
+order by a.`order`,b.`order`  limit 9999999999999) i;
+
+
+
+
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Procedure structure for p_system_navs
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `p_system_navs`;
+delimiter ;;
+CREATE PROCEDURE `p_system_navs`()
+BEGIN
+
+
 select * from (select 
 id ,parent_id, title,'iconfont' as fontFamily,ifnull(icon,'') as icon, ifnull(path,'')  as href,IF(type=1, true, false) as isCheck,false  as spread 
-from system_menu where parent_id =0 and `status`=1 order by `order`) u union all
+from system_menu where parent_id =0 and `status`=1 order by `order` limit 9999999999999) u union all
 
 -- 查询所有 有效（当前一级菜单未  停用或删除下的子集）的子集项
 select * from (select 
 b.id ,b.parent_id, b.title,'iconfont' as fontFamily,ifnull(b.icon,'') as icon, ifnull(b.path,'')  as href,IF(b.type=1, true, false) as isCheck,false  as spread
 from system_menu a INNER  join system_menu b  where a.id=b.parent_id 
 and a.`status`=1 and b.`status`=1 
-order by a.`order`,b.`order`) i;
+order by a.`order`,b.`order`  limit 9999999999999) i;
+
+
 
 
 

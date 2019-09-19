@@ -77,6 +77,9 @@ window.onload = function () {
         //     $("#navBar").find("li.layui-this").find("a").trigger("click");
         // }); //渲染左侧导航
 
+
+
+
         // 添加新窗口
         $("body").on("click", "#navBar .layui-nav-item a,#userInfo a", function () {
             //如果不存在子级
@@ -246,31 +249,31 @@ window.onload = function () {
         /**
          * 锁定账户
          */
-        $("#lock").click(function () {
-            layer.confirm("确定要锁定账户吗？", {
-                skin: 'layui-layer-lan',
-                icon: 4,
-                title: '提示',
-                anim: 1
-            }, function (index) {
-                layer.close(index);
-                $(".yy").show();
-                layer.prompt({
-                    btn: ['确定'],
-                    title: '输入密码解锁(123456)',
-                    closeBtn: 0,
-                    formType: 1
-                }, function (value, index, elem) {
-                    if (value == "123456") {
-                        layer.close(index);
-                        $(".yy").hide();
-                    } else {
-                        layer.msg('密码错误', {
-                            anim: 6
-                        });
-                    }
-                });
-            });
-        });
+        // $("#lock").click(function () {
+        //     layer.confirm("确定要锁定账户吗？", {
+        //         skin: 'layui-layer-lan',
+        //         icon: 4,
+        //         title: '提示',
+        //         anim: 1
+        //     }, function (index) {
+        //         layer.close(index);
+        //         $(".yy").show();
+        //         layer.prompt({
+        //             btn: ['确定'],
+        //             title: '输入密码解锁(123456)',
+        //             closeBtn: 0,
+        //             formType: 1
+        //         }, function (value, index, elem) {
+        //             if (value == "123456") {
+        //                 layer.close(index);
+        //                 $(".yy").hide();
+        //             } else {
+        //                 layer.msg('密码错误', {
+        //                     anim: 6
+        //                 });
+        //             }
+        //         });
+        //     });
+        // });
     });
 }

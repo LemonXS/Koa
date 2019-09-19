@@ -19,8 +19,27 @@ exports.system_navs=system_navs;
 
 
 
+async function  system_menu(option){
+    let rows;
+    try {
+        rows= await DB.system_menu(option); 
+        // rows=navstoTree(rows[0])
+        return  {code:200,success:true,msg:"",data:rows[0]}
+    } catch (error) {
+        return {code:9999,success:false,msg:"异常错误",data:null};
+    }
+}
+exports.system_menu=system_menu;
 
 
+
+
+
+
+
+
+
+//-------------------------------------------------【公共事件】---------------------------------------------
 //菜单专用格式转换----页面刷新
 function navstoTree(data) {
 	// 删除 所有 children,以防止多次调用

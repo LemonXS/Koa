@@ -16,4 +16,18 @@ router.post('/navs', async (ctx) => {
     await ctx.render('system/page_menu');
   })
   
+ //菜单页面内容
+  router.post('/system_menu', async (ctx) => {
+    console.log("-------------------------------")
+    let resData=  await  S_menu.system_menu([]);
+    // console.log("------菜单内容------");
+    // console.log(resData);
+     ctx.body=resData;
+
+  })
+
+
+  
+
+
 module.exports = router
