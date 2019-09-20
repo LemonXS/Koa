@@ -18,14 +18,29 @@ router.post('/navs', async (ctx) => {
   
  //菜单页面内容
   router.post('/system_menu', async (ctx) => {
-    console.log("-------------------------------")
     let resData=  await  S_menu.system_menu([]);
     // console.log("------菜单内容------");
     // console.log(resData);
      ctx.body=resData;
-
   })
 
+ //菜单页面内容-上下移动排序
+ router.post('/system_menu_sort', async (ctx) => {
+var dq_id=ctx.request.body.dq_id;
+var dq_order=ctx.request.body.dq_order;
+var th_id=ctx.request.body.th_id;
+var th_order=ctx.request.body.th_order;
+console.log(dq_id)
+console.log(dq_order)
+console.log(th_id)
+console.log(th_order)
+
+  let resData=  await  S_menu.system_menu_sort([dq_id,dq_order,th_id,th_order]);
+  // console.log("------菜单排序返回------");
+  // console.log(resData);
+   ctx.body=resData;
+
+})
 
   
 

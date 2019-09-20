@@ -68,21 +68,21 @@ const sms = require("./app/api/sms");
 
 // Token 路由拦截中心
 app.use(async (ctx, next) => { // 我这里知识把登陆和注册请求去掉了，其他的多有请求都需要进行token校验 
-  if (!ctx.url.match(/^\/login/)
-   && !ctx.url.match(/^\/register/)
-   && !ctx.url.match(/^\/public.*/) 
-   && !ctx.url.match(/^\/logout/) 
-   && !ctx.url.match(/^\/404/) 
-   && !ctx.url.match(/^\/500/)
-   && !ctx.url.match(/^\/api/) 
-   && !ctx.url.match(/^\/mysqlDB/) 
+  // if (!ctx.url.match(/^\/login/)
+  //  && !ctx.url.match(/^\/register/)
+  //  && !ctx.url.match(/^\/public.*/) 
+  //  && !ctx.url.match(/^\/logout/) 
+  //  && !ctx.url.match(/^\/404/) 
+  //  && !ctx.url.match(/^\/500/)
+  //  && !ctx.url.match(/^\/api/) 
+  //  && !ctx.url.match(/^\/mysqlDB/) 
 
-   && !ctx.url.match(/^\/proxy/) 
-   && !ctx.url.match(/^\/oauth2.0.*/) 
-   && !ctx.url.match(/^\/proxy_openid/) 
-   && !ctx.url.match(/^\/proxy_userinfo/) 
-   ) 
-  // if(false)
+  //  && !ctx.url.match(/^\/proxy/) 
+  //  && !ctx.url.match(/^\/oauth2.0.*/) 
+  //  && !ctx.url.match(/^\/proxy_openid/) 
+  //  && !ctx.url.match(/^\/proxy_userinfo/) 
+  //  ) 
+  if(false)
    {
     // Authentication Error
     let token = ctx.cookies.get('guid');

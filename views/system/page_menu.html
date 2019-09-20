@@ -75,7 +75,15 @@
         .btnuncheck {
             background-color: #ffffff;
         }
-
+		.layui-form-switch{
+			margin-top:0px;
+		}
+		#M1table .layui-table-sort .layui-table-sort-asc{
+			border-bottom-color:black;
+		}
+		#M1table .layui-table-cell{
+			padding: 0;
+		}
 
     </style>
 </head>
@@ -96,10 +104,10 @@
             </div>
             <!-- 【内容】 -->
             <div id="div_module1">
-		<button type="button" class="layui-btn layui-btn-primary layui-btn-sm refresh">刷新</button>
+		<!-- <button type="button" class="layui-btn layui-btn-primary layui-btn-sm refresh">刷新</button>
 		<button type="button" class="layui-btn layui-btn-primary layui-btn-sm open-all">全部展开</button>
-		<button type="button" class="layui-btn layui-btn-primary layui-btn-sm close-all">全部关闭</button>
-		<button type="button" class="layui-btn layui-btn-primary layui-btn-sm change-icon">随机更换小图标</button>
+		<button type="button" class="layui-btn layui-btn-primary layui-btn-sm close-all">全部关闭</button> -->
+		<!-- <button type="button" class="layui-btn layui-btn-primary layui-btn-sm change-icon">随机更换小图标</button> -->
 		
 		<table class="layui-table layui-form"  lay-size="sm"></table>
                 <!-- <button type="button" class="layui-btn " id="btn_cx">查询&nbsp;<span style="display:none;" class=" layui-icon layui-icon-loading  layui-anim layui-anim-rotate layui-anim-loop"></span></button> -->
@@ -141,7 +149,6 @@
 
 
 	window.onload=function(){
-		// M1tableFunc();
 		loadFunc();
 
 	}
@@ -179,19 +186,21 @@
 				var	re = treeTable.render({
 					elem: '#M1table',
                     data:data,
-					// data: [{"id":1,"pid":0,"title":"1-1"},{"id":2,"pid":0,"title":"1-2"},{"id":3,"pid":0,"title":"1-3"},{"id":4,"pid":1,"title":"1-1-1"},{"id":5,"pid":1,"title":"1-1-2"},{"id":6,"pid":2,"title":"1-2-1"},{"id":7,"pid":2,"title":"1-2-3"},{"id":8,"pid":3,"title":"1-3-1"},{"id":9,"pid":3,"title":"1-3-2"},{"id":10,"pid":4,"title":"1-1-1-1"},{"id":11,"pid":4,"title":"1-1-1-2"}],
 					top_value: 0,
 					icon_key: 'title',
 					primary_key: 'id',
-                    parent_key: 'parent_id',
+					parent_key: 'parent_id',
+					// hide_class: 'layui-hide',// 页面刷新后--默认折叠显示
 					is_checkbox: false,
+					is_cache: true,
 					// checked: {
 					// 	key: 'id',
 					// 	data: [8,9],
 					// },
 					end: function(e){
 						console.log("--------[数据返回]--------")
-						console.log(e)
+						// console.log(e)
+						// console.log(e.data)
 						form.render();
 					},
 					cols: [
@@ -199,19 +208,18 @@
 							key: 'title',
 							title: '名称',
 							width: '140px',
+							align:'left',
 							template: function(item){
 								if(item.level == 0){
-									return '<span style="color:red;">'+item.title+'</span>';
-								}else if(item.level == 1){
-									return '<span style="color:green;">'+item.title+'</span>';
-								}else if(item.level == 2){
-									return '<span style="color:#aaa;">'+item.title+'</span>';
+									return '<span style="font-weight:bold;">'+item.title+'</span>';
+								}else{
+									return '<span style="">'+item.title+'</span>';
 								}
 							}
 						},
 						{
 							key: 'id',
-							title: 'ID',
+							title: '菜单ID',
 							width: '100px',
 							align: 'center',
 						},
@@ -219,23 +227,16 @@
 							key: 'parent_id',
 							title: '父ID',
 							width: '100px',
-							align: 'center',
+							align: 'center'
 						},
-						// {
-						// 	title: '开关',
-						// 	width: '100px',
-						// 	align: 'center',
-						// 	template: function(item){
-						// 		return '<input type="checkbox" lay-filter="inpSwitch"  lay-skin="switch" lay-text="ON|OFF">';
-						// 	}
-						// },
 						{
                                 key: 'level',
-                                title: '节点',
-                                width: 100,
+                                title: '级别',
+								width: 100,
+								align:'center',
                                 template: function (item) {
-                                    // console.log(item)
                                     if (item.level == 0) {
+										
                                         return '<span >' + "一级" + '</span>';
                                     }
                                     if (item.level == 1) {
@@ -249,10 +250,11 @@
                                     }
                                 }
                             },
-                            {
+                        {
                                 key: 'icon',
                                 title: '图标',
-                                width: 100,
+								width: 100,
+								align:'left',
                                 template: function (item) {
                                     if (item.icon == null) {
                                         return '';
@@ -262,110 +264,363 @@
 
                                 }
 							},
-							{
+						{
                                 key: 'path',
                                 title: '路径',
                                 width: 130,
-                               
+								align:'left',
 							},
-							{
+						{
+                                key: 'type',
+                                title: '无子项',
+								width: 100,
+								align:'center',
+								template: function (item) {
+                                    if (item.type > 0) {
+                                        return ' <span class="iconfont icon-check " style="color:#F84334;font-size:16px;font-weight:bold;"></span>';
+                                    } else {
+										return ' <span class="iconfont icon-close " style="color:#3E8EE8;font-size:16px;font-weight:bold;"></span>';
+                                }}
+							},
+						{
                                 key: 'status',
                                 title: '状态',
-                                width: 130,
+								width: 130,
+								align:'center',
+								template: function (item) {
+                                    if (item.status > 0) {
+                                        return ' <input type="checkbox" checked="" name="open" lay-skin="switch" lay-filter="status" menukey="' +
+                                            item.id + '" lay-text="开启|关闭">'
+                                    } else {
+                                        return ' <input type="checkbox" name="open" lay-skin="switch" lay-filter="status" menukey="' +
+                                            item.id + '" lay-text="开启|关闭">'
+                                }}
 							},
-							{
+						{
                                 key: 'order',
                                 title: '排序',
-                                width: 120,
-                              
+								width: 120,
+								align:'center',
+								edit:true,
+								// template: function (item) {
+								// 		return '<span id="pid_'+item.id+'">'+item.order+'</span>'
+								// }
+								template: function (item) {
+									return '<div class="layui-table-cell laytable-cell-1-0-3">'
+										    +'<span id="pid_'+item.id+'">'+item.order+'</span><span class="layui-table-sort layui-inline" lay-sort="desc">'
+											+'<i class="layui-edge layui-table-sort-asc" lay-filter="moveUp" title="上移"></i>'
+										    +'<i class="layui-edge layui-table-sort-desc" lay-filter="moveDown" title="下移"></i></span></div>';
+								}
+								// template: function (item) {
+								// 	return '<div class="layui-table-cell laytable-cell-1-0-3">'
+								// 		    +'<span id="pid_'+item.id+'">'+item.order+'</span><span class="layui-table-sort layui-inline" lay-sort="desc">'
+								// 			+'<i class="layui-edge layui-table-sort-asc" lay-filter="moveUp" title="上移"></i>'
+								// 		    +'<i class="layui-edge layui-table-sort-desc" lay-filter="moveDown" title="下移"></i></span></div>';
+                                // }
                             },
 						{
-							title: '操作',
-							align: 'center',
-							template: function(item){
-								return '<a lay-filter="add">添加</a> | <a target="_blank" href="/detail?id='+item.id+'">编辑</a>';
-							}
+							// title: '操作',
+							// align: 'center',
+							// template: function(item){
+							// 	return '<a lay-filter="add">添加</a> | <a target="_blank" href="/detail?id='+item.id+'">编辑</a>';
+							// }
+							key: 'actions',
+                                title: '操作',
+                                minWidth: 180,
+                                template: function (item) {
+                                    var tem = [];
+                                    if (item.type == 0 && item.level < 1) {
+                                        tem.push(
+                                            '<a class="add-child" lay-filter="add">添加子级</a>'
+                                        );
+                                    }
+                                    tem.push('<a lay-filter="edit">编辑</a>');
+                                    // if (item.yjxs == 0) {
+                                    tem.push('<a lay-filter="del">删除</a>');
+                                    // }
+                                    return tem.join(' <font>|</font> ')
+								},
+								// template: function (item) {
+                                //   return '<button class="layui-btn layui-btn-xs layui-btn-normal" lay-filter="moveUp"><i class="layui-icon layui-icon-up"></i></button>'
+                                //   +'<button class="layui-btn layui-btn-xs layui-btn-normal" lay-filter="moveDown"><i class="layui-icon layui-icon-down"></i></button>';
+                                // }
+
 						}
-					]
+					],
+				    
 				});
 
+				// // 监听checkbox选择
+				// treeTable.on('tree(box)',function(data){
+				// 	if(o(data.elem).parents('#tree-table1').length){
+				// 		var text = [];
+				// 		o(data.elem).parents('#tree-table1').find('.cbx.layui-form-checked').each(function(){
+				// 			o(this).parents('[data-pid]').length && text.push(o(this).parents('td').next().find('span').text());
+				// 		})
+				// 		o(data.elem).parents('#tree-table1').prev().find('input').val(text.join(','));
+				// 	}
+				// 	layer.msg(JSON.stringify(data));
+				// })
 
-				// 监听checkbox选择
-				treeTable.on('tree(box)',function(data){
-					if(o(data.elem).parents('#tree-table1').length){
-						var text = [];
-						o(data.elem).parents('#tree-table1').find('.cbx.layui-form-checked').each(function(){
-							o(this).parents('[data-pid]').length && text.push(o(this).parents('td').next().find('span').text());
-						})
-						o(data.elem).parents('#tree-table1').prev().find('input').val(text.join(','));
-					}
-					layer.msg(JSON.stringify(data));
-				})
-
-
-				// 监听自定义
+				// 添加监听
 				treeTable.on('tree(add)',function(data){
                     console.log("------添加监听-------")
 					layer.msg(JSON.stringify(data));
 				})
 
+                // 修改监听
+                treeTable.on('tree(edit)',function(data){
+                    console.log("------修改监听-------")
+					layer.msg(JSON.stringify(data));
+				})
 
+                // 删除监听
+                treeTable.on('tree(del)',function(data){
+                    console.log("------删除监听-------")
+					layer.msg(JSON.stringify(data));
+				})
+
+
+				// // 文本监听
+				// treeTable.on('tree(text)',function(data){
+                //     console.log("------文本监听-------")
+				// 	layer.msg(JSON.stringify(data));
+				// })
+
+
+				//监听上移
+				treeTable.on('tree(moveUp)', function (data) {
+					var cur_tr = $(this).parent().parent().parent().parent();   // 获取当前节点父节点tr
+                    var cur_id = data.item.id;   // 获取当前节点id
+                    var cur_pid = data.item.parent_id;   // 获取当前节点pid【此处是自己的父级id的字段名】对应 parent_key: 'parent_id',
+					// debugger;
+                    // console.log("---------监听上移-----------")
+					// console.log("当前ID："+cur_id)
+					// console.log("当前序号："+data.item.order)//根据表字段来的（排序字段）
+					//主目录
+					var next_tr;
+                    var prev_tr;
+                    if (cur_pid == 0) {
+                        next_tr = cur_tr.nextAll("tr[data-pid='" + cur_id + "']");     // 获取当前目录子目录
+						prev_tr = cur_tr.prevAll("tr[data-pid='0']").first();     // 获取当前行的上一个主目录节点
+						
+                    } else {
+					    prev_tr = cur_tr.prev().not("tr[data-pid='0']");     // 获取当前节点的上一个子目录节点
+                        next_tr = null;
+					}
+					if (prev_tr.length != 0) {// 把当前节点插入到上一个节点之前，如果不存在上一个节点，说明已经到达顶部
+					  //【子项 和 父级下移触发】
+					  var prev_pid = prev_tr[0].attributes['data-id'].value;
+					//   console.log("要替换的ID："+prev_pid)
+					  var ordernum=$("#pid_"+prev_pid).text();
+					//   console.log("要替换的序号："+ordernum)
+
+					  orderFunc(cur_id,data.item.order,prev_pid,ordernum)
+                      prev_tr.before(cur_tr);
+                      cur_tr.after(next_tr)
+                    } else {
+                      layer.msg('元素已经到顶部!');
+                    }
+                   
+				})
+				//监听下移
+				treeTable.on('tree(moveDown)', function (data) {
+                    var cur_tr = $(this).parent().parent().parent().parent();   // 获取当前节点父节点tr
+                    var cur_id = data.item.id;   // 获取当前节点id
+                    var cur_pid = data.item.parent_id;   // 获取当前节点pid【此处是自己的父级id的字段名】对应 parent_key: 'parent_id',
+                    // console.log("---------监听下移-----------")
+					// console.log("当前ID："+cur_id)
+					// console.log("当前序号："+data.item.order)//根据表字段来的（排序字段）
+                    // debugger;
+					//主目录
+					var prev_tr;
+					var next_tr;
+                    if (cur_pid == 0) {
+					  //【父级下移触发】
+                        next_tr = cur_tr.nextAll("tr[data-pid='" + cur_id + "']");     //获取当前目录子目录
+                        prev_tr = cur_tr.nextAll("tr[data-pid='0']").first();     //获取当前行的下一个主目录节点
+                     
+                    } else {
+					  //【子项下移触发】
+					    prev_tr = cur_tr.next().not("tr[data-pid='0']");//获取当前节点的下一个子目录节点
+					    next_tr = null;
+					}
+					if (prev_tr.length != 0) { //把当前节点插入到下一个节点之前，如果不存在下一个节点，说明已经到达底部
+                        var prev_pid = prev_tr[0].attributes['data-id'].value;
+                        var prev_next_tr = cur_tr.nextAll("tr[data-pid='" + prev_pid + "']").last(); //获取当前目录子目录
+                        if (prev_next_tr.length != 0) {
+							// console.log("||||||||||||||||")
+                        //   console.log(prev_pid);
+						//   console.log("要替换的ID："+prev_pid)
+						  var ordernum=$("#pid_"+prev_pid).text();
+						//   console.log("要替换的序号："+ordernum)
+						  
+						  orderFunc(cur_id,data.item.order,prev_pid,ordernum)
+                          prev_next_tr.after(cur_tr);
+                        } else {
+						//   console.log("要替换的ID："+prev_pid)
+						  var ordernum=$("#pid_"+prev_pid).text();
+						//   console.log("要替换的序号："+ordernum)
+						  orderFunc(cur_id,data.item.order,prev_pid,ordernum)
+                          prev_tr.after(cur_tr);
+                        }
+                        cur_tr.after(next_tr)
+                      } else {
+                        layer.msg('元素已经到底部!');
+                      }
+				})
+
+                {
+	// //监听下移
+	// treeTable.on('tree(moveDown)', function (data) {
+    //                 var cur_tr = $(this).parent().parent();   // 获取当前节点父节点tr
+    //                 var cur_id = data.item.id;   // 获取当前节点id
+    //                 var cur_pid = data.item.parent_id;   // 获取当前节点pid
+    //                 console.log("---------监听下移-----------")
+	// 				console.log("当前ID："+cur_id)
+	// 				console.log("当前序号："+data.item.order)
+    //                 debugger;
+    //                 //主目录
+    //                 if (cur_pid == 0) {
+	// 				  //【父级下移触发】
+    //                   var next_tr = cur_tr.nextAll("tr[data-pid='" + cur_id + "']");     //获取当前目录子目录
+    //                   var prev_tr = cur_tr.nextAll("tr[data-pid='0']").first();     //获取当前行的下一个主目录节点
+    //                   if (prev_tr.length != 0) { //把当前节点插入到下一个节点之前，如果不存在下一个节点，说明已经到达底部
+    //                     var prev_pid = prev_tr[0].attributes['data-id'].value;
+    //                     var prev_next_tr = cur_tr.nextAll("tr[data-pid='" + prev_pid + "']").last(); //获取当前目录子目录
+    //                     if (prev_next_tr.length != 0) {
+	// 						console.log("||||||||||||||||")
+    //                       console.log(prev_pid);
+	// 					  console.log("要替换的ID："+prev_pid)
+    //                       prev_next_tr.after(cur_tr);
+    //                     } else {
+    //                       prev_tr.after(cur_tr);
+    //                     }
+    //                     cur_tr.after(next_tr)
+    //                   } else {
+    //                     layer.msg('元素已经到底部!');
+    //                   }
+    //                 } else {
+	// 				  //【子项下移触发】
+	// 				  var prev_tr = cur_tr.next().not("tr[data-pid='0']");//获取当前节点的下一个子目录节点
+    //                   if (prev_tr.length != 0) {
+	// 					var prev_pid = prev_tr[0].attributes['data-id'].value;
+	// 					    console.log("))))))))))))))")
+	// 						 console.log("要替换的ID："+prev_pid)
+    //                     prev_tr.after(cur_tr)
+    //                   } else {
+    //                     layer.msg('元素已经到底部!');
+    //                   }
+    //                 }
+	// 			})
+
+}
+
+
+
+
+
+
+				
+
+				//监听状态（菜单表的状态）
+				form.on('switch(status)', function (data) {
+                            var menuid_checked = this.getAttribute('menukey');
+							var menuisdel_checked = this.checked == true ? '1' : '0';
+							layer.msg("行ID:"+menuid_checked+" </br>  选中的状态："+menuisdel_checked)
+                            // $.ajax({
+                            //     url: "/menuedit_isdel",
+                            //     data: {
+                            //         menuid: menuid_checked,
+                            //         menuisdel: menuisdel_checked
+                            //     },
+                            //     dataType: "json",
+                            //     type: "post",
+                            //     success: function (result) {
+                            //         if (result.status == true) {
+                            //             LoadShow();
+                            //             layer.msg('更新成功', {
+                            //                 icon: 6
+                            //             })
+                            //         } else {
+                            //             layer.msg('更新失败', {
+                            //                 icon: 5
+                            //             })
+                            //             // layer.close(index);
+                            //         }
+                            //     },
+                            //     error: function (err) {
+                            //         console.log("ajax异常：" + JSON.stringify(err));
+                            //         // layer.close(index);
+                            //         layer.msg('更新失败', {
+                            //             icon: 5
+                            //         });
+                            //     }
+                            // })
+                        });
+
+
+						
 				// // 获取选中值，返回值是一个数组（定义的primary_key参数集合）
 				// o('.get-checked').click(function(){
 				// 	layer.msg('选中参数'+treeTable.checked(re).join(','))
 				// })
 
 
-				// 刷新重载树表（一般在异步处理数据后刷新显示）
-				o('.refresh').click(function(){
-					// re.data.push({"id":50,"pid":0,"title":"1-4"},{"id":51,"pid":50,"title":"1-4-1"});
-                    console.log("我是刷新")
-					treeTable.render(re);
-				})
-				// 全部展开
-				o('.open-all').click(function(){
-					treeTable.openAll(re);
-				})
-				// 全部关闭
-				o('.close-all').click(function(){
-					treeTable.closeAll(re);
-				})
+				// // 刷新重载树表（一般在异步处理数据后刷新显示）
+				// o('.refresh').click(function(){
+				// 	// re.data.push({"id":50,"pid":0,"title":"1-4"},{"id":51,"pid":50,"title":"1-4-1"});
+                //     console.log("我是刷新")
+				// 	treeTable.render(re);
+				// })
+				
+				// // 全部展开
+				// o('.open-all').click(function(){
+				// 	treeTable.openAll(re);
+				// })
+				// // 全部关闭
+				// o('.close-all').click(function(){
+				// 	treeTable.closeAll(re);
+				// })
 				// 随机更换小图标
-				o('.change-icon').click(function(){
-					var arr = [
-						{
-							open: 'layui-icon layui-icon-set',
-							close: 'layui-icon layui-icon-set-fill',
-							left: 16,
-						},
-						{
-							open: 'layui-icon layui-icon-rate',
-							close: 'layui-icon layui-icon-rate-solid',
-							left: 16,
-						},
-						{
-							open: 'layui-icon layui-icon-tread',
-							close: 'layui-icon layui-icon-praise',
-							left: 16,
-						},
-						{
-							open: 'layui-icon layui-icon-camera',
-							close: 'layui-icon layui-icon-camera-fill',
-							left: 16,
-						},
-						{
-							open: 'layui-icon layui-icon-user',
-							close: 'layui-icon layui-icon-group',
-							left: 16,
-						},
-					];
-					var round = Math.round(Math.random()*(arr.length - 1));
-					re.icon = arr[round];
-					treeTable.render(re);
-				})
-				o('#tree1').on('click','[data-down]',function(){
-					o(this).find('span').length && o(this).parents('.layui-unselect').find('input').val(o(this).text());
-				})
+				{
+					// o('.change-icon').click(function(){
+				// 	var arr = [
+				// 		{
+				// 			open: 'layui-icon layui-icon-set',
+				// 			close: 'layui-icon layui-icon-set-fill',
+				// 			left: 16,
+				// 		},
+				// 		{
+				// 			open: 'layui-icon layui-icon-rate',
+				// 			close: 'layui-icon layui-icon-rate-solid',
+				// 			left: 16,
+				// 		},
+				// 		{
+				// 			open: 'layui-icon layui-icon-tread',
+				// 			close: 'layui-icon layui-icon-praise',
+				// 			left: 16,
+				// 		},
+				// 		{
+				// 			open: 'layui-icon layui-icon-camera',
+				// 			close: 'layui-icon layui-icon-camera-fill',
+				// 			left: 16,
+				// 		},
+				// 		{
+				// 			open: 'layui-icon layui-icon-user',
+				// 			close: 'layui-icon layui-icon-group',
+				// 			left: 16,
+				// 		},
+				// 	];
+				// 	var round = Math.round(Math.random()*(arr.length - 1));
+				// 	re.icon = arr[round];
+				// 	treeTable.render(re);
+				// })
+				}
+				
+				// o('#tree1').on('click','[data-down]',function(){
+				// 	o(this).find('span').length && o(this).parents('.layui-unselect').find('input').val(o(this).text());
+				// })
 				o('.layui-select-title').click(function(){
 					o(this).parent().hasClass('layui-form-selected') ? o(this).next().hide() : o(this).next().show(),o(this).parent().toggleClass('layui-form-selected');
 				})
@@ -373,7 +628,48 @@
 					!o(i.target).parent().hasClass('layui-select-title') && !o(i.target).parents('table').length && !(!o(i.target).parents('table').length && o(i.target).hasClass('layui-icon')) && o(".layui-form-select").removeClass("layui-form-selected").find('.layui-anim').hide();
 				})
             })
-    }
+	}
+	
+    /***
+	 * dq_id  选中行的id
+	 * dq_order 选中行的 序号
+	 * th_id    要被替换行的id
+	 * th_order 要被替换行的 序号
+	 * */
+	function orderFunc(dq_id,dq_order,th_id,th_order){
+	console.log("-------移动排序-------")
+	console.log("选中行的【id】："+dq_id)
+	console.log("选中行的【序号】："+dq_order)
+	console.log("要替换行的【id】："+th_id)
+	console.log("要替换行的【序号】："+th_order)
+
+   layui.use(["layer"],function(){
+	   var layer=layui.layer;
+    	$.ajax({
+    		url:"/system_menu_sort",
+    		type:"post",
+    		dataType:"json",
+    		data:{
+				dq_id:dq_id,
+				dq_order:dq_order,
+				th_id:th_id,
+				th_order:th_order
+			},
+    		success:function(obj){
+            if(obj.code!=200){
+				layer.msg(obj.msg);
+    		}else{
+				loadFunc();
+			}
+    		},
+    		error:function(err){
+			console.error(JSON.stringify(err))
+			layer.msg("异常错误");
+    		}
+    	})
+    })
+	}
+
 </script>
 
 </html>

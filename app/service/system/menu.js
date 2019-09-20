@@ -33,7 +33,22 @@ exports.system_menu=system_menu;
 
 
 
-
+async function  system_menu_sort(option){
+    let rows;
+    try {
+		rows= await DB.system_menu_sort(option); 
+		// console.log(rows)
+		console.log(rows[0])
+		if(rows[0][0].num1==1 && rows[0][0].num2==1 ){
+			return  {code:200,success:true,msg:"排序成功",data:[]}
+		}else{
+			return  {code:0,success:false,msg:"排序失败",data:[]}
+		}
+    } catch (error) {
+        return {code:9999,success:false,msg:"异常错误",data:null};
+    }
+}
+exports.system_menu_sort=system_menu_sort;
 
 
 

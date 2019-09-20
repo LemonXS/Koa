@@ -11,7 +11,7 @@
  Target Server Version : 50717
  File Encoding         : 65001
 
- Date: 19/09/2019 10:05:02
+ Date: 20/09/2019 15:31:50
 */
 
 SET NAMES utf8mb4;
@@ -31,30 +31,30 @@ CREATE TABLE `system_menu`  (
   `type` int(11) NULL DEFAULT 0 COMMENT '类型： 一菜单无子集（0）|一级菜单有子集（1）|二级菜单无子集（2）|二级菜单有子集（3）',
   `order` int(11) NULL DEFAULT NULL COMMENT '菜单顺序',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 120 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 121 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of system_menu
 -- ----------------------------
-INSERT INTO `system_menu` VALUES (1, '0', '退税概况', 'icon-tasklist', '/stlb', 1, 1, 0);
-INSERT INTO `system_menu` VALUES (2, '0', '退税进度', 'icon-flip', '', 1, 0, 2);
-INSERT INTO `system_menu` VALUES (3, '0', '数据联动', 'icon-accessory', NULL, 1, 0, 3);
-INSERT INTO `system_menu` VALUES (4, '0', '自动预测', 'icon-magic', '', 1, 0, 4);
-INSERT INTO `system_menu` VALUES (5, '0', '数据查询', 'icon-wxbsousuotuiguang', NULL, 1, 0, 5);
-INSERT INTO `system_menu` VALUES (6, '0', '智能提醒', 'icon-creative', NULL, 1, 0, 6);
-INSERT INTO `system_menu` VALUES (7, '0', '出口地图', 'icon-rankfill', NULL, 1, 0, 7);
-INSERT INTO `system_menu` VALUES (8, '0', '分析简报', 'icon-activity1', '/znjb', 1, 0, 8);
-INSERT INTO `system_menu` VALUES (9, '0', '系统设置', 'icon-settings', NULL, 1, 0, 9);
-INSERT INTO `system_menu` VALUES (10, '0', '功能测试', 'icon-iconfontjingxihuaxue', '', 1, 0, 10);
-INSERT INTO `system_menu` VALUES (15, '2', '退税进度统计', NULL, '/tsjdtj', 1, 0, 1);
-INSERT INTO `system_menu` VALUES (16, '2', '滞留数量统计', NULL, '/zlsltj', 1, 0, 2);
+INSERT INTO `system_menu` VALUES (1, '0', '退税概况', 'icon-tasklist', '/stlb', 1, 1, 1);
+INSERT INTO `system_menu` VALUES (2, '0', '退税进度', 'icon-flip', '', 1, 0, 4);
+INSERT INTO `system_menu` VALUES (3, '0', '数据联动', 'icon-accessory', NULL, 1, 0, 5);
+INSERT INTO `system_menu` VALUES (4, '0', '自动预测', 'icon-magic', '', 1, 0, 7);
+INSERT INTO `system_menu` VALUES (5, '0', '数据查询', 'icon-wxbsousuotuiguang', NULL, 1, 0, 6);
+INSERT INTO `system_menu` VALUES (6, '0', '智能提醒', 'icon-creative', NULL, 1, 0, 8);
+INSERT INTO `system_menu` VALUES (7, '0', '出口地图', 'icon-rankfill', NULL, 1, 0, 9);
+INSERT INTO `system_menu` VALUES (8, '0', '分析简报', 'icon-activity1', '/znjb', 1, 0, 10);
+INSERT INTO `system_menu` VALUES (9, '0', '系统设置', 'icon-settings', NULL, 1, 0, 11);
+INSERT INTO `system_menu` VALUES (10, '0', '功能测试', 'icon-iconfontjingxihuaxue', '', 1, 0, 12);
+INSERT INTO `system_menu` VALUES (15, '2', '退税进度统计', NULL, '/tsjdtj', 1, 0, 2);
+INSERT INTO `system_menu` VALUES (16, '2', '滞留数量统计', NULL, '/zlsltj', 1, 0, 1);
 INSERT INTO `system_menu` VALUES (17, '2', '滞留时长统计', NULL, '/zlsctj', 1, 0, 3);
 INSERT INTO `system_menu` VALUES (18, '2', '受理时间分布', NULL, '/slsjfb', 1, 0, 4);
 INSERT INTO `system_menu` VALUES (19, '2', '受理回退企业', '', '/htqyhc', 1, 0, 5);
-INSERT INTO `system_menu` VALUES (20, '3', '纳税人状态', '', '/nsrzt', 1, 0, 1);
+INSERT INTO `system_menu` VALUES (20, '3', '纳税人状态', '', '/nsrzt', 1, 0, 3);
 INSERT INTO `system_menu` VALUES (21, '4', '免抵调库数收入预测', '', '/mddksyckxsedgxfx', 1, 0, 1);
-INSERT INTO `system_menu` VALUES (22, '5', '疑点查询统计', NULL, '/ydcxtj', 1, 0, 1);
-INSERT INTO `system_menu` VALUES (23, '5', '调库退库查询', NULL, '/dktkcx', 1, 0, 2);
+INSERT INTO `system_menu` VALUES (22, '5', '疑点查询统计', NULL, '/ydcxtj', 1, 0, 2);
+INSERT INTO `system_menu` VALUES (23, '5', '调库退库查询', NULL, '/dktkcx', 1, 0, 1);
 INSERT INTO `system_menu` VALUES (24, '5', '流程进度查询', '', '/sljdcx', 1, 0, 3);
 INSERT INTO `system_menu` VALUES (25, '5', '专管员查询', NULL, '/zgycx', 1, 0, 4);
 INSERT INTO `system_menu` VALUES (26, '6', '智能提醒', NULL, NULL, 1, 0, 1);
@@ -67,17 +67,17 @@ INSERT INTO `system_menu` VALUES (40, '9', '采集管理', '', '/cjgl', 1, 0, 4)
 INSERT INTO `system_menu` VALUES (41, '7', '综合地图', '', '/zhdt', 1, 0, 2);
 INSERT INTO `system_menu` VALUES (42, '7', '企业地图', '', '/qydt', 1, 0, 3);
 INSERT INTO `system_menu` VALUES (43, '3', '银行账号', '', '/yhzh', 1, 0, 2);
-INSERT INTO `system_menu` VALUES (45, '0', '数据导入', 'icon-pullup', '', 1, 0, 11);
+INSERT INTO `system_menu` VALUES (45, '0', '数据导入', 'icon-pullup', '', 1, 0, 13);
 INSERT INTO `system_menu` VALUES (46, '45', '中国裁判文书网', '', '/zgcpwsw', 1, 0, 1);
-INSERT INTO `system_menu` VALUES (48, '3', '多缴税金明细清册', '', '/djsjmxqc', 1, 0, 3);
-INSERT INTO `system_menu` VALUES (49, '0', '退税进度历史', 'icon-qrcode1', '', 1, 0, 12);
+INSERT INTO `system_menu` VALUES (48, '3', '多缴税金明细清册', '', '/djsjmxqc', 1, 0, 999);
+INSERT INTO `system_menu` VALUES (49, '0', '退税进度历史', 'icon-qrcode1', '', 1, 0, 14);
 INSERT INTO `system_menu` VALUES (50, '49', '滞留数量统计历史', '', '/zlsltjls', 1, 0, 1);
 INSERT INTO `system_menu` VALUES (51, '49', '受理回退企业历史', '', '/htqyhcls', 1, 0, 2);
 INSERT INTO `system_menu` VALUES (52, '49', '退税进度概况', '', '/tsgk', 1, 0, 3);
 INSERT INTO `system_menu` VALUES (53, '2', '滞留数量统计(新)', '', '/zlsltj_pie', 1, 0, 6);
 INSERT INTO `system_menu` VALUES (54, '49', '滞留时长统计历史', '', '/zlsctjls', 1, 0, 4);
 INSERT INTO `system_menu` VALUES (55, '2', '滞留时长统计(新)', '', '/zlsctj_line', 1, 0, 7);
-INSERT INTO `system_menu` VALUES (56, '3', '进项发票晚开', '', '/jxfpwk', 1, 0, NULL);
+INSERT INTO `system_menu` VALUES (56, '3', '进项发票晚开', '', '/jxfpwk', 1, 0, 1);
 INSERT INTO `system_menu` VALUES (57, '49', '受理时间分布历史', '', '/slsjfbls', 1, 0, 5);
 INSERT INTO `system_menu` VALUES (58, '5', '滞留时长查询', '', '/zlsccx', 1, 0, 5);
 INSERT INTO `system_menu` VALUES (59, '9', '滞留时长设置', '', '/zlscsz', 1, 0, 5);
@@ -89,7 +89,7 @@ INSERT INTO `system_menu` VALUES (64, '7', '地图2（点）', '', '/c2', 1, 0, 
 INSERT INTO `system_menu` VALUES (65, '7', '地图3（线上一版）', '', '/c3', 1, 0, 7);
 INSERT INTO `system_menu` VALUES (66, '7', '地图4（点上一版）', '', '/c4', 1, 0, 8);
 INSERT INTO `system_menu` VALUES (67, '7', '地图5(全屏备份)', '', '/c5', 1, 0, 9);
-INSERT INTO `system_menu` VALUES (68, '0', '开发者操作', 'icon-friendfamous', '', 1, 0, 13);
+INSERT INTO `system_menu` VALUES (68, '0', '开发者操作', 'icon-friendfamous', '', 1, 0, 3);
 INSERT INTO `system_menu` VALUES (69, '68', '自动预测概况图', '', '/znycchart', 1, 0, 1);
 INSERT INTO `system_menu` VALUES (70, '68', '分析简报流程概况图', '', '/fxjblcchart', 1, 0, 2);
 INSERT INTO `system_menu` VALUES (71, '68', '退税概况视图管理', '', '/chartStorage', 1, 0, 3);
@@ -106,15 +106,16 @@ INSERT INTO `system_menu` VALUES (107, '5', '疑点数量', '', '\\ydsl', 1, 0, 
 INSERT INTO `system_menu` VALUES (108, '5', '疑点企业', '', '\\ydqy', 1, 0, 11);
 INSERT INTO `system_menu` VALUES (109, '9', '受理回退撤销解锁', '', '/slhtcxjs', 1, 0, 6);
 INSERT INTO `system_menu` VALUES (110, '9', '回退参数设置', '', '/htcssz', 1, 0, 7);
-INSERT INTO `system_menu` VALUES (111, '0', '疑点信息', '', '', 1, 0, 14);
+INSERT INTO `system_menu` VALUES (111, '0', '疑点信息', '', '', 1, 0, 15);
 INSERT INTO `system_menu` VALUES (112, '111', '疑点信息（一版）', '', '/ydxx_v190401', 1, 0, 1);
 INSERT INTO `system_menu` VALUES (113, '111', '疑点信息（二版）', '', '/ydxx_v190423', 1, 0, 2);
 INSERT INTO `system_menu` VALUES (114, '2', '受理回退企业(河流)', '', '/slhtqy', 1, 0, 9);
 INSERT INTO `system_menu` VALUES (115, '4', '退税率变动模拟', '', '/tslbdmn', 1, 0, 2);
-INSERT INTO `system_menu` VALUES (116, '0', '菜单演示', '', '', 1, 0, 1);
+INSERT INTO `system_menu` VALUES (116, '0', '菜单演示', '', '', 1, 0, 2);
 INSERT INTO `system_menu` VALUES (117, '116', '退税进度统计V201906', '', '/tsjdtj_v201906', 1, 0, 1);
-INSERT INTO `system_menu` VALUES (118, '116', '受理回退企业v201908', '', '/slhtqy_v201908', 1, 0, 2);
+INSERT INTO `system_menu` VALUES (118, '116', '受理回退企业v201908', '', '/slhtqy_v201908', 1, 0, 3);
 INSERT INTO `system_menu` VALUES (119, '116', '受理情况统计v201906', '', '/slqktj_v201906', 1, 0, 3);
+INSERT INTO `system_menu` VALUES (120, '116', '菜单页面', NULL, '/page_menu', 1, 0, 4);
 
 -- ----------------------------
 -- Table structure for user
@@ -184,7 +185,7 @@ CREATE TABLE `user_token`  (
   `randomkey` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '登录随机字符串',
   `ip` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '登录ip',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 85 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 86 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user_token
@@ -256,6 +257,7 @@ INSERT INTO `user_token` VALUES (81, 'c06668a0-af67-11e9-a74c-e12bacab5eb7', 'lo
 INSERT INTO `user_token` VALUES (82, 'c06668a0-af67-11e9-a74c-e12bacab5eb7', 'local', '2019-09-18 16:44:43', 'dE5y3m6dmwW58GjU', '127.0.0.1');
 INSERT INTO `user_token` VALUES (83, 'c06668a0-af67-11e9-a74c-e12bacab5eb7', 'local', '2019-09-18 17:37:54', '1wDdBVpvfokv8mwU', '127.0.0.1');
 INSERT INTO `user_token` VALUES (84, 'c06668a0-af67-11e9-a74c-e12bacab5eb7', 'local', '2019-09-19 10:04:16', 'ySMKR0A5wXWJID2O', '127.0.0.1');
+INSERT INTO `user_token` VALUES (85, 'c06668a0-af67-11e9-a74c-e12bacab5eb7', 'local', '2019-09-19 14:32:54', 'lmyQUALJrSgpACTq', '127.0.0.1');
 
 -- ----------------------------
 -- Table structure for user_track
@@ -287,12 +289,12 @@ BEGIN
 
 
 select * from (select 
-id,parent_id,title,ifnull(icon,'') as icon,ifnull(path,'') as path,`status`,type,`order`
+id,parent_id,title,ifnull(icon,'') as icon,ifnull(path,'') as path,`status`,type,ifnull(`order`,999) as `order`
 from system_menu where parent_id =0 and `status`=1 order by `order` limit 9999999999999) u union all
 
 -- 查询所有 有效（当前一级菜单未  停用或删除下的子集）的子集项
 select * from (select 
-b.id,b.parent_id,b.title,ifnull(b.icon,'') as icon,ifnull(b.path,'') as path,b.`status`,b.type,b.`order`
+b.id,b.parent_id,b.title,ifnull(b.icon,'') as icon,ifnull(b.path,'') as path,b.`status`,b.type,ifnull(b.`order`,999) as `order`
 from system_menu a INNER  join system_menu b  where a.id=b.parent_id 
 and a.`status`=1 and b.`status`=1 
 order by a.`order`,b.`order`  limit 9999999999999) i;
@@ -300,6 +302,51 @@ order by a.`order`,b.`order`  limit 9999999999999) i;
 
 
 
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Procedure structure for p_system_menu_sort
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `p_system_menu_sort`;
+delimiter ;;
+CREATE PROCEDURE `p_system_menu_sort`(IN `_dq_id` int,IN `_dq_order` int,IN `_th_id` int,IN `_th_order` int)
+BEGIN
+
+-- 这个是菜单页面的 上下移动排序的事务方法 
+-- _dq_id  当前行的   id
+-- _dq_order 当前行的 序号（order）
+-- _th_id  要被替换行的 id
+-- _th_order 要被替换行的 序号（order）
+
+   start transaction; -- 开始事务
+    update system_menu  set `order`=_th_order where id=_dq_id;
+	 
+	 
+	 
+  if row_count() < 1 then  
+	 -- select row_count(); -- 查看受影响行数
+    set @col1 = 0;   
+    rollback;  -- 回滚
+		else
+		-- select row_count(); -- 查看受影响行数
+		 set @col1 = 1;  
+  end if;
+   update system_menu  set `order`=_dq_order where id=_th_id ;
+
+  if row_count() < 1 then  
+	  -- select row_count(); -- 查看受影响行数
+    set  @col2 = 0;  
+    rollback;  -- 回滚
+   else 
+	 -- select row_count(); -- 查看受影响行数
+	 set @col2 = 1;  
+   COMMIT; -- 提交事务
+  end if; 
+	
+  select @col1 as num1,@col2 as num2;-- 标识 是否成功
+ 
 END
 ;;
 delimiter ;
