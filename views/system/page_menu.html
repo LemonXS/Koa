@@ -85,6 +85,19 @@
 			padding: 0;
 		}
 
+
+
+        /* 添加子项 弹框 */
+		#div_child .layui-input-block{
+			margin-left:80px;	
+		}
+		#div_child .divclass{
+			height:35px;line-height:35px;
+			padding-right:20px;
+		}
+		#div_child .layui-form-label{
+			width:50px;
+		}
     </style>
 </head>
 
@@ -104,12 +117,14 @@
             </div>
             <!-- 【内容】 -->
             <div id="div_module1">
+				
+
+
 		<!-- <button type="button" class="layui-btn layui-btn-primary layui-btn-sm refresh">刷新</button>
 		<button type="button" class="layui-btn layui-btn-primary layui-btn-sm open-all">全部展开</button>
 		<button type="button" class="layui-btn layui-btn-primary layui-btn-sm close-all">全部关闭</button> -->
 		<!-- <button type="button" class="layui-btn layui-btn-primary layui-btn-sm change-icon">随机更换小图标</button> -->
 		
-		<table class="layui-table layui-form"  lay-size="sm"></table>
                 <!-- <button type="button" class="layui-btn " id="btn_cx">查询&nbsp;<span style="display:none;" class=" layui-icon layui-icon-loading  layui-anim layui-anim-rotate layui-anim-loop"></span></button> -->
                 <table id="M1table" class="layui-table layui-form" lay-size="sm"></table>
             </div>
@@ -146,14 +161,11 @@
         },3000);
     });
     
-
-
 	window.onload=function(){
 		loadFunc();
-
 	}
 	
-	
+	//初始查询菜单的方法
     function loadFunc(){
 		$.ajax({
 			url:"/system_menu",
@@ -170,8 +182,8 @@
 			error:function (err) { console.log(JSON.stringify(err)) }
 		})
 	}
-
-
+    
+	//生成菜单表格
     function  M1tableFunc(data){
             layui.config({
 				base: '/public/layui_extend/treeTable/js/',
@@ -311,12 +323,6 @@
 											+'<i class="layui-edge layui-table-sort-asc" lay-filter="moveUp" title="上移"></i>'
 										    +'<i class="layui-edge layui-table-sort-desc" lay-filter="moveDown" title="下移"></i></span></div>';
 								}
-								// template: function (item) {
-								// 	return '<div class="layui-table-cell laytable-cell-1-0-3">'
-								// 		    +'<span id="pid_'+item.id+'">'+item.order+'</span><span class="layui-table-sort layui-inline" lay-sort="desc">'
-								// 			+'<i class="layui-edge layui-table-sort-asc" lay-filter="moveUp" title="上移"></i>'
-								// 		    +'<i class="layui-edge layui-table-sort-desc" lay-filter="moveDown" title="下移"></i></span></div>';
-                                // }
                             },
 						{
 							// title: '操作',
@@ -350,28 +356,110 @@
 				    
 				});
 
-				// // 监听checkbox选择
-				// treeTable.on('tree(box)',function(data){
-				// 	if(o(data.elem).parents('#tree-table1').length){
-				// 		var text = [];
-				// 		o(data.elem).parents('#tree-table1').find('.cbx.layui-form-checked').each(function(){
-				// 			o(this).parents('[data-pid]').length && text.push(o(this).parents('td').next().find('span').text());
-				// 		})
-				// 		o(data.elem).parents('#tree-table1').prev().find('input').val(text.join(','));
-				// 	}
-				// 	layer.msg(JSON.stringify(data));
-				// })
 
 				// 添加监听
 				treeTable.on('tree(add)',function(data){
                     console.log("------添加监听-------")
 					layer.msg(JSON.stringify(data));
+					var menuid=data.item.id;
+					var menutitle=data.item.title;
+					layer.open({
+                                id: "layeropenchindadd",
+                                type: 1,
+                                title: [menutitle+'-->添加子菜单', 'font-size:18px;'],
+                                skin: 'layui-layer-demo', //样式类名
+                                area: ['400px', '310px'], //宽高
+                                anim: 2,
+                                shadeClose: false, //是否开启遮罩关闭
+									content:	'<div style="padding-top:10px;" id="div_child">'
+						            +'	<div class="divclass layui-form-item" ><label class="layui-form-label">标题</label><div   class="layui-input-block"><input type="text" id="titlename" name="titlename" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input"></div> </div>'
+						            +'	<div class="divclass layui-form-item" ><label class="layui-form-label">图标</label><div   class="layui-input-block"><input type="text" id="titleicon" name="titleicon" lay-verify="title" autocomplete="off" placeholder="请输入图标" class="layui-input"></div></div>'
+						            +'	<div class="divclass layui-form-item" ><label class="layui-form-label">地址</label><div   class="layui-input-block"><input type="text" id="titlepath" name="titlepath" lay-verify="title" autocomplete="off" placeholder="请输入地址:/" class="layui-input"></div></div>'
+						            +'	<div class="divclass layui-form-item" ><label class="layui-form-label">启/禁</label><div  class="layui-input-block">启&nbsp;&nbsp;<input type="radio" name="titleradio" value="1" title="启" checked="">&nbsp;&nbsp;&nbsp;&nbsp;  禁&nbsp;&nbsp;<input type="radio" name="titleradio" value="0" title="禁" ></div></div>'
+						            +'</div>',
+                                btn: ['提交', '取消'],
+                                btnAlign: 'c',
+                                yes: function (index, layero) {
+                                    // console.log("我是提交")
+                                    var titleid = data.item.id;
+                                    var titlename = $("#titlename").val();
+                                    var titleicon = $("#titleicon").val();
+                                    var titlepath = $("#titlepath").val();
+                                    var titleradio = $("input[name='titleradio']:checked").val();
+                                    if (titlename != "" && titlepath != "") {
+									 console.log("-----添加子菜单-----")
+                                     console.log(titleid);
+									 console.log(titlename);
+									 console.log(titleicon);
+									 console.log(titlepath);
+									 console.log(titleradio);
+                                     } else {
+                                        layer.msg('标题,路径不能为空', {
+                                            icon: 6
+                                        })
+                                    }
+                                },
+                                btn2: function (index, layero) {
+									$("#div_child").remove();
+                                }
+                            });
+                       
 				})
 
                 // 修改监听
                 treeTable.on('tree(edit)',function(data){
                     console.log("------修改监听-------")
 					layer.msg(JSON.stringify(data));
+					var menuid=data.item.id;
+					var menutitle=data.item.title;
+					var menuicon=data.item.icon;
+					var menupath=data.item.path;
+					var menustatus=data.item.status;
+
+					layer.open({
+                                id: "layeropenchindedit",
+                                type: 1,
+                                title: [menutitle+'-->修改', 'font-size:18px;'],
+                                skin: 'layui-layer-demo', //样式类名
+                                area: ['400px', '310px'], //宽高
+                                anim: 2,
+                                shadeClose: false, //是否开启遮罩关闭
+									content:	'<div style="padding-top:10px;" id="div_child">'
+						            +'	<div class="divclass layui-form-item" ><label class="layui-form-label">标题</label><div   class="layui-input-block"><input type="text" id="titlename" name="titlename" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input"></div> </div>'
+						            +'	<div class="divclass layui-form-item" ><label class="layui-form-label">图标</label><div   class="layui-input-block"><input type="text" id="titleicon" name="titleicon" lay-verify="title" autocomplete="off" placeholder="请输入图标" class="layui-input"></div></div>'
+						            +'	<div class="divclass layui-form-item" ><label class="layui-form-label">地址</label><div   class="layui-input-block"><input type="text" id="titlepath" name="titlepath" lay-verify="title" autocomplete="off" placeholder="请输入地址:/" class="layui-input"></div></div>'
+						            +'	<div class="divclass layui-form-item" ><label class="layui-form-label">启/禁</label><div  class="layui-input-block">启&nbsp;&nbsp;<input type="radio" name="titleradio" value="1" title="启" checked="">&nbsp;&nbsp;&nbsp;&nbsp;  禁&nbsp;&nbsp;<input type="radio" name="titleradio" value="0" title="禁" ></div></div>'
+						            +'</div>',
+                                btn: ['提交', '取消'],
+								btnAlign: 'c',
+                                success: function(layero, index){
+								  console.log("1111111111111111111111111111111");
+                                  console.log(layero, index);
+                                },
+                                yes: function (index, layero) {
+                                    // console.log("我是提交")
+                                    var titleid = data.item.id;
+                                    var titlename = $("#titlename").val();
+                                    var titleicon = $("#titleicon").val();
+                                    var titlepath = $("#titlepath").val();
+                                    var titleradio = $("input[name='titleradio']:checked").val();
+                                    if (titlename != "" && titlepath != "") {
+									 console.log("-----添加子菜单-----")
+                                     console.log(titleid);
+									 console.log(titlename);
+									 console.log(titleicon);
+									 console.log(titlepath);
+									 console.log(titleradio);
+                                     } else {
+                                        layer.msg('标题,路径不能为空', {
+                                            icon: 6
+                                        })
+                                    }
+                                },
+                                btn2: function (index, layero) {
+									$("#div_child").remove();
+                                }
+                            });
 				})
 
                 // 删除监听
@@ -379,14 +467,6 @@
                     console.log("------删除监听-------")
 					layer.msg(JSON.stringify(data));
 				})
-
-
-				// // 文本监听
-				// treeTable.on('tree(text)',function(data){
-                //     console.log("------文本监听-------")
-				// 	layer.msg(JSON.stringify(data));
-				// })
-
 
 				//监听上移
 				treeTable.on('tree(moveUp)', function (data) {
@@ -516,13 +596,6 @@
 
 }
 
-
-
-
-
-
-				
-
 				//监听状态（菜单表的状态）
 				form.on('switch(status)', function (data) {
                             var menuid_checked = this.getAttribute('menukey');
@@ -559,8 +632,6 @@
                             // })
                         });
 
-
-						
 				// // 获取选中值，返回值是一个数组（定义的primary_key参数集合）
 				// o('.get-checked').click(function(){
 				// 	layer.msg('选中参数'+treeTable.checked(re).join(','))
@@ -637,11 +708,11 @@
 	 * th_order 要被替换行的 序号
 	 * */
 	function orderFunc(dq_id,dq_order,th_id,th_order){
-	console.log("-------移动排序-------")
-	console.log("选中行的【id】："+dq_id)
-	console.log("选中行的【序号】："+dq_order)
-	console.log("要替换行的【id】："+th_id)
-	console.log("要替换行的【序号】："+th_order)
+	// console.log("-------移动排序-------")
+	// console.log("选中行的【id】："+dq_id)
+	// console.log("选中行的【序号】："+dq_order)
+	// console.log("要替换行的【id】："+th_id)
+	// console.log("要替换行的【序号】："+th_order)
 
    layui.use(["layer"],function(){
 	   var layer=layui.layer;
@@ -669,6 +740,12 @@
     	})
     })
 	}
+
+    
+
+
+
+
 
 </script>
 
