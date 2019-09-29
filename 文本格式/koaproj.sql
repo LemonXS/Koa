@@ -11,7 +11,7 @@
  Target Server Version : 50717
  File Encoding         : 65001
 
- Date: 20/09/2019 15:31:50
+ Date: 29/09/2019 14:13:11
 */
 
 SET NAMES utf8mb4;
@@ -185,7 +185,7 @@ CREATE TABLE `user_token`  (
   `randomkey` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '登录随机字符串',
   `ip` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '登录ip',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 86 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 88 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user_token
@@ -258,6 +258,8 @@ INSERT INTO `user_token` VALUES (82, 'c06668a0-af67-11e9-a74c-e12bacab5eb7', 'lo
 INSERT INTO `user_token` VALUES (83, 'c06668a0-af67-11e9-a74c-e12bacab5eb7', 'local', '2019-09-18 17:37:54', '1wDdBVpvfokv8mwU', '127.0.0.1');
 INSERT INTO `user_token` VALUES (84, 'c06668a0-af67-11e9-a74c-e12bacab5eb7', 'local', '2019-09-19 10:04:16', 'ySMKR0A5wXWJID2O', '127.0.0.1');
 INSERT INTO `user_token` VALUES (85, 'c06668a0-af67-11e9-a74c-e12bacab5eb7', 'local', '2019-09-19 14:32:54', 'lmyQUALJrSgpACTq', '127.0.0.1');
+INSERT INTO `user_token` VALUES (86, 'c06668a0-af67-11e9-a74c-e12bacab5eb7', 'local', '2019-09-20 17:12:48', 'GfSmfOwMurOKy4dn', '127.0.0.1');
+INSERT INTO `user_token` VALUES (87, 'c06668a0-af67-11e9-a74c-e12bacab5eb7', 'local', '2019-09-20 17:13:47', 'EfKmXb1t8XacWQF6', '127.0.0.1');
 
 -- ----------------------------
 -- Table structure for user_track
