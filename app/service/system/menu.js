@@ -14,11 +14,6 @@ async function  system_navs(option){
 }
 exports.system_navs=system_navs;
 
-
-
-
-
-
 async function  system_menu(option){
     let rows;
     try {

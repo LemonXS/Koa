@@ -48,10 +48,17 @@ const index = require("./app/controller/index");
 ////【controller】本地控制器-->【用户】
 const users = require("./app/controller/user/users");
 const QQauthorization = require("./app/controller/user/qq/QQauthorization");
-const myProfile = require("./app/controller/user/myProfile");//个人中心
 
 ////【controller】本地控制器-->【系统设置】
-const menu = require("./app/controller/system/menu");//个人中心
+const menu = require("./app/controller/system/menu");//菜单
+const myProfile = require("./app/controller/system/myProfile");//个人中心
+
+
+
+
+
+
+
 
 
 
@@ -103,7 +110,6 @@ app.use(async (ctx, next) => { // 我这里知识把登陆和注册请求去掉�
       // console.log("----【TOKEN-err】-----");
       // consolele.log(error)
     }
-
     if (Object.prototype.toString.call(result) == "[object Object]") {
     //  console.log("【解密的监听】")
     //  console.log(result)
@@ -284,9 +290,14 @@ app.use(index.routes(), index.allowedMethods());
 ////【controller】本地控制器-->【用户】
 app.use(users.routes(), users.allowedMethods());
 app.use(QQauthorization.routes(), QQauthorization.allowedMethods());
-app.use(myProfile.routes(), myProfile.allowedMethods());//个人中心
 ////【controller】本地控制器-->【系统设置】
 app.use(menu.routes(), menu.allowedMethods());//菜单
+app.use(myProfile.routes(), myProfile.allowedMethods());//菜单
+
+
+
+
+
 
 
 //【api】路由
