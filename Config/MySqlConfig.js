@@ -5,7 +5,7 @@ const config = {
     // 数据库配置
     database: {
         DATABASE: 'KoaProj', //数据库名称
-        USERNAME: 'MY', //mysql用户名
+        USERNAME: 'root', //mysql用户名
         PASSWORD: '13579468250', //mysql密码
         PORT: '3306', //mysql端口号
         HOST: '127.0.0.1' //服务器ip
